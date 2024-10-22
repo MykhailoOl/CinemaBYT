@@ -9,10 +9,12 @@ public class Movie
     [MinLength(1)]
     public List<string> ListOfGenres { get; set; }
 
-    public Movie(string name, DateTime rel, int age, List<string> genres)
+    public Movie(string name, DateTime releaseDate, int ageRating, List<string> listOfGenres)
     {
-        
-        //please check the list of genres len > 0 and release date from future
+        Name = name;
+        ReleaseDate = releaseDate;
+        AgeRating = ageRating;
+        ListOfGenres = listOfGenres;
     }
 }
 

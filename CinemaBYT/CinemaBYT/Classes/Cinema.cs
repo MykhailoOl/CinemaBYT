@@ -10,4 +10,14 @@ public class Cinema
     public string OpeningHours { get; set; }
     [MinLength(1)]
     public List<Hall> Halls { get; set; }
+
+    public Cinema(string name, string city, string country, string contactPhone, string openingHours, List<Hall> halls)
+    {
+        Name = name;
+        City = city;
+        Country = country;
+        ContactPhone = contactPhone;
+        OpeningHours = openingHours;
+        Halls = halls;
+    }
 }
