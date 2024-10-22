@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
-namespace CinemaBYT.Classes
+public class Cinema
 {
-    internal class Cinema
-    {
-    }
+    public string Name { get; set; }
+    public string City { get; set; }
+    public string Country { get; set; }
+    public string ContactPhone { get; set; }
+    public string OpeningHours { get; set; }
+    [MinLength(1)]
+    public List<Hall> Halls { get; set; }
 }

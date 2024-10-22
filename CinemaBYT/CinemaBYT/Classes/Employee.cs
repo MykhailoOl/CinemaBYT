@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CinemaBYT.Classes
+﻿public abstract class Employee : Person
 {
-    internal class Employee
-    {
-    }
+    public DateTime HireDate { get; set; }
+    public decimal Salary { get; set; }
 }

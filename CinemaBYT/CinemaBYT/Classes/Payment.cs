@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CinemaBYT.Classes
+﻿public class Payment
 {
-    internal class Payment
-    {
-    }
+    public PaymentType Type { get; set; }
+    public DateTime PaymentDate { get; set; }
+    public int MaxTicketPerPayment { get; set; } = 5;
+}
+
+public enum PaymentType
+{
+    Blik,
+    Card,
+    GiftCard
 }

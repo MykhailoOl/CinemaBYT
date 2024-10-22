@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Diagnostics.CodeAnalysis;
 
-namespace CinemaBYT.Classes
+public class History
 {
-    internal class History
-    {
-    }
+    [AllowNull]
+    public List<Session> ListOfSessions { get; set; }
 }

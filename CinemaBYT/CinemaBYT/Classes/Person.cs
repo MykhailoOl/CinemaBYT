@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CinemaBYT.Classes
+﻿public abstract class Person
 {
-    internal class Person
-    {
-    }
+    public string Name { get; set; }
+    public string Email { get; set; }
+    public DateTime BirthDate { get; set; }
+    public string PESEL { get; set; }
 }

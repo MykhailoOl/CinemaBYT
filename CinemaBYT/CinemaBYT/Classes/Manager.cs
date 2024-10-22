@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CinemaBYT.Classes
+﻿public class Manager : Employee
 {
-    internal class Manager
-    {
-    }
+    public string Position { get; set; }
 }

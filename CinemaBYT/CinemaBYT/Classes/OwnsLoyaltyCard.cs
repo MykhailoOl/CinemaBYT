@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CinemaBYT.Classes
+﻿public class OwnsLoyaltyCard
 {
-    internal class OwnsLoyaltyCard
-    {
-    }
+    public DateTime StartDate { get; set; }
+    public DateTime ExpireDate { get; set; }
+    public decimal Discount { get; set; }
 }

@@ -1,12 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Net.Sockets;
 
-namespace CinemaBYT.Classes
+public class Ticket
 {
-    internal class Ticket
-    {
-    }
+    public int SeatNumber { get; set; }
+    public decimal Price { get; set; }
+    public DateTime PurchaseDate { get; set; }
+    public TicketType Type { get; set; }
+    public Session Session { get; set; }
+}
+public enum TicketType
+{
+    Adult,
+    Senior,
+    Child
 }

@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CinemaBYT.Classes
+﻿public class Seat
 {
-    internal class Seat
-    {
-    }
+    
+    public int SeatNo { get; set; }
+    public bool IsVIP { get; set; }
+    public bool IsAvailable { get; set; }
 }

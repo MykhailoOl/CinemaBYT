@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
-namespace CinemaBYT.Classes
+public class Movie
 {
-    internal class Movie
-    {
-    }
+    public string Name { get; set; }
+    public DateTime ReleaseDate { get; set; }
+    public int AgeRating { get; set; }
+    [MinLength(1)]
+    public List<string> ListOfGenres { get; set; }
 }
