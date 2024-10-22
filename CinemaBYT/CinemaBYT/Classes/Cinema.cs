@@ -20,4 +20,16 @@ public class Cinema
         OpeningHours = openingHours;
         Halls = halls;
     }
+    public List<Hall> GetAvailableHalls()
+    {
+        List<Hall> availableHalls = new List<Hall>();
+        foreach (var hall in Halls)
+        {
+            if (hall.HasAvailableSeats())
+            {
+                availableHalls.Add(hall);
+            }
+        }
+        return availableHalls;
+    }
 }

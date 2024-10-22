@@ -10,6 +10,14 @@
         PaymentDate = paymentDate;
         MaxTicketPerPayment = maxTicketPerPayment;
     }
+    public double LoyaltyDiscount(double Price, bool HasLoyaltyCard)
+    {
+        if (HasLoyaltyCard)
+        {
+            return Price * 0.9; 
+        }
+        return Price;
+    }
 }
 
 public enum PaymentType

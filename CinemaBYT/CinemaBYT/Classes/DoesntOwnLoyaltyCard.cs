@@ -1,9 +1,5 @@
-﻿public class DoesntOwnLoyaltyCard
+﻿public class DoesntOwnLoyaltyCard : Person
 {
-    public int OfferLCO { get; set; }
-
-    public DoesntOwnLoyaltyCard(int offerLCO)
-    {
-        OfferLCO = offerLCO;
-    }
+    
+    
 }

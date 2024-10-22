@@ -11,4 +11,12 @@
         IsVIP = isVIP;
         IsAvailable = isAvailable;
     }
+    
+    public bool ReserveSeat() {
+        if (IsAvailable) {
+            IsAvailable = false;
+            return true;
+        }
+        return false;
+    }
 }

@@ -16,5 +16,9 @@ public class Movie
         AgeRating = ageRating;
         ListOfGenres = listOfGenres;
     }
+    
+    public bool isSuitableForAge(int age) {
+        return age>= AgeRating;
+    }
 }
 

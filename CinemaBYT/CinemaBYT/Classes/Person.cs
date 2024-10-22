@@ -5,6 +5,10 @@
     public DateTime BirthDate { get; set; }
     public string PESEL { get; set; }
 
+    protected Person()
+    {
+    }
+
     protected Person(string name, string email, DateTime birthDate, string pESEL)
     {
         Name = name;

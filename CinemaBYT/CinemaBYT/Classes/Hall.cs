@@ -1,6 +1,4 @@
-﻿using CinemaBYT.Classes;
-using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.ComponentModel.DataAnnotations;
 
 public class Hall
 {
@@ -17,5 +15,15 @@ public class Hall
         NumberOfSeats = numberOfSeats;
         Seats = seats;
         Cinema = cinema;
+    }
+
+    public bool HasAvailableSeats()
+    {
+        foreach (var seat in Seats)
+        {
+            if (seat.IsAvailable) return true;
+        }
+
+        return false;
     }
 }
