@@ -10,4 +10,12 @@ public class Hall
     [MaxLength(100)]
     public List<Seat> Seats { get; set; }
     public Cinema Cinema { get; set; } // Belongs to a Cinema
+
+    public Hall(int hallNumber, int numberOfSeats, List<Seat> seats, Cinema cinema)
+    {
+        HallNumber = hallNumber;
+        NumberOfSeats = numberOfSeats;
+        Seats = seats;
+        Cinema = cinema;
+    }
 }
