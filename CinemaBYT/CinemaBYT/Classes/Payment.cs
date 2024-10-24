@@ -10,7 +10,7 @@
         PaymentDate = paymentDate;
         MaxTicketPerPayment = maxTicketPerPayment;
     }
-    public double LoyaltyDiscount(double Price, bool HasLoyaltyCard)
+    public static double LoyaltyDiscount(double Price, bool HasLoyaltyCard)
     {
         if (HasLoyaltyCard)
         {
