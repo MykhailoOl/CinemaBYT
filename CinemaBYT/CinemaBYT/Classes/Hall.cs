@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using CinemaBYT.Exceptions;
 
 public class Hall
 {
@@ -18,13 +19,26 @@ public class Hall
 
     public bool HasAvailableSeats()
     {
+        if (Seats == null)
+        {
+            throw new HallException("The hall's seats list is not initialized.");
+        }
+        if (Seats.Count == 0)
+        {
+            throw new HallException("The hall has no seats.");
+        }
+
         foreach (var seat in Seats)
         {
-            if (seat.IsAvailable) return true;
+            if (seat.IsAvailable)
+            {
+                return true;
+            }
         }
 
         return false;
     }
+
     public void ValidateSeats()
     {
         if (Seats.Count < 20 || Seats.Count > 100)

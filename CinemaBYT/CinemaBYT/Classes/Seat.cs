@@ -1,4 +1,6 @@
-﻿public class Seat
+﻿using CinemaBYT.Exceptions;
+
+public class Seat
 {
     
     public int SeatNo { get; set; }
@@ -12,11 +14,13 @@
         IsAvailable = isAvailable;
     }
     
-    public bool ReserveSeat() {
-        if (IsAvailable) {
-            IsAvailable = false;
-            return true;
+    public bool ReserveSeat()
+    {
+        if (!IsAvailable)
+        {
+            throw new SeatReservationException("Seat is already reserved.");
         }
-        return false;
+        IsAvailable = false;
+        return true;
     }
 }

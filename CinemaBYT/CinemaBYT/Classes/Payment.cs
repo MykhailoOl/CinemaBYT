@@ -1,4 +1,6 @@
-﻿public class Payment
+﻿using CinemaBYT.Exceptions;
+
+public class Payment
 {
     public PaymentType Type { get; set; }
     public DateTime PaymentDate { get; set; }
@@ -10,13 +12,19 @@
         PaymentDate = paymentDate;
         MaxTicketPerPayment = maxTicketPerPayment;
     }
-    public static double LoyaltyDiscount(double Price, bool HasLoyaltyCard)
+    public static double LoyaltyDiscount(double price, bool hasLoyaltyCard)
     {
-        if (HasLoyaltyCard)
+        if (price <= 0)
         {
-            return Price * 0.9; 
+            throw new PaymentException("Price must be a positive value.");
         }
-        return Price;
+
+        if (hasLoyaltyCard)
+        {
+            return price * 0.9;  // 10% discount for loyalty card holders
+        }
+
+        return price;
     }
 }
 

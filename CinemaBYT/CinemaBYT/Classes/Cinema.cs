@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 using System.Xml.Linq;
+using CinemaBYT.Exceptions;
 
 public class Cinema
 {
@@ -23,6 +24,10 @@ public class Cinema
     }
     public List<Hall> GetAvailableHalls()
     {
+        if (Halls == null)
+        {
+            throw new CinemaException("The halls list is not initialized.");
+        }
         List<Hall> availableHalls = new List<Hall>();
         foreach (var hall in Halls)
         {
@@ -30,6 +35,10 @@ public class Cinema
             {
                 availableHalls.Add(hall);
             }
+        }
+        if (availableHalls.Count == 0)
+        {
+            throw new CinemaException("No available halls with seats found.");
         }
         return availableHalls;
     }

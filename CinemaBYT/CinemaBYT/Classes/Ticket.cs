@@ -1,4 +1,6 @@
 ﻿using System.Net.Sockets;
+using CinemaBYT.Exceptions;
+
 [Serializable]
 public class Ticket
 {
@@ -20,24 +22,51 @@ public class Ticket
     }
     public bool BuyTicket()
     {
-        if (Seat.ReserveSeat())
+        try
         {
-            Console.WriteLine("Ticket purchased successfully!");
-            return true;
+            if (Seat == null)
+            {
+                throw new TicketException("Seat is not initialized.");
+            }
+
+            if (Seat.ReserveSeat())
+            {
+                Console.WriteLine("Ticket purchased successfully!");
+                return true;
+            }
+            Console.WriteLine("Seat is already reserved."); 
+            return false;
         }
-        Console.WriteLine("Seat is already reserved.");
-        return false;
+        catch (TicketException ex)
+        {
+            Console.WriteLine("Ticket purchase error: " + ex.Message);
+            return false;
+        }
     }
+
     public bool RefundTicket()
     {
-        if (CanRefund())
+        try
         {
-            Seat.IsAvailable=true; 
-            Console.WriteLine("Ticket refunded successfully.");
-            return true;
+            if (Seat == null)
+            {
+                throw new TicketException("Seat is not initialized.");
+            }
+
+            if (CanRefund())
+            {
+                Seat.IsAvailable = true;
+                Console.WriteLine("Ticket refunded successfully.");
+                return true;
+            }
+            Console.WriteLine("Ticket cannot be refunded."); 
+            return false;
         }
-        Console.WriteLine("Ticket cannot be refunded.");
-        return false;
+        catch (TicketException ex)
+        {
+            Console.WriteLine("Refund error: " + ex.Message);
+            return false;
+        }
     }
     private bool CanRefund()
     {

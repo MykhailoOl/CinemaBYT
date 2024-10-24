@@ -1,5 +1,6 @@
 ﻿using System.Xml;
 using System.Xml.Serialization;
+using CinemaBYT.Exceptions;
 
 public class Session
 {
@@ -20,9 +21,24 @@ public class Session
         Tickets = tickets;
     }
     
-    public bool checkAvailability()
+    public bool CheckAvailability()
     {
-        return (Hall.NumberOfSeats > Tickets.Capacity);
+        if (Hall == null)
+        {
+            throw new SessionException("The session's hall is not initialized.");
+        }
+
+        if (Tickets == null)
+        {
+            throw new SessionException("The session's tickets are not initialized.");
+        }
+
+        if (Hall.NumberOfSeats <= 0)
+        {
+            throw new SessionException("The hall must have a positive number of seats.");
+        }
+
+        return Hall.NumberOfSeats > Tickets.Count;
     }
     public List<Ticket> load()
     {
