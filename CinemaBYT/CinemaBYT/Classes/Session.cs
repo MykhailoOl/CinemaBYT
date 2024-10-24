@@ -33,10 +33,15 @@ public class Session
             throw new SessionException("The session's tickets are not initialized.");
         }
 
-        if (Hall.NumberOfSeats <= 0)
+        if (Tickets.Count==0)
         {
-            throw new SessionException("The hall must have a positive number of seats.");
+            throw new SessionException("The session's tickets number cannot be 0.");
         }
+
+        //if (Hall.NumberOfSeats <= 0)
+        //{
+        //    throw new SessionException("The hall must have a positive number of seats.");
+        //}
 
         return Hall.NumberOfSeats > Tickets.Count;
     }

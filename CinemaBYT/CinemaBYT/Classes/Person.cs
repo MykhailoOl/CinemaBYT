@@ -16,4 +16,11 @@
         BirthDate = birthDate;
         PESEL = pESEL;
     }
+    protected Person(Person p2)
+    {
+        Name = p2.Name;
+        Email = p2.Email;
+        BirthDate = p2.BirthDate;
+        PESEL = p2.PESEL;
+    }
 }

@@ -10,4 +10,15 @@ public abstract class Employee : Person
         HireDate = hireDate;
         Salary = salary;
     }
+    protected Employee(DateTime hireDate, decimal salary, Person p) : base(p)
+    {
+        HireDate = hireDate;
+        Salary = salary;
+    }
+    protected Employee(Employee employee)
+    {
+        HireDate = employee.HireDate;
+        Salary = employee.Salary;
+    }
+
 }

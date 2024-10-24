@@ -6,7 +6,7 @@ public class Hall
     public int HallNumber { get; set; }
     public int NumberOfSeats { get; set; }
     public List<Seat> Seats { get; set; }
-    public Cinema? Cinema { get; set; } 
+    private Cinema? Cinema { get; set; } 
 
     public Hall(int hallNumber, int numberOfSeats, List<Seat> seats, Cinema? cinema = null)
     {
@@ -49,5 +49,9 @@ public class Hall
     public void SetCinema(Cinema cinema)
     {
         Cinema = cinema;
+    }
+    public Cinema GetCinema()
+    {
+        return Cinema;
     }
 }
