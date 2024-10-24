@@ -15,13 +15,21 @@ namespace CinemaBYT_Tests
         [Test]
         public void PersonInEmployee()  //CorrectClassInClassExtent
         {
-            Manager manager = new Manager(new DateTime(2020, 10, 10), 4500, "Top manager");
+            Manager manager = new Manager(new DateTime(2020, 10, 10), 4500, "Top manager", "Alan", "tt@rr.yy", 
+                new DateTime(2000, 8, 26), "09876543210");
             //manager.BirthDate = new DateTime(2000, 8, 26);
             Assert.That(manager.GetType(), Is.EqualTo(typeof(Person)));
         }
 
         //+ check reading from file with initial info
+        [Test]
+        public void LoadInitInfo()
+        {
+
+        }
+
         //check incapsulation with Person and Manager
+        //check exceptions
 
         //movie
 
