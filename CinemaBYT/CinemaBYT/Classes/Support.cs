@@ -1,7 +1,7 @@
 ﻿
 public class Support : Employee
 {
-    public Support(DateTime hireDate, decimal salary) : base(hireDate, salary)
+    public Support(DateTime hireDate, decimal salary, string name, string email, DateTime birthDate, string pESEL) : base(hireDate, salary, name, email,birthDate,pESEL)
     {
     }
 

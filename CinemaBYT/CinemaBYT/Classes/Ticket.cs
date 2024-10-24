@@ -1,5 +1,5 @@
 ﻿using System.Net.Sockets;
-
+[Serializable]
 public class Ticket
 {
     public int SeatNumber { get; set; }

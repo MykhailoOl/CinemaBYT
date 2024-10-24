@@ -4,17 +4,16 @@ public class Hall
 {
     public int HallNumber { get; set; }
     public int NumberOfSeats { get; set; }
-    [MinLength(20)]
-    [MaxLength(100)]
     public List<Seat> Seats { get; set; }
-    public Cinema Cinema { get; set; } // Belongs to a Cinema
+    public Cinema? Cinema { get; set; } 
 
-    public Hall(int hallNumber, int numberOfSeats, List<Seat> seats, Cinema cinema)
+    public Hall(int hallNumber, int numberOfSeats, List<Seat> seats, Cinema? cinema = null)
     {
         HallNumber = hallNumber;
         NumberOfSeats = numberOfSeats;
         Seats = seats;
         Cinema = cinema;
+        ValidateSeats();
     }
 
     public bool HasAvailableSeats()
@@ -25,5 +24,16 @@ public class Hall
         }
 
         return false;
+    }
+    public void ValidateSeats()
+    {
+        if (Seats.Count < 20 || Seats.Count > 100)
+        {
+            throw new ValidationException($"The number of seats in the hall must be between 20 and 100. Current count: {Seats.Count}");
+        }
+    }
+    public void SetCinema(Cinema cinema)
+    {
+        Cinema = cinema;
     }
 }
