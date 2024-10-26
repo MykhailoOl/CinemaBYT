@@ -41,7 +41,7 @@ public class Hall
 
     public void ValidateSeats()
     {
-        if (Seats.Count < 20 || Seats.Count > 100)
+        if (NumberOfSeats < 20 || NumberOfSeats > 100)
         {
             throw new ValidationException($"The number of seats in the hall must be between 20 and 100. Current count: {Seats.Count}");
         }

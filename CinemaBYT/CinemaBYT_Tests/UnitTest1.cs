@@ -1,3 +1,4 @@
+using CinemaBYT.Classes;
 using CinemaBYT.Exceptions;
 using System.ComponentModel.DataAnnotations;
 
@@ -21,21 +22,22 @@ namespace CinemaBYT_Tests
             Manager manager = new Manager(new DateTime(2020, 10, 10), 4500, "Top manager", "Alan", "tt@rr.yy", 
                 new DateTime(2000, 8, 26), "09876543210");
             //manager.BirthDate = new DateTime(2000, 8, 26);
-            Assert.That(manager.GetType(), Is.EqualTo(typeof(Person)));
+            Assert.That(manager, Is.InstanceOf<Person>());
         }
 
         //+ check reading from file with initial info
         [Test]
         public void LoadInitInfo()
         {
-            List<Cinema> initCinemas = Cinema.LoadFromXml("text.xml");
-            Assert.That(initCinemas.Count, Is.EqualTo(1));
+            LoadInfo loadInfo = new LoadInfo();
+            loadInfo.LoadFromXml("text.xml");
+            Assert.That(loadInfo.CinemaName, Is.EqualTo("Cinema 1"));
         }
 
         //check incapsulation with Hall attribute Cinema
         [Test]
         public void CheckEncapsulation() {
-            Hall h = new Hall(12, 30, new List<Seat>(30));
+            Hall h = new Hall(10, 30, new List<Seat>(30));
             h.SetCinema(new Cinema("fff", "New York", "USA", "0987654321", "all week 10-22"));
             Assert.That(h.GetCinema().Name, Is.EqualTo("fff"));
         }
@@ -58,7 +60,7 @@ namespace CinemaBYT_Tests
         [Test]
         public void NoSeats()
         {
-            Assert.Throws<HallException>(() => new Hall(12, 0, new List<Seat>(0)));
+            Assert.Throws<ValidationException>(() => new Hall(12, 0, new List<Seat>(0)));
         }
 
         //movie exception
@@ -73,7 +75,7 @@ namespace CinemaBYT_Tests
         [Test]
         public void InappropriatePrice()
         {
-            Assert.Throws<MovieException>(() => Payment.LoyaltyDiscount(-100, true));
+            Assert.Throws<PaymentException>(() => Payment.LoyaltyDiscount(-100, true));
         }
 
         //seat exception
