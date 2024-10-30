@@ -8,6 +8,10 @@ public class Movie
     public DateTime ReleaseDate { get; set; }
     public int AgeRating { get; set; }
     public List<string> ListOfGenres { get; set; }
+    [MinLength(1)]
+    public List<Session> sessions { get; set; } = new List<Session>();
+    [AllowNull]
+    public List<Comment> comments { get; set; } = new List<Comment>();
 
     public Movie(string name, DateTime releaseDate, int ageRating, List<string> listOfGenres)
     {

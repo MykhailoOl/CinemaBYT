@@ -5,10 +5,15 @@ using CinemaBYT.Exceptions;
 
 public class Cinema
 {
+    [DisallowNull]
     public string Name { get; set; }
+    [DisallowNull]
     public string City { get; set; }
+    [DisallowNull]
     public string Country { get; set; }
+    [DisallowNull]
     public string ContactPhone { get; set; }
+    [DisallowNull]
     public string OpeningHours { get; set; }
     [MinLength(1)]
     public List<Hall> Halls { get; set; }

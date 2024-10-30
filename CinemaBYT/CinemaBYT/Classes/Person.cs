@@ -4,6 +4,7 @@
     public string Email { get; set; }
     public DateTime BirthDate { get; set; }
     public string PESEL { get; set; }
+    public History History { get; set; }
 
     protected Person()
     {

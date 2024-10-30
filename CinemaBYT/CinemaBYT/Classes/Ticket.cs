@@ -10,6 +10,7 @@ public class Ticket
     public TicketType Type { get; set; }
     public Session Session { get; set; }
     public Seat Seat { get; set; }
+    public Person Person { get; set; }
 
     public Ticket(int seatNumber, decimal price, DateTime purchaseDate, TicketType type, Session session,Seat seat)
     {

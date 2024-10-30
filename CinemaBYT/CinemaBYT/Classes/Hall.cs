@@ -1,11 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using CinemaBYT.Exceptions;
 
 public class Hall
 {
+    [Required]
     public int HallNumber { get; set; }
     public int NumberOfSeats { get; set; }
     public List<Seat> Seats { get; set; }
+    public List<Session> Sessions { get; set; }
     private Cinema? Cinema { get; set; } 
 
     public Hall(int hallNumber, int numberOfSeats, List<Seat> seats, Cinema? cinema = null)
