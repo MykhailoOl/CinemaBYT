@@ -10,7 +10,7 @@ public class Session
     public Movie Movie { get; set; }
     public Hall Hall { get; set; }
     public List<Ticket> Tickets { get; set; }
-    public History History { get; set; }
+    public History? History { get; set; }
     public Session(TimeSpan duration, DateTime timeStart, decimal income, Movie movie, Hall hall, List<Ticket> tickets)
     {
         Duration = duration;
