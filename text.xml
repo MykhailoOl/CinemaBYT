@@ -1,0 +1,125 @@
+<CinemaData>
+	<OwnsLoyaltyCard>
+		<LoyaltyCard>
+			<startDate>2023-01-01</startDate>
+			<expireDate>2024-01-01</expireDate>
+			<discount>0.15</discount>
+		</LoyaltyCard>
+	</OwnsLoyaltyCard>
+
+	<Seats>
+		<Seat>
+			<seatNo>1</seatNo>
+			<isVIP>false</isVIP>
+			<isAvailable>true</isAvailable>
+		</Seat>
+		<Seat>
+			<seatNo>2</seatNo>
+			<isVIP>true</isVIP>
+			<isAvailable>false</isAvailable>
+		</Seat>
+	</Seats>
+
+	<Movies>
+		<Movie>
+			<name>Inception</name>
+			<releaseDate>2010-07-16</releaseDate>
+			<ageRating>13</ageRating>
+			<listOfGenres>
+				<genre>Sci-Fi</genre>
+				<genre>Thriller</genre>
+			</listOfGenres>
+		</Movie>
+	</Movies>
+
+	<SupportStaff>
+		<Staff>
+			<name>John Doe</name>
+			<level>Intermediate</level>
+			<hireDate>2020-01-01</hireDate>
+			<salary>40000</salary>
+			<birthDate>1985-05-15</birthDate>
+			<email>john.doe@example.com</email>
+			<pesel>1234567890</pesel>
+		</Staff>
+	</SupportStaff>
+
+	<Management>
+		<Manager>
+			<name>Jane Smith</name>
+			<position>General Manager</position>
+			<hireDate>2018-02-15</hireDate>
+			<salary>60000</salary>
+			<birthDate>1978-11-20</birthDate>
+			<email>jane.smith@example.com</email>
+			<pesel>0987654321</pesel>
+		</Manager>
+	</Management>
+
+	<Halls>
+		<Hall>
+			<hallNumber>1</hallNumber>
+			<numberOfSeats>100</numberOfSeats>
+			<seats>
+				<seatNo>1</seatNo>
+				<seatNo>2</seatNo>
+			</seats>
+		</Hall>
+	</Halls>
+
+	<Sessions>
+		<Session>
+			<duration>02:30:00</duration>
+			<timeStart>2023-10-31 19:30:00</timeStart>
+			<income>1200.00</income>
+			<movieId>0</movieId>
+			<hallId>0</hallId>
+		</Session>
+	</Sessions>
+
+	<Cinemas>
+		<Cinema>
+			<name>Cinema City</name>
+			<city>New York</city>
+			<country>USA</country>
+			<contactPhone>+1-555-1234</contactPhone>
+			<openingHours>09:00-23:00</openingHours>
+		</Cinema>
+	</Cinemas>
+
+	<Histories>
+		<History>
+			<Person>1234567890</Person>
+			<Sessions>
+				<Session>0</Session>
+			</Sessions>
+		</History>
+	</Histories>
+
+	<Comments>
+		<Comment>
+			<commentText>Amazing movie experience!</commentText>
+			<date>2023-07-21</date>
+			<movie>0</movie>
+		</Comment>
+	</Comments>
+
+	<Payments>
+		<Payment>
+			<type>CreditCard</type>
+			<paymentDate>2023-08-01</paymentDate>
+			<maxTicketPerPayment>5</maxTicketPerPayment>
+		</Payment>
+	</Payments>
+
+	<Tickets>
+		<Ticket>
+			<seatNumber>1</seatNumber>
+			<price>12.50</price>
+			<purchaseDate>2023-10-20</purchaseDate>
+			<type>Adult</type>
+			<session>0</session>
+			<seat>1</seat>
+		</Ticket>
+	</Tickets>
+</CinemaData>
