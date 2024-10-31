@@ -11,4 +11,4 @@ LoadInfo loadInfo = new LoadInfo();
 //Console.WriteLine($"Release Date: {loadInfo.ReleaseDate}");
 //Console.WriteLine($"Age Rating: {loadInfo.AgeRating}");
 
-loadInfo.LoadFromJson("data.json");
+loadInfo.LoadFromXml("text.xml");

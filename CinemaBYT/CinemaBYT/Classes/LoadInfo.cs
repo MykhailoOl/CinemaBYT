@@ -206,7 +206,8 @@ namespace CinemaBYT.Classes
                             List<Seat> Hallseats = new List<Seat>();
                             foreach (XmlNode seatNode in hallNode.SelectNodes("seats/seatNo"))
                             {
-                                Hallseats.Add(seats[seats.FindIndex(s => s.SeatNo.Equals(seatNode.InnerText))]);
+                                //seats.Count();
+                                Hallseats.Add(seats[seats.FindIndex(s => s.SeatNo.Equals(int.Parse(seatNode.InnerText)))]);
                             }
 
                             halls.Add(new Hall(hallNumber, numberOfSeats, seats));
@@ -311,7 +312,8 @@ namespace CinemaBYT.Classes
                             }
 
                             // Assuming Person object is deserialized separately or from another part of the XML
-                            Person person = people[people.FindIndex(p => p.PESEL.Equals(historyNode["Person"]))]; // Deserialize person information
+                            people.Count();
+                            Person person = people[people.FindIndex(p => p.PESEL.Equals(historyNode["Person"].InnerText))]; // Deserialize person information
 
                             histories.Add(new History(sessions, person));
                         }
@@ -412,7 +414,7 @@ namespace CinemaBYT.Classes
 
                             // Assuming Session and Seat objects are deserialized separately or from another part of the XML
                             Session session = sessions[int.Parse(ticketNode["session"].InnerText)]; // Deserialize session information
-                            Seat seat = seats[seats.FindIndex(s => s.SeatNo.Equals(ticketNode["seat"]))]; // Deserialize seat information
+                            Seat seat = seats[seats.FindIndex(s => s.SeatNo.Equals(int.Parse(ticketNode["seat"].InnerText)))]; // Deserialize seat information
                             //Person can be added after being added to constructor
 
                             tickets.Add(new Ticket(seatNumber, price, purchaseDate, type, session, seat));
