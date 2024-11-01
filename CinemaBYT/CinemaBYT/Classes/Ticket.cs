@@ -1,7 +1,7 @@
 ﻿using System.Net.Sockets;
 using CinemaBYT.Exceptions;
 
-[Serializable]
+
 public class Ticket
 {
     public int SeatNumber { get; set; }
