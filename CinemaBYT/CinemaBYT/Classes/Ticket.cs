@@ -1,53 +1,62 @@
-﻿using System.Net.Sockets;
+﻿using System;
 using CinemaBYT.Exceptions;
 
-
-public class Ticket
+namespace CinemaBYT
 {
-    public int SeatNumber { get; set; }
-    public decimal Price { get; set; }
-    public DateTime PurchaseDate { get; set; }
-    public TicketType Type { get; set; }
-    public Session Session { get; set; }
-    public Seat Seat { get; set; }
-    public Person Person { get; set; }
+    public class Ticket
+    {
+        public int SeatNumber { get; private set; }
+        public decimal Price { get; private set; }
+        public DateTime PurchaseDate { get; private set; }
+        public TicketType Type { get; private set; }
+        public Session Session { get; private set; }
+        public Seat Seat { get; private set; }
+        public Person Person { get; private set; }
 
-    public Ticket(int seatNumber, decimal price, DateTime purchaseDate, TicketType type, Session session,Seat seat)
-    {
-        SeatNumber = seatNumber;
-        Price = price;
-        PurchaseDate = purchaseDate;
-        Type = type;
-        Session = session;
-        Seat = seat;
-    }
-    public bool BuyTicket()
-    {
-        try
+        public Ticket(int seatNumber, decimal price, DateTime purchaseDate, TicketType type, Session session, Seat seat, Person person)
+        {
+            if (seatNumber <= 0)
+            {
+                throw new ArgumentException("Seat number must be positive.", nameof(seatNumber));
+            }
+
+            if (price < 0)
+            {
+                throw new ArgumentException("Price cannot be negative.", nameof(price));
+            }
+
+            SeatNumber = seatNumber;
+            Price = price;
+            PurchaseDate = purchaseDate;
+            Type = type;
+            Session = session ?? throw new ArgumentNullException(nameof(session), "Session cannot be null.");
+            Seat = seat ?? throw new ArgumentNullException(nameof(seat), "Seat cannot be null.");
+            Person = person ?? throw new ArgumentNullException(nameof(person), "Person cannot be null.");
+        }
+
+        public bool BuyTicket()
         {
             if (Seat == null)
             {
                 throw new TicketException("Seat is not initialized.");
             }
 
-            if (Seat.ReserveSeat())
+            if (!Seat.IsAvailable)
+            {
+                Console.WriteLine("Seat is already reserved.");
+                return false;
+            }
+
+            if (Seat.ReserveSeat(this))
             {
                 Console.WriteLine("Ticket purchased successfully!");
                 return true;
             }
-            Console.WriteLine("Seat is already reserved."); 
-            return false;
-        }
-        catch (TicketException ex)
-        {
-            Console.WriteLine("Ticket purchase error: " + ex.Message);
-            return false;
-        }
-    }
 
-    public bool RefundTicket()
-    {
-        try
+            return false;
+        }
+
+        public bool RefundTicket()
         {
             if (Seat == null)
             {
@@ -56,28 +65,36 @@ public class Ticket
 
             if (CanRefund())
             {
-                Seat.IsAvailable = true;
-                Console.WriteLine("Ticket refunded successfully.");
-                return true;
+                if (Seat.ReleaseSeat())
+                {
+                    Console.WriteLine("Ticket refunded successfully.");
+                    return true;
+                }
+
+                Console.WriteLine("Failed to release the seat.");
+                return false;
             }
-            Console.WriteLine("Ticket cannot be refunded."); 
+
+            Console.WriteLine("Ticket cannot be refunded; refund period has expired.");
             return false;
         }
-        catch (TicketException ex)
+
+        private bool CanRefund()
         {
-            Console.WriteLine("Refund error: " + ex.Message);
-            return false;
+            TimeSpan timeDifference = DateTime.Now - PurchaseDate;
+            return timeDifference.TotalHours < 24;
+        }
+
+        public override string ToString()
+        {
+            return $"Ticket for Seat {SeatNumber} - {Type} at {Session.TimeStart:HH:mm} for {Price:C}";
         }
     }
-    private bool CanRefund()
+
+    public enum TicketType
     {
-        TimeSpan timeDifference = DateTime.Now - PurchaseDate;
-        return timeDifference.TotalHours < 24;
+        Adult,
+        Senior,
+        Child
     }
-}
-public enum TicketType
-{
-    Adult,
-    Senior,
-    Child
 }

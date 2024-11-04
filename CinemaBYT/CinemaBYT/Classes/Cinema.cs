@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 using System.Xml.Linq;
+using CinemaBYT;
 using CinemaBYT.Exceptions;
 
 public class Cinema

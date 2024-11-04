@@ -1,27 +1,50 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Transactions;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 public abstract class Employee : Person
 {
-    [DisallowNull]
-    public DateTime HireDate { get; set; }
-    [DisallowNull]
-    public decimal Salary { get; set; }
+    private DateTime _hireDate;
+    private decimal _salary;
 
-    protected Employee(DateTime hireDate, decimal salary, string name, string email, DateTime birthDate, string pESEL) : base(name, email, birthDate, pESEL)
+    [DisallowNull]
+    public DateTime HireDate
+    {
+        get => _hireDate;
+        set => _hireDate = value; 
+    }
+
+    [DisallowNull]
+    public decimal Salary
+    {
+        get => _salary;
+        set
+        {
+            if (value < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(Salary), "Salary cannot be negative.");
+            }
+            _salary = value;
+        }
+    }
+
+    protected Employee(DateTime hireDate, decimal salary, string name, string email, DateTime birthDate, string pesel)
+        : base(name, email, birthDate, pesel)
     {
         HireDate = hireDate;
         Salary = salary;
     }
-    protected Employee(DateTime hireDate, decimal salary, Person p) : base(p)
+
+    protected Employee(DateTime hireDate, decimal salary, Person person)
+        : base(person)
     {
         HireDate = hireDate;
-        Salary = salary;
+        Salary = salary; 
     }
+
     protected Employee(Employee employee)
+        : base(employee)
     {
         HireDate = employee.HireDate;
-        Salary = employee.Salary;
+        Salary = employee.Salary; 
     }
-
 }

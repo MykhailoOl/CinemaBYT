@@ -1,38 +1,59 @@
-﻿using System.Xml;
+﻿using System;
+using System.Collections.Generic;
 using System.Xml.Serialization;
 using CinemaBYT.Exceptions;
 
-public class Session(TimeSpan duration, DateTime timeStart, decimal income, Movie movie, Hall hall, List<Ticket> tickets)
+namespace CinemaBYT
 {
-    public TimeSpan Duration { get; set; } = duration;
-    public DateTime TimeStart { get; set; } = timeStart;
-    public decimal Income { get; set; } = income;
-    public Movie Movie { get; set; } = movie;
-    public Hall Hall { get; set; } = hall;
-    public List<Ticket> Tickets { get; set; } = tickets;
-    public History? History { get; set; }
-
-    public Session(TimeSpan duration, DateTime timeStart, decimal income, Movie movie, Hall hall, List<Ticket> tickets, History? history) : this(duration, timeStart, income, movie, hall, tickets)
+    public class Session
     {
-        History = history;
-    }
+        public TimeSpan Duration { get; private set; }
+        public DateTime TimeStart { get; private set; }
+        public decimal Income { get; private set; }
+        public Movie Movie { get; private set; }
+        public Hall Hall { get; private set; }
+        public List<Ticket> Tickets { get; private set; }
+        public History? History { get; private set; }
 
-    public bool CheckAvailability()
-    {
-        if (Hall == null)
+        public Session(TimeSpan duration, DateTime timeStart, decimal income, Movie movie, Hall hall, List<Ticket> tickets, History? history = null)
         {
-            throw new SessionException("The session's hall is not initialized.");
+            Duration = duration;
+            TimeStart = timeStart;
+            Income = income;
+            Movie = movie ?? throw new ArgumentNullException(nameof(movie), "Movie cannot be null.");
+            Hall = hall ?? throw new ArgumentNullException(nameof(hall), "Hall cannot be null.");
+            Tickets = tickets ?? throw new ArgumentNullException(nameof(tickets), "Tickets list cannot be null.");
+
+            if (tickets.Count == 0)
+            {
+                throw new SessionException("The session must have at least one ticket.");
+            }
+
+            History = history;
         }
 
-        if (Tickets == null)
+        public bool CheckAvailability()
         {
-            throw new SessionException("The session's tickets are not initialized.");
+            if (Hall == null)
+            {
+                throw new SessionException("The session's hall is not initialized.");
+            }
+
+            return Hall.NumberOfSeats > Tickets.Count;
         }
 
-        if (Tickets.Count==0)
+        public void AddIncome(decimal amount)
         {
-            throw new SessionException("The session's tickets number cannot be 0.");
+            if (amount < 0)
+            {
+                throw new ArgumentException("Income amount cannot be negative.", nameof(amount));
+            }
+            Income += amount;
         }
-        return Hall.NumberOfSeats > Tickets.Count;
+
+        public override string ToString()
+        {
+            return $"{Movie.Name} session in Hall {Hall.HallNumber} starts at {TimeStart:HH:mm} with duration of {Duration}";
+        }
     }
 }
