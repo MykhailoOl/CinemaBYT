@@ -9,7 +9,11 @@ public class Hall
     public int NumberOfSeats { get; set; }
     public List<Seat> Seats { get; set; }
     public List<Session> Sessions { get; set; }
-    private Cinema? Cinema { get; set; } 
+    private Cinema? Cinema { get; set; }
+
+    public Hall()
+    {
+    }
 
     public Hall(int hallNumber, int numberOfSeats, List<Seat> seats, Cinema? cinema = null)
     {
