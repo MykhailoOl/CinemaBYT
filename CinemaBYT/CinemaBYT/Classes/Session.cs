@@ -50,11 +50,11 @@ namespace CinemaBYT
             private set => _hall = value ?? throw new ArgumentNullException(nameof(Hall), "Hall cannot be null.");
         }
 
-        [DisallowNull]
+        [AllowNull]
         public List<Ticket> Tickets
         {
             get => _tickets;
-            private set => _tickets = value ?? throw new ArgumentNullException(nameof(Tickets), "Tickets list cannot be null.");
+            private set => _tickets = value;
         }
 
         [AllowNull]
@@ -71,14 +71,8 @@ namespace CinemaBYT
             Income = income;
             Movie = movie;
             Hall = hall;
+            History = history;
             Tickets = tickets;
-
-            if (tickets.Count == 0)
-            {
-                throw new SessionException("The session must have at least one ticket.");
-            }
-
-            History = history; 
         }
 
         public bool CheckAvailability()

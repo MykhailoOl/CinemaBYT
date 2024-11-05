@@ -34,14 +34,14 @@ public class OwnsLoyaltyCard
 
     public decimal Discount
     {
-        get => _discount;
+        get => _discount * 100;
         set
         {
-            if (value < 0 || value > 1)
+            if (value < 0 || value > 100)
             {
-                throw new ArgumentOutOfRangeException(nameof(Discount), "Discount must be between 0 and 1 (inclusive).");
+                throw new ArgumentOutOfRangeException(nameof(Discount), "Discount must be between 0 and 100.");
             }
-            _discount = value;
+            _discount = value / 100;
         }
     }
 

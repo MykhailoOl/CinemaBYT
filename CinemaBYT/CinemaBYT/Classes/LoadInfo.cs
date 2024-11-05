@@ -349,7 +349,7 @@ namespace CinemaBYT.Classes
                             Movie movie = movies[int.Parse(commentNode["movie"].InnerText)]; // Deserialize movie information
                             
                             // could be used, if we had Person in constructor
-                            Person person = people[people.FindIndex(p => p.PESEL.Equals(commentNode["Person"]))];
+                            Person person = people[people.FindIndex(p => p.PESEL.Equals(commentNode["Person"].InnerText))];
 
                             comments.Add(new Comment(commentText, date, movie, person));
                         }
