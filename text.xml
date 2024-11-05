@@ -1,125 +1,150 @@
 <CinemaData>
-	<OwnsLoyaltyCard>
-		<LoyaltyCard>
-			<startDate>2023-01-01</startDate>
-			<expireDate>2024-01-01</expireDate>
-			<discount>0.15</discount>
-		</LoyaltyCard>
-	</OwnsLoyaltyCard>
+    <OwnsLoyaltyCard>
+        <LoyaltyCard>
+            <startDate>2023-01-01</startDate>
+            <expireDate>2024-01-01</expireDate>
+            <discount>10</discount>
+        </LoyaltyCard>
+        <LoyaltyCard>
+            <startDate>2023-02-01</startDate>
+            <expireDate>2024-02-01</expireDate>
+            <discount>15</discount>
+        </LoyaltyCard>
+    </OwnsLoyaltyCard>
 
-	<Seats>
-		<Seat>
-			<seatNo>1</seatNo>
-			<isVIP>false</isVIP>
-			<isAvailable>true</isAvailable>
-		</Seat>
-		<Seat>
-			<seatNo>2</seatNo>
-			<isVIP>true</isVIP>
-			<isAvailable>false</isAvailable>
-		</Seat>
-	</Seats>
+    <Seats>
+        <Seat>
+            <seatNo>1</seatNo>
+            <isVIP>false</isVIP>
+            <isAvailable>true</isAvailable>
+        </Seat>
+        <Seat>
+            <seatNo>2</seatNo>
+            <isVIP>true</isVIP>
+            <isAvailable>false</isAvailable>
+        </Seat>
+    </Seats>
 
-	<Movies>
-		<Movie>
-			<name>Inception</name>
-			<releaseDate>2010-07-16</releaseDate>
-			<ageRating>13</ageRating>
-			<listOfGenres>
-				<genre>Sci-Fi</genre>
-				<genre>Thriller</genre>
-			</listOfGenres>
-		</Movie>
-	</Movies>
+    <Movies>
+        <Movie>
+            <name>The Great Adventure</name>
+            <releaseDate>2023-05-10</releaseDate>
+            <ageRating>PG-13</ageRating>
+            <listOfGenres>
+                <genre>Adventure</genre>
+                <genre>Action</genre>
+            </listOfGenres>
+        </Movie>
+        <Movie>
+            <name>The Silent Woods</name>
+            <releaseDate>2022-08-15</releaseDate>
+            <ageRating>R</ageRating>
+            <listOfGenres>
+                <genre>Drama</genre>
+                <genre>Thriller</genre>
+            </listOfGenres>
+        </Movie>
+    </Movies>
 
-	<SupportStaff>
-		<Staff>
-			<name>John Doe</name>
-			<level>Intermediate</level>
-			<hireDate>2020-01-01</hireDate>
-			<salary>40000</salary>
-			<birthDate>1985-05-15</birthDate>
-			<email>john.doe@example.com</email>
-			<pesel>1234567890</pesel>
-		</Staff>
-	</SupportStaff>
+    <SupportStaff>
+        <Staff>
+            <name>John Doe</name>
+            <level>Manager</level>
+            <hireDate>2020-06-01</hireDate>
+            <salary>50000</salary>
+            <birthDate>1985-04-15</birthDate>
+            <email>johndoe@example.com</email>
+            <pesel>12345678901</pesel>
+        </Staff>
+    </SupportStaff>
 
-	<Management>
-		<Manager>
-			<name>Jane Smith</name>
-			<position>General Manager</position>
-			<hireDate>2018-02-15</hireDate>
-			<salary>60000</salary>
-			<birthDate>1978-11-20</birthDate>
-			<email>jane.smith@example.com</email>
-			<pesel>0987654321</pesel>
-		</Manager>
-	</Management>
+    <Management>
+        <Manager>
+            <name>Jane Smith</name>
+            <position>Director</position>
+            <hireDate>2019-03-01</hireDate>
+            <salary>80000</salary>
+            <birthDate>1980-02-20</birthDate>
+            <email>janesmith@example.com</email>
+            <pesel>10987654321</pesel>
+        </Manager>
+    </Management>
 
-	<Halls>
-		<Hall>
-			<hallNumber>1</hallNumber>
-			<numberOfSeats>100</numberOfSeats>
-			<seats>
-				<seatNo>1</seatNo>
-				<seatNo>2</seatNo>
-			</seats>
-		</Hall>
-	</Halls>
+    <Halls>
+        <Hall>
+            <hallNumber>1</hallNumber>
+            <numberOfSeats>100</numberOfSeats>
+            <seats>
+                <seatNo>1</seatNo>
+                <seatNo>2</seatNo>
+            </seats>
+        </Hall>
+    </Halls>
 
-	<Sessions>
-		<Session>
-			<duration>02:30:00</duration>
-			<timeStart>2023-10-31 19:30:00</timeStart>
-			<income>1200.00</income>
-			<movieId>0</movieId>
-			<hallId>0</hallId>
-		</Session>
-	</Sessions>
+    <Sessions>
+        <Session>
+            <duration>120</duration>
+            <timeStart>2023-11-05 15:00:00</timeStart>
+            <income>300.00</income>
+            <movieId>0</movieId>
+            <hallId>0</hallId>
+        </Session>
+    </Sessions>
 
-	<Cinemas>
-		<Cinema>
-			<name>Cinema City</name>
-			<city>New York</city>
-			<country>USA</country>
-			<contactPhone>+1-555-1234</contactPhone>
-			<openingHours>09:00-23:00</openingHours>
-		</Cinema>
-	</Cinemas>
+    <Cinemas>
+        <Cinema>
+            <name>Cinema City</name>
+            <city>Los Angeles</city>
+            <country>USA</country>
+            <contactPhone>(123) 456-7890</contactPhone>
+            <openingHours>10:00 AM - 11:00 PM</openingHours>
+        </Cinema>
+    </Cinemas>
 
-	<Histories>
-		<History>
-			<Person>1234567890</Person>
-			<Sessions>
-				<Session>0</Session>
-			</Sessions>
-		</History>
-	</Histories>
+    <Histories>
+        <History>
+            <Person>12345678901</Person>
+            <Sessions>
+                <Session>0</Session>
+            </Sessions>
+        </History>
+    </Histories>
 
-	<Comments>
-		<Comment>
-			<commentText>Amazing movie experience!</commentText>
-			<date>2023-07-21</date>
-			<movie>0</movie>
-		</Comment>
-	</Comments>
+    <Comments>
+        <Comment>
+            <commentText>Great movie!</commentText>
+            <date>2023-11-05</date>
+            <movie>0</movie>
+            <Person>12345678901</Person>
+        </Comment>
+    </Comments>
 
-	<Payments>
-		<Payment>
-			<type>CreditCard</type>
-			<paymentDate>2023-08-01</paymentDate>
-			<maxTicketPerPayment>5</maxTicketPerPayment>
-		</Payment>
-	</Payments>
+    <Payments>
+        <Payment>
+            <type>CreditCard</type>
+            <paymentDate>2023-11-05</paymentDate>
+            <maxTicketPerPayment>5</maxTicketPerPayment>
+        </Payment>
+    </Payments>
 
-	<Tickets>
-		<Ticket>
-			<seatNumber>1</seatNumber>
-			<price>12.50</price>
-			<purchaseDate>2023-10-20</purchaseDate>
-			<type>Adult</type>
-			<session>0</session>
-			<seat>1</seat>
-		</Ticket>
-	</Tickets>
+    <Tickets>
+        <Ticket>
+            <seatNumber>1</seatNumber>
+            <price>15.00</price>
+            <purchaseDate>2023-11-01</purchaseDate>
+            <type>Standard</type>
+            <session>0</session>
+            <seat>0</seat>
+            <Person>12345678901</Person>
+        </Ticket>
+        <Ticket>
+            <seatNumber>2</seatNumber>
+            <price>15.00</price>
+            <purchaseDate>2023-11-01</purchaseDate>
+            <type>VIP</type>
+            <session>0</session>
+            <seat>1</seat>
+            <Person>12345678901</Person>
+        </Ticket>
+    </Tickets>
 </CinemaData>
