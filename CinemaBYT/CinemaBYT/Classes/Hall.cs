@@ -9,15 +9,15 @@ namespace CinemaBYT
     public class Hall
     {
         private int _numberOfSeats;
-
-        [Required]
-        public int HallNumber { get; set; }
+        private List<Seat> _seats;
+        private Cinema? _cinema;
+        private int _hallNumber;
 
         [Range(20, 100, ErrorMessage = "The number of seats in the hall must be between 20 and 100.")]
         public int NumberOfSeats
         {
             get => _numberOfSeats;
-            set
+            private set
             {
                 if (value < 20 || value > 100)
                 {
@@ -27,11 +27,14 @@ namespace CinemaBYT
             }
         }
 
-        public List<Seat> Seats { get; set; }
+        [DisallowNull]
+        public List<Seat> Seats
+        {
+            get => _seats;
+            private set => _seats = value ?? throw new ArgumentNullException(nameof(Seats), "Seats list cannot be null.");
+        }
 
-        public List<Session> Sessions { get; set; } = new List<Session>();
-
-        private Cinema? _cinema;
+        public List<Session> Sessions { get; private set; } = new List<Session>();
 
         public Cinema? Cinema
         {
@@ -39,11 +42,18 @@ namespace CinemaBYT
             private set => _cinema = value;
         }
 
+    
+        public int HallNumber
+        {
+            get => _hallNumber;
+            private set => _hallNumber = value;
+        }
+
         public Hall(int hallNumber, int numberOfSeats, List<Seat> seats, Cinema? cinema = null)
         {
-            HallNumber = hallNumber;
+            HallNumber = hallNumber; 
             NumberOfSeats = numberOfSeats;
-            Seats = seats ?? throw new ArgumentNullException(nameof(seats), "Seats list cannot be null.");
+            Seats = seats; 
             Cinema = cinema;
             ValidateSeats();
         }

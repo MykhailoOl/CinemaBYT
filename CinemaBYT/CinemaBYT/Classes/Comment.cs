@@ -8,6 +8,9 @@ namespace CinemaBYT
     {
         private string _commentText;
         private DateTime _date;
+        private Movie _movie;
+        private Person _person;
+        private List<Comment> _replies = new List<Comment>();
 
         [DisallowNull]
         public string CommentText
@@ -29,13 +32,25 @@ namespace CinemaBYT
         }
 
         [DisallowNull]
-        public Movie Movie { get; set; }
+        public Movie Movie
+        {
+            get => _movie;
+            set => _movie = value ?? throw new ArgumentNullException(nameof(Movie), "Movie cannot be null.");
+        }
 
         [DisallowNull]
-        public Person Person { get; set; }
+        public Person Person
+        {
+            get => _person;
+            set => _person = value ?? throw new ArgumentNullException(nameof(Person), "Person cannot be null.");
+        }
 
         [AllowNull]
-        public List<Comment> Replies { get; set; } = new List<Comment>();
+        public List<Comment> Replies
+        {
+            get => _replies;
+            set => _replies = value ?? new List<Comment>();
+        }
 
         public Comment(string commentText, DateTime date, Movie movie, Person person)
         {

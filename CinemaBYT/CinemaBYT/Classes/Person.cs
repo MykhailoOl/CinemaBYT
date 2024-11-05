@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 public abstract class Person
 {
@@ -6,19 +7,23 @@ public abstract class Person
     private string _email;
     private DateTime _birthDate;
     private string _pesel;
+    private History _history = new History();
 
+    [DisallowNull]
     public string Name
     {
         get => _name;
         set => _name = string.IsNullOrWhiteSpace(value) ? throw new ArgumentNullException(nameof(Name), "Name cannot be null or empty.") : value;
     }
 
+    [DisallowNull]
     public string Email
     {
         get => _email;
         set => _email = string.IsNullOrWhiteSpace(value) ? throw new ArgumentNullException(nameof(Email), "Email cannot be null or empty.") : value;
     }
 
+    [DisallowNull]
     public DateTime BirthDate
     {
         get => _birthDate;
@@ -32,6 +37,7 @@ public abstract class Person
         }
     }
 
+    [DisallowNull]
     public string PESEL
     {
         get => _pesel;
@@ -45,7 +51,12 @@ public abstract class Person
         }
     }
 
-    public History History { get; set; } = new History();
+    [DisallowNull]
+    public History History
+    {
+        get => _history;
+        set => _history = value ?? throw new ArgumentNullException(nameof(History), "History cannot be null.");
+    }
 
     protected Person() { }
 
@@ -68,6 +79,6 @@ public abstract class Person
         Email = other.Email;
         BirthDate = other.BirthDate;
         PESEL = other.PESEL;
-        History = other.History;
+        History = other.History ?? throw new ArgumentNullException(nameof(other.History), "Copied person's history cannot be null.");
     }
 }

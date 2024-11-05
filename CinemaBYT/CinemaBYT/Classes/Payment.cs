@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using CinemaBYT.Exceptions;
 
 public class Payment
@@ -7,18 +8,28 @@ public class Payment
     private DateTime _paymentDate;
     private int _maxTicketPerPayment = 5;
 
+    [DisallowNull]
     public PaymentType Type
     {
         get => _type;
-        set => _type = value;
+        set => _type = value; 
     }
 
+    [DisallowNull]
     public DateTime PaymentDate
     {
         get => _paymentDate;
-        set => _paymentDate = value;
+        set
+        {
+            if (value == default)
+            {
+                throw new ArgumentNullException(nameof(PaymentDate), "Payment date cannot be null or default.");
+            }
+            _paymentDate = value;
+        }
     }
 
+    [DisallowNull]
     public int MaxTicketPerPayment
     {
         get => _maxTicketPerPayment;
@@ -35,7 +46,9 @@ public class Payment
     public Payment(PaymentType type, DateTime paymentDate, int maxTicketPerPayment = 5)
     {
         Type = type;
-        PaymentDate = paymentDate;
+        PaymentDate = paymentDate == default
+            ? throw new ArgumentNullException(nameof(paymentDate), "Payment date cannot be default.")
+            : paymentDate;
         MaxTicketPerPayment = maxTicketPerPayment;
     }
 

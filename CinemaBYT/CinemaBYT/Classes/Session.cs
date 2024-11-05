@@ -1,35 +1,84 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Xml.Serialization;
+using System.Diagnostics.CodeAnalysis;
 using CinemaBYT.Exceptions;
 
 namespace CinemaBYT
 {
     public class Session
     {
-        public TimeSpan Duration { get; private set; }
-        public DateTime TimeStart { get; private set; }
-        public decimal Income { get; private set; }
-        public Movie Movie { get; private set; }
-        public Hall Hall { get; private set; }
-        public List<Ticket> Tickets { get; private set; }
-        public History? History { get; private set; }
+        private TimeSpan _duration;
+        private DateTime _timeStart;
+        private decimal _income;
+        private Movie _movie;
+        private Hall _hall;
+        private List<Ticket> _tickets;
+        private History? _history; 
+
+        [DisallowNull]
+        public TimeSpan Duration
+        {
+            get => _duration;
+            private set => _duration = value;
+        }
+
+        [DisallowNull]
+        public DateTime TimeStart
+        {
+            get => _timeStart;
+            private set => _timeStart = value;
+        }
+
+        [DisallowNull]
+        public decimal Income
+        {
+            get => _income;
+            private set => _income = value;
+        }
+
+        [DisallowNull]
+        public Movie Movie
+        {
+            get => _movie;
+            private set => _movie = value ?? throw new ArgumentNullException(nameof(Movie), "Movie cannot be null.");
+        }
+
+        [DisallowNull]
+        public Hall Hall
+        {
+            get => _hall;
+            private set => _hall = value ?? throw new ArgumentNullException(nameof(Hall), "Hall cannot be null.");
+        }
+
+        [DisallowNull]
+        public List<Ticket> Tickets
+        {
+            get => _tickets;
+            private set => _tickets = value ?? throw new ArgumentNullException(nameof(Tickets), "Tickets list cannot be null.");
+        }
+
+        [AllowNull]
+        public History? History
+        {
+            get => _history;
+            private set => _history = value;
+        }
 
         public Session(TimeSpan duration, DateTime timeStart, decimal income, Movie movie, Hall hall, List<Ticket> tickets, History? history = null)
         {
             Duration = duration;
             TimeStart = timeStart;
             Income = income;
-            Movie = movie ?? throw new ArgumentNullException(nameof(movie), "Movie cannot be null.");
-            Hall = hall ?? throw new ArgumentNullException(nameof(hall), "Hall cannot be null.");
-            Tickets = tickets ?? throw new ArgumentNullException(nameof(tickets), "Tickets list cannot be null.");
+            Movie = movie;
+            Hall = hall;
+            Tickets = tickets;
 
             if (tickets.Count == 0)
             {
                 throw new SessionException("The session must have at least one ticket.");
             }
 
-            History = history;
+            History = history; 
         }
 
         public bool CheckAvailability()
@@ -39,7 +88,7 @@ namespace CinemaBYT
                 throw new SessionException("The session's hall is not initialized.");
             }
 
-            return Hall.NumberOfSeats > Tickets.Count;
+            return Hall.NumberOfSeats > Tickets.Count; 
         }
 
         public void AddIncome(decimal amount)

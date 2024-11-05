@@ -8,12 +8,13 @@ public class History
     private Person _person;
 
     [AllowNull]
-    public List<Session> ListOfSessions
+    public List<Session>? ListOfSessions
     {
-        get => _listOfSessions ??= new List<Session>();
-        set => _listOfSessions = value ?? throw new ArgumentNullException(nameof(ListOfSessions), "List of sessions cannot be null.");
+        get => _listOfSessions;
+        set => _listOfSessions = value;
     }
 
+    [DisallowNull]
     public Person Person
     {
         get => _person;

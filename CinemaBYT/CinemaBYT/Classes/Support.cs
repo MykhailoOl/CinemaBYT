@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 public class Support : Employee
 {
     private string _level;
 
+    [DisallowNull]
     public string Level
     {
         get => _level;

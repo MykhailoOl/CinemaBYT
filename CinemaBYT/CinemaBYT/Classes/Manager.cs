@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 public class Manager : Employee
 {
     private string _position;
-
+    [DisallowNull]    
     public string Position
     {
         get => _position;

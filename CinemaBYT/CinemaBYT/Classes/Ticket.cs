@@ -1,37 +1,91 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using CinemaBYT.Exceptions;
 
 namespace CinemaBYT
 {
     public class Ticket
     {
-        public int SeatNumber { get; private set; }
-        public decimal Price { get; private set; }
-        public DateTime PurchaseDate { get; private set; }
-        public TicketType Type { get; private set; }
-        public Session Session { get; private set; }
-        public Seat Seat { get; private set; }
-        public Person Person { get; private set; }
+        private int _seatNumber;
+        private decimal _price;
+        private DateTime _purchaseDate;
+        private TicketType _type;
+        private Session _session;
+        private Seat _seat;
+        private Person _person;
+
+        [DisallowNull]
+        public int SeatNumber
+        {
+            get => _seatNumber;
+            private set
+            {
+                if (value <= 0)
+                {
+                    throw new ArgumentException("Seat number must be positive.", nameof(SeatNumber));
+                }
+                _seatNumber = value;
+            }
+        }
+
+        [DisallowNull]
+        public decimal Price
+        {
+            get => _price;
+            private set
+            {
+                if (value < 0)
+                {
+                    throw new ArgumentException("Price cannot be negative.", nameof(Price));
+                }
+                _price = value;
+            }
+        }
+
+        [DisallowNull]
+        public DateTime PurchaseDate
+        {
+            get => _purchaseDate;
+            private set => _purchaseDate = value;
+        }
+
+        [DisallowNull]
+        public TicketType Type
+        {
+            get => _type;
+            private set => _type = value;
+        }
+
+        [DisallowNull]
+        public Session Session
+        {
+            get => _session;
+            private set => _session = value ?? throw new ArgumentNullException(nameof(Session), "Session cannot be null.");
+        }
+
+        [DisallowNull]
+        public Seat Seat
+        {
+            get => _seat;
+            private set => _seat = value ?? throw new ArgumentNullException(nameof(Seat), "Seat cannot be null.");
+        }
+
+        [DisallowNull]
+        public Person Person
+        {
+            get => _person;
+            private set => _person = value ?? throw new ArgumentNullException(nameof(Person), "Person cannot be null.");
+        }
 
         public Ticket(int seatNumber, decimal price, DateTime purchaseDate, TicketType type, Session session, Seat seat, Person person)
         {
-            if (seatNumber <= 0)
-            {
-                throw new ArgumentException("Seat number must be positive.", nameof(seatNumber));
-            }
-
-            if (price < 0)
-            {
-                throw new ArgumentException("Price cannot be negative.", nameof(price));
-            }
-
-            SeatNumber = seatNumber;
-            Price = price;
+            SeatNumber = seatNumber; 
+            Price = price;         
             PurchaseDate = purchaseDate;
             Type = type;
-            Session = session ?? throw new ArgumentNullException(nameof(session), "Session cannot be null.");
-            Seat = seat ?? throw new ArgumentNullException(nameof(seat), "Seat cannot be null.");
-            Person = person ?? throw new ArgumentNullException(nameof(person), "Person cannot be null.");
+            Session = session;       
+            Seat = seat;             
+            Person = person;        
         }
 
         public bool BuyTicket()

@@ -11,8 +11,11 @@ namespace CinemaBYT
         private string _name;
         private DateTime _releaseDate;
         private int _ageRating;
+        private List<string> _listOfGenres;
+        private List<Session> _sessions = new List<Session>();
+        private List<Comment> _comments = new List<Comment>();
 
-        [Required]
+        [DisallowNull]
         public string Name
         {
             get => _name;
@@ -49,13 +52,25 @@ namespace CinemaBYT
 
         [Required]
         [MinLength(1, ErrorMessage = "At least one genre must be specified.")]
-        public List<string> ListOfGenres { get; set; }
+        public List<string> ListOfGenres
+        {
+            get => _listOfGenres;
+            set => _listOfGenres = value ?? throw new ArgumentNullException(nameof(ListOfGenres), "List of genres cannot be null.");
+        }
 
         [MinLength(1)]
-        public List<Session> Sessions { get; set; } = new List<Session>();
+        public List<Session> Sessions
+        {
+            get => _sessions;
+            set => _sessions = value ?? new List<Session>();
+        }
 
         [AllowNull]
-        public List<Comment> Comments { get; set; } = new List<Comment>();
+        public List<Comment> Comments
+        {
+            get => _comments;
+            set => _comments = value ?? new List<Comment>();
+        }
 
         public Movie(string name, DateTime releaseDate, int ageRating, List<string> listOfGenres)
         {

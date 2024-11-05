@@ -7,6 +7,9 @@ namespace CinemaBYT
     public class Seat
     {
         private int _seatNo;
+        private bool _isVIP;
+        private bool _isAvailable = true; 
+        private Ticket? _ticket;
 
         [DisallowNull]
         public int SeatNo
@@ -22,17 +25,32 @@ namespace CinemaBYT
             }
         }
 
-        public bool IsVIP { get; set; }
+        [DisallowNull]
+        public bool IsVIP
+        {
+            get => _isVIP;
+            set => _isVIP = value;
+        }
 
-        public bool IsAvailable { get; private set; } = true; // Default to available
+        [DisallowNull]
+        public bool IsAvailable
+        {
+            get => _isAvailable;
+            private set => _isAvailable = value; 
+        }
 
-        public Ticket? Ticket { get; private set; }
+        [AllowNull]
+        public Ticket? Ticket
+        {
+            get => _ticket;
+            private set => _ticket = value; 
+        }
 
         public Seat(int seatNo, bool isVIP, bool isAvailable = true)
         {
             SeatNo = seatNo;
             IsVIP = isVIP;
-            IsAvailable = isAvailable;
+            IsAvailable = isAvailable; 
         }
 
         public bool ReserveSeat(Ticket ticket)
@@ -58,8 +76,8 @@ namespace CinemaBYT
                 throw new SeatReservationException("Seat is already available.");
             }
 
-            Ticket = null;
-            IsAvailable = true;
+            Ticket = null; 
+            IsAvailable = true; 
             return true;
         }
 

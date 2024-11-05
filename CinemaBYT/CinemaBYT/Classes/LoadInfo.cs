@@ -16,7 +16,12 @@ namespace CinemaBYT.Classes
         List<Manager> managers = new List<Manager>();
         List<Person> people = new List<Person>();
         List<Hall> halls = new List<Hall>();
-
+        List<Ticket> tickets = new List<Ticket>();
+        List<Session> sessions = new List<Session>();
+        List<Cinema> cinemas = new List<Cinema>();
+        List<History> histories = new List<History>();
+        List<Comment> comments = new List<Comment>();
+        List<Payment> payments = new List<Payment>();
         public void LoadFromXml(string filePath)
         {
             XmlDocument doc = new XmlDocument();
@@ -220,7 +225,7 @@ namespace CinemaBYT.Classes
                 }
             }
 
-            List<Session> sessions = new List<Session>();
+       
 
             XmlNode sessionsNode = doc.SelectSingleNode("/CinemaData/Sessions");
 
@@ -255,7 +260,7 @@ namespace CinemaBYT.Classes
                 }
             }
 
-            List<Cinema> cinemas = new List<Cinema>();
+    
 
             XmlNode cinemasNode = doc.SelectSingleNode("/CinemaData/Cinemas");
 
@@ -288,7 +293,7 @@ namespace CinemaBYT.Classes
                 }
             }
 
-            List<History> histories = new List<History>();
+         
 
             XmlNode historiesNode = doc.SelectSingleNode("/CinemaData/Histories");
 
@@ -325,7 +330,7 @@ namespace CinemaBYT.Classes
                 }
             }
 
-            List<Comment> comments = new List<Comment>();
+     
 
             XmlNode commentsNode = doc.SelectSingleNode("/CinemaData/Comments");
 
@@ -360,7 +365,7 @@ namespace CinemaBYT.Classes
                 }
             }
 
-            List<Payment> payments = new List<Payment>();
+       
 
             XmlNode paymentsNode = doc.SelectSingleNode("/CinemaData/Payments");
 
@@ -391,8 +396,6 @@ namespace CinemaBYT.Classes
             }
 
           
-            List<Ticket> tickets = new List<Ticket>();
-
             XmlNode ticketsNode = doc.SelectSingleNode("/CinemaData/Tickets");
 
             if (ticketsNode != null)
@@ -612,10 +615,175 @@ namespace CinemaBYT.Classes
                 hallsElement.AppendChild(hallElement);
             }
             root.AppendChild(hallsElement);
+            XmlElement sessionsElement = doc.CreateElement("Sessions");
+            foreach (var session in sessions)
+            {
+                XmlElement sessionElement = doc.CreateElement("Session");
 
-            // Repeat this pattern for Sessions, Cinemas, Histories, Comments, Payments, and Tickets
-            // Finalize and save the XML file
+                XmlElement duration = doc.CreateElement("duration");
+                duration.InnerText = session.Duration.ToString();
+                sessionElement.AppendChild(duration);
 
+                XmlElement timeStart = doc.CreateElement("timeStart");
+                timeStart.InnerText = session.TimeStart.ToString("yyyy-MM-dd HH:mm:ss");
+                sessionElement.AppendChild(timeStart);
+
+                XmlElement income = doc.CreateElement("income");
+                income.InnerText = session.Income.ToString();
+                sessionElement.AppendChild(income);
+
+                XmlElement movieId = doc.CreateElement("movieId");
+                movieId.InnerText = movies.IndexOf(session.Movie).ToString();
+                sessionElement.AppendChild(movieId);
+
+                XmlElement hallId = doc.CreateElement("hallId");
+                hallId.InnerText = halls.IndexOf(session.Hall).ToString();
+                sessionElement.AppendChild(hallId);
+
+                sessionsElement.AppendChild(sessionElement);
+            }
+            root.AppendChild(sessionsElement);
+
+            // Cinemas
+            XmlElement cinemasElement = doc.CreateElement("Cinemas");
+            foreach (var cinema in cinemas)
+            {
+                XmlElement cinemaElement = doc.CreateElement("Cinema");
+
+                XmlElement name = doc.CreateElement("name");
+                name.InnerText = cinema.Name;
+                cinemaElement.AppendChild(name);
+
+                XmlElement city = doc.CreateElement("city");
+                city.InnerText = cinema.City;
+                cinemaElement.AppendChild(city);
+
+                XmlElement country = doc.CreateElement("country");
+                country.InnerText = cinema.Country;
+                cinemaElement.AppendChild(country);
+
+                XmlElement contactPhone = doc.CreateElement("contactPhone");
+                contactPhone.InnerText = cinema.ContactPhone;
+                cinemaElement.AppendChild(contactPhone);
+
+                XmlElement openingHours = doc.CreateElement("openingHours");
+                openingHours.InnerText = cinema.OpeningHours;
+                cinemaElement.AppendChild(openingHours);
+
+                cinemasElement.AppendChild(cinemaElement);
+            }
+            root.AppendChild(cinemasElement);
+
+            // Histories
+            XmlElement historiesElement = doc.CreateElement("Histories");
+            foreach (var history in histories)
+            {
+                XmlElement historyElement = doc.CreateElement("History");
+
+                XmlElement person = doc.CreateElement("Person");
+                person.InnerText = history.Person.PESEL;
+                historyElement.AppendChild(person);
+
+                XmlElement sessionsNode = doc.CreateElement("Sessions");
+                foreach (var session in history.ListOfSessions)
+                {
+                    XmlElement sessionId = doc.CreateElement("Session");
+                    sessionId.InnerText = sessions.IndexOf(session).ToString();
+                    sessionsNode.AppendChild(sessionId);
+                }
+                historyElement.AppendChild(sessionsNode);
+
+                historiesElement.AppendChild(historyElement);
+            }
+            root.AppendChild(historiesElement);
+
+            // Comments
+            XmlElement commentsElement = doc.CreateElement("Comments");
+            foreach (var comment in comments)
+            {
+                XmlElement commentElement = doc.CreateElement("Comment");
+
+                XmlElement commentText = doc.CreateElement("commentText");
+                commentText.InnerText = comment.CommentText;
+                commentElement.AppendChild(commentText);
+
+                XmlElement date = doc.CreateElement("date");
+                date.InnerText = comment.Date.ToString("yyyy-MM-dd");
+                commentElement.AppendChild(date);
+
+                XmlElement movie = doc.CreateElement("movie");
+                movie.InnerText = movies.IndexOf(comment.Movie).ToString();
+                commentElement.AppendChild(movie);
+
+                XmlElement person = doc.CreateElement("Person");
+                person.InnerText = comment.Person.PESEL;
+                commentElement.AppendChild(person);
+
+                commentsElement.AppendChild(commentElement);
+            }
+            root.AppendChild(commentsElement);
+
+            // Payments
+            XmlElement paymentsElement = doc.CreateElement("Payments");
+            foreach (var payment in payments)
+            {
+                XmlElement paymentElement = doc.CreateElement("Payment");
+
+                XmlElement type = doc.CreateElement("type");
+                type.InnerText = payment.Type.ToString();
+                paymentElement.AppendChild(type);
+
+                XmlElement paymentDate = doc.CreateElement("paymentDate");
+                paymentDate.InnerText = payment.PaymentDate.ToString("yyyy-MM-dd");
+                paymentElement.AppendChild(paymentDate);
+
+                XmlElement maxTicketPerPayment = doc.CreateElement("maxTicketPerPayment");
+                maxTicketPerPayment.InnerText = payment.MaxTicketPerPayment.ToString();
+                paymentElement.AppendChild(maxTicketPerPayment);
+
+                paymentsElement.AppendChild(paymentElement);
+            }
+            root.AppendChild(paymentsElement);
+
+            // Tickets
+            XmlElement ticketsElement = doc.CreateElement("Tickets");
+            foreach (var ticket in tickets)
+            {
+                XmlElement ticketElement = doc.CreateElement("Ticket");
+
+                XmlElement seatNumber = doc.CreateElement("seatNumber");
+                seatNumber.InnerText = ticket.SeatNumber.ToString();
+                ticketElement.AppendChild(seatNumber);
+
+                XmlElement price = doc.CreateElement("price");
+                price.InnerText = ticket.Price.ToString();
+                ticketElement.AppendChild(price);
+
+                XmlElement purchaseDate = doc.CreateElement("purchaseDate");
+                purchaseDate.InnerText = ticket.PurchaseDate.ToString("yyyy-MM-dd");
+                ticketElement.AppendChild(purchaseDate);
+
+                XmlElement type = doc.CreateElement("type");
+                type.InnerText = ticket.Type.ToString();
+                ticketElement.AppendChild(type);
+
+                XmlElement sessionId = doc.CreateElement("session");
+                sessionId.InnerText = sessions.IndexOf(ticket.Session).ToString();
+                ticketElement.AppendChild(sessionId);
+
+                XmlElement seatId = doc.CreateElement("seat");
+                seatId.InnerText = seats.IndexOf(ticket.Seat).ToString();
+                ticketElement.AppendChild(seatId);
+
+                XmlElement person = doc.CreateElement("Person");
+                person.InnerText = ticket.Person.PESEL;
+                ticketElement.AppendChild(person);
+
+                ticketsElement.AppendChild(ticketElement);
+            }
+            root.AppendChild(ticketsElement);
+
+            // Save the XML document
             doc.Save(filePath);
         }
 
