@@ -19,14 +19,14 @@ namespace CinemaBYT
         public TimeSpan Duration
         {
             get => _duration;
-            private set => _duration = value;
+             set => _duration = value;
         }
 
         [DisallowNull]
         public DateTime TimeStart
         {
             get => _timeStart;
-            private set => _timeStart = value;
+             set => _timeStart = value;
         }
 
         [DisallowNull]
@@ -40,28 +40,32 @@ namespace CinemaBYT
         public Movie Movie
         {
             get => _movie;
-            private set => _movie = value ?? throw new ArgumentNullException(nameof(Movie), "Movie cannot be null.");
+             set => _movie = value ?? throw new ArgumentNullException(nameof(Movie), "Movie cannot be null.");
         }
 
         [DisallowNull]
         public Hall Hall
         {
             get => _hall;
-            private set => _hall = value ?? throw new ArgumentNullException(nameof(Hall), "Hall cannot be null.");
+             set => _hall = value ?? throw new ArgumentNullException(nameof(Hall), "Hall cannot be null.");
         }
 
         [AllowNull]
         public List<Ticket> Tickets
         {
             get => _tickets;
-            private set => _tickets = value;
+             set => _tickets = value;
         }
 
         [AllowNull]
         public History? History
         {
             get => _history;
-            private set => _history = value;
+             set => _history = value;
+        }
+
+        public Session()
+        {
         }
 
         public Session(TimeSpan duration, DateTime timeStart, decimal income, Movie movie, Hall hall, List<Ticket> tickets, History? history = null)

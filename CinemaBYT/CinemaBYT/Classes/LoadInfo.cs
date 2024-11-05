@@ -43,7 +43,9 @@ namespace CinemaBYT.Classes
                             DateTime.TryParseExact(loyaltyCardNode["expireDate"].InnerText, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out expireDate) &&
                             decimal.TryParse(loyaltyCardNode["discount"].InnerText, out discount))
                         {
+                            /*
                             loyaltyOwners.Add(new OwnsLoyaltyCard(startDate, expireDate, discount));
+                        */
                         }
                         else
                         {

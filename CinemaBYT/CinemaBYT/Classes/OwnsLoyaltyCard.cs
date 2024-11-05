@@ -1,6 +1,6 @@
 ﻿using System;
 
-public class OwnsLoyaltyCard
+public class OwnsLoyaltyCard : Person
 {
     private DateTime _startDate;
     private DateTime _expireDate;
@@ -45,10 +45,15 @@ public class OwnsLoyaltyCard
         }
     }
 
-    public OwnsLoyaltyCard(DateTime startDate, DateTime expireDate, decimal discount)
+    public OwnsLoyaltyCard(String name,String email, DateTime birthDate,String pesel,DateTime startDate, DateTime expireDate, decimal discount)
+        : base(name, email, birthDate, pesel)
     {
         StartDate = startDate;
         ExpireDate = expireDate;
         Discount = discount;
+    }
+
+    public OwnsLoyaltyCard()
+    {
     }
 }

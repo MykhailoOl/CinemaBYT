@@ -117,5 +117,9 @@ namespace CinemaBYT
         {
             return $"{Name} (Released on {ReleaseDate:yyyy-MM-dd}), Age Rating: {AgeRating}";
         }
+
+        public Movie()
+        {
+        }
     }
 }

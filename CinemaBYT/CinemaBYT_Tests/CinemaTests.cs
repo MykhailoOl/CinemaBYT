@@ -1,4 +1,6 @@
 ﻿
+using CinemaBYT;
+
 namespace CinemaBYT_Tests
 {
     public class CinemaTests

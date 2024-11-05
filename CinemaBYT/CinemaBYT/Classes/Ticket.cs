@@ -88,6 +88,10 @@ namespace CinemaBYT
             Person = person;        
         }
 
+        public Ticket()
+        {
+        }
+
         public bool BuyTicket()
         {
             if (Seat == null)

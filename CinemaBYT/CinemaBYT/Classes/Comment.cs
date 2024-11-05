@@ -60,6 +60,10 @@ namespace CinemaBYT
             Person = person;
         }
 
+        public Comment()
+        {
+        }
+
         public void AddReply(Comment reply)
         {
             if (reply == null)

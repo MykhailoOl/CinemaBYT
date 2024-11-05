@@ -17,11 +17,11 @@ namespace CinemaBYT
         public int NumberOfSeats
         {
             get => _numberOfSeats;
-            private set
+            set
             {
                 if (value < 20 || value > 100)
                 {
-                    throw new ValidationException($"Number of seats must be between 20 and 100. Current count: {value}");
+                    throw new ValidationException("Number of seats must be between 20 and 100. Current count: {value}");
                 }
                 _numberOfSeats = value;
             }
@@ -31,7 +31,7 @@ namespace CinemaBYT
         public List<Seat> Seats
         {
             get => _seats;
-            private set => _seats = value ?? throw new ArgumentNullException(nameof(Seats), "Seats list cannot be null.");
+             set => _seats = value ?? throw new ArgumentNullException(nameof(Seats), "Seats list cannot be null.");
         }
 
         public List<Session> Sessions { get; private set; } = new List<Session>();
@@ -56,6 +56,10 @@ namespace CinemaBYT
             Seats = seats; 
             Cinema = cinema;
             ValidateSeats();
+        }
+
+        public Hall()
+        {
         }
 
         public bool HasAvailableSeats()
