@@ -344,9 +344,9 @@ namespace CinemaBYT.Classes
                             Movie movie = movies[int.Parse(commentNode["movie"].InnerText)]; // Deserialize movie information
                             
                             // could be used, if we had Person in constructor
-                            //Person person = people[people.FindIndex(p => p.PESEL.Equals(historyNode["Person"]))];
+                            Person person = people[people.FindIndex(p => p.PESEL.Equals(commentNode["Person"]))];
 
-                            comments.Add(new Comment(commentText, date, movie));
+                            comments.Add(new Comment(commentText, date, movie, person));
                         }
                         catch (FormatException ex)
                         {
@@ -412,8 +412,9 @@ namespace CinemaBYT.Classes
                             Session session = sessions[int.Parse(ticketNode["session"].InnerText)]; // Deserialize session information
                             Seat seat = seats[seats.FindIndex(s => s.SeatNo.Equals(int.Parse(ticketNode["seat"].InnerText)))]; // Deserialize seat information
                             //Person can be added after being added to constructor
+                            Person person = people[people.FindIndex(p => p.PESEL == ticketNode["person"].InnerText)];
 
-                            tickets.Add(new Ticket(seatNumber, price, purchaseDate, type, session, seat));
+                            tickets.Add(new Ticket(seatNumber, price, purchaseDate, type, session, seat, person));
                         }
                         catch (FormatException ex)
                         {
