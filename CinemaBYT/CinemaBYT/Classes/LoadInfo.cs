@@ -36,21 +36,31 @@ namespace CinemaBYT.Classes
                 {
                     if (loyaltyCardNode != null)
                     {
-                        DateTime startDate, expireDate;
-                        decimal discount;
 
-                        if (DateTime.TryParseExact(loyaltyCardNode["startDate"].InnerText, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out startDate) &&
-                            DateTime.TryParseExact(loyaltyCardNode["expireDate"].InnerText, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out expireDate) &&
-                            decimal.TryParse(loyaltyCardNode["discount"].InnerText, out discount))
+
+
+                        //String name,String email, DateTime birthDate,String pesel,
+
+                        try
                         {
-                            /*
-                            loyaltyOwners.Add(new OwnsLoyaltyCard(startDate, expireDate, discount));
-                        */
+                            DateTime startDate = DateTime.ParseExact(loyaltyCardNode["startDate"].InnerText, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+                            DateTime expireDate = DateTime.ParseExact(loyaltyCardNode["expireDate"].InnerText, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+                            decimal discount = decimal.Parse(loyaltyCardNode["discount"].InnerText);
+                            string name = loyaltyCardNode["name"].InnerText;
+                            DateTime birthDate = DateTime.ParseExact(loyaltyCardNode["birthDate"].InnerText, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+                            string email = loyaltyCardNode["email"].InnerText;
+                            string pesel = loyaltyCardNode["pesel"].InnerText;
+                            loyaltyOwners.Add(new OwnsLoyaltyCard(name, email, birthDate, pesel, startDate, expireDate, discount));
                         }
-                        else
+
+                        catch (FormatException ex)
                         {
                             // Handle parsing errors, e.g., log an error or throw an exception
                             Console.WriteLine("Error parsing loyalty card node: " + loyaltyCardNode.OuterXml);
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"Unexpected error parsing seat node: {loyaltyCardNode.OuterXml}. Exception: {ex.Message}");
                         }
                     }
                 }
