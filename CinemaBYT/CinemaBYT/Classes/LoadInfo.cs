@@ -452,25 +452,37 @@ namespace CinemaBYT.Classes
 
             // OwnsLoyaltyCard
             XmlElement loyaltyCardElement = doc.CreateElement("OwnsLoyaltyCard");
+
             foreach (var loyaltyCard in loyaltyOwners)
             {
-                XmlElement cardElement = doc.CreateElement("LoyaltyCard");
-
+                XmlElement cardElement = doc.CreateElement("LoyaltyCard");        
                 XmlElement startDate = doc.CreateElement("startDate");
                 startDate.InnerText = loyaltyCard.StartDate.ToString("yyyy-MM-dd");
                 cardElement.AppendChild(startDate);
-
                 XmlElement expireDate = doc.CreateElement("expireDate");
                 expireDate.InnerText = loyaltyCard.ExpireDate.ToString("yyyy-MM-dd");
-                cardElement.AppendChild(expireDate);
-
+                cardElement.AppendChild(expireDate);            
                 XmlElement discount = doc.CreateElement("discount");
                 discount.InnerText = loyaltyCard.Discount.ToString();
-                cardElement.AppendChild(discount);
-
+                cardElement.AppendChild(discount);           
+                XmlElement name = doc.CreateElement("name");
+                name.InnerText = loyaltyCard.Name;
+                cardElement.AppendChild(name);
+                XmlElement birthDate = doc.CreateElement("birthDate");
+                birthDate.InnerText = loyaltyCard.BirthDate.ToString("yyyy-MM-dd");
+                cardElement.AppendChild(birthDate);     
+                XmlElement email = doc.CreateElement("email");
+                email.InnerText = loyaltyCard.Email;
+                cardElement.AppendChild(email);   
+                XmlElement pesel = doc.CreateElement("pesel");
+                pesel.InnerText = loyaltyCard.PESEL;
+                cardElement.AppendChild(pesel);
                 loyaltyCardElement.AppendChild(cardElement);
             }
+
+  
             root.AppendChild(loyaltyCardElement);
+
 
             // Seats
             XmlElement seatsElements = doc.CreateElement("Seats");
