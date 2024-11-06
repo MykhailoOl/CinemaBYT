@@ -1,10 +1,23 @@
 <CinemaData>
 	<OwnsLoyaltyCard>
-		<loyaltyCard>
-			<startDate>2024-01-01</startDate>
-			<expireDate>2025-01-01</expireDate>
-			<discount>15.00</discount>
-		</loyaltyCard>
+		<LoyaltyCard>
+			<startDate>2023-01-01</startDate>
+			<expireDate>2024-01-01</expireDate>
+			<discount>10.5</discount>
+			<name>John Doe</name>
+			<birthDate>1990-05-15</birthDate>
+			<email>johndoe@example.com</email>
+			<pesel>12345678901</pesel>
+		</LoyaltyCard>
+		<LoyaltyCard>
+			<startDate>2023-06-15</startDate>
+			<expireDate>2024-06-15</expireDate>
+			<discount>15.0</discount>
+			<name>Jane Smith</name>
+			<birthDate>1985-09-10</birthDate>
+			<email>janesmith@example.com</email>
+			<pesel>10987654321</pesel>
+		</LoyaltyCard>
 	</OwnsLoyaltyCard>
 	<Seats>
 			<seat>
