@@ -425,9 +425,10 @@ namespace CinemaBYT.Classes
 
                             // Assuming Session and Seat objects are deserialized separately or from another part of the XML
                             Session session = sessions[int.Parse(ticketNode["session"].InnerText)]; // Deserialize session information
-                            Seat seat = seats[seats.FindIndex(s => s.SeatNo.Equals(int.Parse(ticketNode["seat"].InnerText)))]; // Deserialize seat information
+                            Seat seat = seats[seats.FindIndex(s => s.SeatNo.Equals(int.Parse(ticketNode["seatNumber"].InnerText)))]; // Deserialize seat information
                             //Person can be added after being added to constructor
-                            Person person = people[people.FindIndex(p => p.PESEL == ticketNode["person"].InnerText)];
+                            Person person = people[people.FindIndex(p => p.PESEL.Equals(ticketNode["Person"].InnerText))];
+             
 
                             tickets.Add(new Ticket(seatNumber, price, purchaseDate, type, session, seat, person));
                         }

@@ -42,6 +42,7 @@ public class LoadInfoTest
         Hall hall = new Hall(1, 25, seats);
         serializeInfo.halls.Add(hall);
         serializeInfo.managers.Add(new Manager(DateTime.Today, 5,"man","joe","sfdsf",DateTime.Now, "12313211111"));
+        serializeInfo.people.Add(serializeInfo.managers[0]);
     
 
    
@@ -66,10 +67,10 @@ public class LoadInfoTest
         Assert.AreEqual(serializeInfo.managers.Count, deserializeInfo.managers.Count, "Managers count mismatch");
         Assert.AreEqual(serializeInfo.movies.Count, deserializeInfo.movies.Count, "Movies cou   nt mismatch");
         Assert.AreEqual(serializeInfo.payments.Count, deserializeInfo.payments.Count, "Payments count mismatch");
-        //Assert.AreEqual(serializeInfo.people.Count, deserializeInfo.people.Count, "People count mismatch");
+        Assert.AreEqual(serializeInfo.people.Count, deserializeInfo.people.Count, "People count mismatch");
         Assert.AreEqual(serializeInfo.seats.Count, deserializeInfo.seats.Count, "Seats count mismatch");
         Assert.AreEqual(serializeInfo.sessions.Count, deserializeInfo.sessions.Count, "Sessions count mismatch");
-        //Assert.AreEqual(serializeInfo.tickets.Count, deserializeInfo.tickets.Count, "Tickets count mismatch");
+        Assert.AreEqual(serializeInfo.tickets.Count, deserializeInfo.tickets.Count, "Tickets count mismatch");
         Assert.AreEqual(serializeInfo.supportStaff.Count, deserializeInfo.supportStaff.Count, "Support staff count mismatch");
 
     }
