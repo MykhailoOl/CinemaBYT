@@ -30,4 +30,9 @@ public class History
     {
         _listOfSessions = new List<Session>();
     }
+    public History(Person person)
+    {
+        _listOfSessions = new List<Session>();
+        Person = person;
+    }
 }
