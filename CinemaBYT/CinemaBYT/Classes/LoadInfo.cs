@@ -9,19 +9,19 @@ namespace CinemaBYT.Classes
 {
     public class LoadInfo
     {
-        List<OwnsLoyaltyCard> loyaltyOwners = new List<OwnsLoyaltyCard>();
-        List<Seat> seats = new List<Seat>();
-        List<Movie> movies = new List<Movie>();
-        List<Support> supportStaff = new List<Support>();
-        List<Manager> managers = new List<Manager>();
-        List<Person> people = new List<Person>();
-        List<Hall> halls = new List<Hall>();
-        List<Ticket> tickets = new List<Ticket>();
-        List<Session> sessions = new List<Session>();
-        List<Cinema> cinemas = new List<Cinema>();
-        List<History> histories = new List<History>();
-        List<Comment> comments = new List<Comment>();
-        List<Payment> payments = new List<Payment>();
+        public List<OwnsLoyaltyCard> loyaltyOwners = new List<OwnsLoyaltyCard>();
+        public List<Seat> seats = new List<Seat>();
+        public List<Movie> movies = new List<Movie>();
+        public List<Support> supportStaff = new List<Support>();
+        public List<Manager> managers = new List<Manager>();
+        public List<Person> people = new List<Person>();
+        public List<Hall> halls = new List<Hall>();
+        public List<Ticket> tickets = new List<Ticket>();
+        public List<Session> sessions = new List<Session>();
+        public List<Cinema> cinemas = new List<Cinema>();
+        public List<History> histories = new List<History>();
+        public List<Comment> comments = new List<Comment>();
+        public List<Payment> payments = new List<Payment>();
         public void LoadFromXml(string filePath)
         {
             XmlDocument doc = new XmlDocument();
