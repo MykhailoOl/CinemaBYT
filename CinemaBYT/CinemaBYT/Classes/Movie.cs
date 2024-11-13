@@ -9,7 +9,7 @@ namespace CinemaBYT
     public class Movie
     {
         private string _name;
-        private DateTime _releaseDate;
+        private DateTime? _releaseDate;
         private int _ageRating;
         private List<string> _listOfGenres;
         private List<Session> _sessions = new List<Session>();
@@ -22,13 +22,13 @@ namespace CinemaBYT
             set => _name = value ?? throw new ArgumentNullException(nameof(Name), "Name cannot be null.");
         }
 
-        [Required]
-        public DateTime ReleaseDate
+        [AllowNull]
+        public DateTime? ReleaseDate
         {
             get => _releaseDate;
             set
             {
-                if (value > DateTime.Now)
+                if (value.HasValue && value.Value > DateTime.Now)
                 {
                     throw new MovieException("Release date cannot be in the future.");
                 }
@@ -72,7 +72,7 @@ namespace CinemaBYT
             set => _comments = value ?? new List<Comment>();
         }
 
-        public Movie(string name, DateTime releaseDate, int ageRating, List<string> listOfGenres)
+        public Movie(string name, DateTime? releaseDate, int ageRating, List<string> listOfGenres)
         {
             Name = name;
             ReleaseDate = releaseDate;
@@ -115,7 +115,8 @@ namespace CinemaBYT
 
         public override string ToString()
         {
-            return $"{Name} (Released on {ReleaseDate:yyyy-MM-dd}), Age Rating: {AgeRating}";
+            string releaseDateString = ReleaseDate.HasValue ? ReleaseDate.Value.ToString("yyyy-MM-dd") : "N/A";
+            return $"{Name} (Released on {releaseDateString}), Age Rating: {AgeRating}";
         }
 
         public Movie()
