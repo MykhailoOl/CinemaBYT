@@ -9,19 +9,99 @@ namespace CinemaBYT.Classes
 {
     public class LoadInfo
     {
-        public List<OwnsLoyaltyCard> loyaltyOwners = new List<OwnsLoyaltyCard>();
-        public List<Seat> seats = new List<Seat>();
-        public List<Movie> movies = new List<Movie>();
-        public List<Support> supportStaff = new List<Support>();
-        public List<Manager> managers = new List<Manager>();
-        public List<Person> people = new List<Person>();
-        public List<Hall> halls = new List<Hall>();
-        public List<Ticket> tickets = new List<Ticket>();
-        public List<Session> sessions = new List<Session>();
-        public List<Cinema> cinemas = new List<Cinema>();
-        public List<History> histories = new List<History>();
-        public List<Comment> comments = new List<Comment>();
-        public List<Payment> payments = new List<Payment>();
+        private List<OwnsLoyaltyCard> _loyaltyOwners = new List<OwnsLoyaltyCard>();
+        private List<Seat> _seats = new List<Seat>();
+        private List<Movie> _movies = new List<Movie>();
+        private List<Support> _supportStaff = new List<Support>();
+        private List<Manager> _managers = new List<Manager>();
+        private List<Person> _people = new List<Person>();
+        private List<Hall> _halls = new List<Hall>();
+        private List<Ticket> _tickets = new List<Ticket>();
+        private List<Session> _sessions = new List<Session>();
+        private List<Cinema> _cinemas = new List<Cinema>();
+        private List<History> _histories = new List<History>();
+        private List<Comment> _comments = new List<Comment>();
+        private List<Payment> _payments = new List<Payment>();
+
+        public List<OwnsLoyaltyCard> LoyaltyOwners
+        {
+            get => _loyaltyOwners;
+            set => _loyaltyOwners = value ?? new List<OwnsLoyaltyCard>();
+        }
+
+        public List<Seat> Seats
+        {
+            get => _seats;
+            set => _seats = value ?? new List<Seat>();
+        }
+
+        public List<Movie> Movies
+        {
+            get => _movies;
+            set => _movies = value ?? new List<Movie>();
+        }
+
+        public List<Support> SupportStaff
+        {
+            get => _supportStaff;
+            set => _supportStaff = value ?? new List<Support>();
+        }
+
+        public List<Manager> Managers
+        {
+            get => _managers;
+            set => _managers = value ?? new List<Manager>();
+        }
+
+        public List<Person> People
+        {
+            get => _people;
+            set => _people = value ?? new List<Person>();
+        }
+
+        public List<Hall> Halls
+        {
+            get => _halls;
+            set => _halls = value ?? new List<Hall>();
+        }
+
+        public List<Ticket> Tickets
+        {
+            get => _tickets;
+            set => _tickets = value ?? new List<Ticket>();
+        }
+
+        public List<Session> Sessions
+        {
+            get => _sessions;
+            set => _sessions = value ?? new List<Session>();
+        }
+
+        public List<Cinema> Cinemas
+        {
+            get => _cinemas;
+            set => _cinemas = value ?? new List<Cinema>();
+        }
+
+        public List<History> Histories
+        {
+            get => _histories;
+            set => _histories = value ?? new List<History>();
+        }
+
+        public List<Comment> Comments
+        {
+            get => _comments;
+            set => _comments = value ?? new List<Comment>();
+        }
+
+        public List<Payment> Payments
+        {
+            get => _payments;
+            set => _payments = value ?? new List<Payment>();
+        }
+
+
         public void LoadFromXml(string filePath)
         {
             XmlDocument doc = new XmlDocument();
@@ -50,7 +130,7 @@ namespace CinemaBYT.Classes
                             DateTime birthDate = DateTime.ParseExact(loyaltyCardNode["birthDate"].InnerText, "yyyy-MM-dd", CultureInfo.InvariantCulture);
                             string email = loyaltyCardNode["email"].InnerText;
                             string pesel = loyaltyCardNode["pesel"].InnerText;
-                            loyaltyOwners.Add(new OwnsLoyaltyCard(name, email, birthDate, pesel, startDate, expireDate, discount));
+                            _loyaltyOwners.Add(new OwnsLoyaltyCard(name, email, birthDate, pesel, startDate, expireDate, discount));
                         }
 
                         catch (FormatException ex)
@@ -80,7 +160,7 @@ namespace CinemaBYT.Classes
                             bool isVIP = bool.Parse(seatNode["isVIP"].InnerText);
                             bool isAvailable = bool.Parse(seatNode["isAvailable"].InnerText);
 
-                            seats.Add(new Seat(seatNo, isVIP, isAvailable));
+                            _seats.Add(new Seat(seatNo, isVIP, isAvailable));
                         }
                         catch (FormatException ex)
                         {
@@ -115,7 +195,7 @@ namespace CinemaBYT.Classes
                                 genres.Add(genreNode.InnerText);
                             }
 
-                            movies.Add(new Movie(name, releaseDate, ageRating, genres));
+                            _movies.Add(new Movie(name, releaseDate, ageRating, genres));
                         }
                         catch (FormatException ex)
                         {
@@ -150,7 +230,7 @@ namespace CinemaBYT.Classes
                             string pesel = staffNode["pesel"].InnerText;
 
 
-                            supportStaff.Add(new Support(hireDate, salary, name, email, birthDate, pesel, level));
+                            _supportStaff.Add(new Support(hireDate, salary, name, email, birthDate, pesel, level));
                         }
                         catch (FormatException ex)
                         {
@@ -184,7 +264,7 @@ namespace CinemaBYT.Classes
                             string email = managerNode["email"].InnerText;
                             string pesel = managerNode["pesel"].InnerText;
 
-                            managers.Add(new Manager(hireDate, salary, position, name, email, birthDate, pesel));
+                            _managers.Add(new Manager(hireDate, salary, position, name, email, birthDate, pesel));
                         }
                         catch (FormatException ex)
                         {
@@ -199,8 +279,8 @@ namespace CinemaBYT.Classes
             }
 
         
-            people.AddRange(managers);
-            people.AddRange(supportStaff);
+            _people.AddRange(_managers);
+            _people.AddRange(_supportStaff);
 
   
             XmlNode hallsNode = doc.SelectSingleNode("/CinemaData/Halls");
@@ -220,10 +300,10 @@ namespace CinemaBYT.Classes
                             foreach (XmlNode seatNode in hallNode.SelectNodes("seats/seatNo"))
                             {
                                 //seats.Count();
-                                Hallseats.Add(seats[seats.FindIndex(s => s.SeatNo.Equals(int.Parse(seatNode.InnerText)))]);
+                                Hallseats.Add(_seats[_seats.FindIndex(s => s.SeatNo.Equals(int.Parse(seatNode.InnerText)))]);
                             }
 
-                            halls.Add(new Hall(hallNumber, numberOfSeats, seats));
+                            _halls.Add(new Hall(hallNumber, numberOfSeats, _seats));
                         }
                         catch (FormatException ex)
                         {
@@ -254,11 +334,11 @@ namespace CinemaBYT.Classes
                             decimal income = decimal.Parse(sessionNode["income"].InnerText);
 
                             // Assuming Movie, Hall, and Ticket objects are already deserialized
-                            Movie movie = movies[int.Parse(sessionNode["movieId"].InnerText)]; // Deserialize movie information
-                            Hall hall = halls[int.Parse(sessionNode["hallId"].InnerText)]; ; // Deserialize hall information
+                            Movie movie = _movies[int.Parse(sessionNode["movieId"].InnerText)]; // Deserialize movie information
+                            Hall hall = _halls[int.Parse(sessionNode["hallId"].InnerText)]; ; // Deserialize hall information
                             List<Ticket> sessiontickets = new List<Ticket>(); // No tickets purchased yet)
 
-                            sessions.Add(new Session(duration, timeStart, income, movie, hall, sessiontickets));
+                            _sessions.Add(new Session(duration, timeStart, income, movie, hall, sessiontickets));
                         }
                         catch (FormatException ex)
                         {
@@ -291,7 +371,7 @@ namespace CinemaBYT.Classes
                             string openingHours = cinemaNode["openingHours"].InnerText;
                             //we may add list of halls, if you want, but we don't have to
 
-                            cinemas.Add(new Cinema(name, city, country, contactPhone, openingHours));
+                            _cinemas.Add(new Cinema(name, city, country, contactPhone, openingHours));
                         }
                         catch (FormatException ex)
                         {
@@ -321,14 +401,14 @@ namespace CinemaBYT.Classes
                             foreach (XmlNode hsessionNode in historyNode.SelectNodes("Sessions/Session"))
                             {
                                 // ... Deserialize Session object as shown in previous responses ...
-                                Historysessions.Add(sessions[int.Parse(hsessionNode.InnerText)]);
+                                Historysessions.Add(_sessions[int.Parse(hsessionNode.InnerText)]);
                             }
 
                             // Assuming Person object is deserialized separately or from another part of the XML
-                            people.Count();
-                            Person person = people[people.FindIndex(p => p.PESEL.Equals(historyNode["Person"].InnerText))]; // Deserialize person information
+                            _people.Count();
+                            Person person = _people[_people.FindIndex(p => p.PESEL.Equals(historyNode["Person"].InnerText))]; // Deserialize person information
 
-                            histories.Add(new History(sessions, person));
+                            _histories.Add(new History(_sessions, person));
                         }
                         catch (FormatException ex)
                         {
@@ -358,12 +438,12 @@ namespace CinemaBYT.Classes
                             DateTime date = DateTime.ParseExact(commentNode["date"].InnerText, "yyyy-MM-dd", CultureInfo.InvariantCulture);
 
                             // Assuming Movie object is deserialized separately or from another part of the XML
-                            Movie movie = movies[int.Parse(commentNode["movie"].InnerText)]; // Deserialize movie information
+                            Movie movie = _movies[int.Parse(commentNode["movie"].InnerText)]; // Deserialize movie information
                             
                             // could be used, if we had Person in constructor
-                            Person person = people[people.FindIndex(p => p.PESEL.Equals(commentNode["Person"].InnerText))];
+                            Person person = _people[_people.FindIndex(p => p.PESEL.Equals(commentNode["Person"].InnerText))];
 
-                            comments.Add(new Comment(commentText, date, movie, person));
+                            _comments.Add(new Comment(commentText, date, movie, person));
                         }
                         catch (FormatException ex)
                         {
@@ -393,7 +473,7 @@ namespace CinemaBYT.Classes
                             DateTime paymentDate = DateTime.ParseExact(paymentNode["paymentDate"].InnerText, "yyyy-MM-dd", CultureInfo.InvariantCulture);
                             int maxTicketPerPayment = int.Parse(paymentNode["maxTicketPerPayment"].InnerText);
 
-                            payments.Add(new Payment(type, paymentDate, maxTicketPerPayment));
+                            _payments.Add(new Payment(type, paymentDate, maxTicketPerPayment));
                         }
                         catch (FormatException ex)
                         {
@@ -424,13 +504,13 @@ namespace CinemaBYT.Classes
                             TicketType type = (TicketType)Enum.Parse(typeof(TicketType), ticketNode["type"].InnerText);
 
                             // Assuming Session and Seat objects are deserialized separately or from another part of the XML
-                            Session session = sessions[int.Parse(ticketNode["session"].InnerText)]; // Deserialize session information
-                            Seat seat = seats[seats.FindIndex(s => s.SeatNo.Equals(int.Parse(ticketNode["seatNumber"].InnerText)))]; // Deserialize seat information
+                            Session session = _sessions[int.Parse(ticketNode["session"].InnerText)]; // Deserialize session information
+                            Seat seat = _seats[_seats.FindIndex(s => s.SeatNo.Equals(int.Parse(ticketNode["seatNumber"].InnerText)))]; // Deserialize seat information
                             //Person can be added after being added to constructor
-                            Person person = people[people.FindIndex(p => p.PESEL.Equals(ticketNode["Person"].InnerText))];
+                            Person person = _people[_people.FindIndex(p => p.PESEL.Equals(ticketNode["Person"].InnerText))];
              
 
-                            tickets.Add(new Ticket(seatNumber, price, purchaseDate, type, session, seat, person));
+                            _tickets.Add(new Ticket(seatNumber, price, purchaseDate, type, session, seat, person));
                         }
                         catch (FormatException ex)
                         {
@@ -454,7 +534,7 @@ namespace CinemaBYT.Classes
             // OwnsLoyaltyCard
             XmlElement loyaltyCardElement = doc.CreateElement("OwnsLoyaltyCard");
 
-            foreach (var loyaltyCard in loyaltyOwners)
+            foreach (var loyaltyCard in _loyaltyOwners)
             {
                 XmlElement cardElement = doc.CreateElement("LoyaltyCard");        
                 XmlElement startDate = doc.CreateElement("startDate");
@@ -487,7 +567,7 @@ namespace CinemaBYT.Classes
 
             // Seats
             XmlElement seatsElements = doc.CreateElement("Seats");
-            foreach (var seat in seats)
+            foreach (var seat in _seats)
             {
                 XmlElement seatElement = doc.CreateElement("Seat");
 
@@ -509,7 +589,7 @@ namespace CinemaBYT.Classes
 
             // Movies
             XmlElement moviesElement = doc.CreateElement("Movies");
-            foreach (var movie in movies)
+            foreach (var movie in _movies)
             {
                 XmlElement movieElement = doc.CreateElement("Movie");
 
@@ -518,7 +598,9 @@ namespace CinemaBYT.Classes
                 movieElement.AppendChild(name);
 
                 XmlElement releaseDate = doc.CreateElement("releaseDate");
-                releaseDate.InnerText = movie.ReleaseDate.ToString("yyyy-MM-dd");
+                releaseDate.InnerText = movie.ReleaseDate.HasValue
+                    ? movie.ReleaseDate.Value.ToString("yyyy-MM-dd")
+                    : "N/A";
                 movieElement.AppendChild(releaseDate);
 
                 XmlElement ageRating = doc.CreateElement("ageRating");
@@ -540,7 +622,7 @@ namespace CinemaBYT.Classes
 
             // Support Staff
             XmlElement supportStaffElement = doc.CreateElement("SupportStaff");
-            foreach (var staff in supportStaff)
+            foreach (var staff in _supportStaff)
             {
                 XmlElement staffElement = doc.CreateElement("Staff");
 
@@ -578,7 +660,7 @@ namespace CinemaBYT.Classes
 
             // Management
             XmlElement managersElement = doc.CreateElement("Management");
-            foreach (var manager in managers)
+            foreach (var manager in _managers)
             {
                 XmlElement managerElement = doc.CreateElement("Manager");
 
@@ -616,7 +698,7 @@ namespace CinemaBYT.Classes
 
             // Halls
             XmlElement hallsElement = doc.CreateElement("Halls");
-            foreach (var hall in halls)
+            foreach (var hall in _halls)
             {
                 XmlElement hallElement = doc.CreateElement("Hall");
 
@@ -641,7 +723,7 @@ namespace CinemaBYT.Classes
             }
             root.AppendChild(hallsElement);
             XmlElement sessionsElement = doc.CreateElement("Sessions");
-            foreach (var session in sessions)
+            foreach (var session in _sessions)
             {
                 XmlElement sessionElement = doc.CreateElement("Session");
 
@@ -658,11 +740,11 @@ namespace CinemaBYT.Classes
                 sessionElement.AppendChild(income);
 
                 XmlElement movieId = doc.CreateElement("movieId");
-                movieId.InnerText = movies.IndexOf(session.Movie).ToString();
+                movieId.InnerText = _movies.IndexOf(session.Movie).ToString();
                 sessionElement.AppendChild(movieId);
 
                 XmlElement hallId = doc.CreateElement("hallId");
-                hallId.InnerText = halls.IndexOf(session.Hall).ToString();
+                hallId.InnerText = _halls.IndexOf(session.Hall).ToString();
                 sessionElement.AppendChild(hallId);
 
                 sessionsElement.AppendChild(sessionElement);
@@ -671,7 +753,7 @@ namespace CinemaBYT.Classes
 
             // Cinemas
             XmlElement cinemasElement = doc.CreateElement("Cinemas");
-            foreach (var cinema in cinemas)
+            foreach (var cinema in _cinemas)
             {
                 XmlElement cinemaElement = doc.CreateElement("Cinema");
 
@@ -701,7 +783,7 @@ namespace CinemaBYT.Classes
 
             // Histories
             XmlElement historiesElement = doc.CreateElement("Histories");
-            foreach (var history in histories)
+            foreach (var history in _histories)
             {
                 XmlElement historyElement = doc.CreateElement("History");
 
@@ -713,7 +795,7 @@ namespace CinemaBYT.Classes
                 foreach (var session in history.ListOfSessions)
                 {
                     XmlElement sessionId = doc.CreateElement("Session");
-                    sessionId.InnerText = sessions.IndexOf(session).ToString();
+                    sessionId.InnerText = _sessions.IndexOf(session).ToString();
                     sessionsNode.AppendChild(sessionId);
                 }
                 historyElement.AppendChild(sessionsNode);
@@ -724,7 +806,7 @@ namespace CinemaBYT.Classes
 
             // Comments
             XmlElement commentsElement = doc.CreateElement("Comments");
-            foreach (var comment in comments)
+            foreach (var comment in _comments)
             {
                 XmlElement commentElement = doc.CreateElement("Comment");
 
@@ -737,7 +819,7 @@ namespace CinemaBYT.Classes
                 commentElement.AppendChild(date);
 
                 XmlElement movie = doc.CreateElement("movie");
-                movie.InnerText = movies.IndexOf(comment.Movie).ToString();
+                movie.InnerText = _movies.IndexOf(comment.Movie).ToString();
                 commentElement.AppendChild(movie);
 
                 XmlElement person = doc.CreateElement("Person");
@@ -750,7 +832,7 @@ namespace CinemaBYT.Classes
 
             // Payments
             XmlElement paymentsElement = doc.CreateElement("Payments");
-            foreach (var payment in payments)
+            foreach (var payment in _payments)
             {
                 XmlElement paymentElement = doc.CreateElement("Payment");
 
@@ -772,7 +854,7 @@ namespace CinemaBYT.Classes
 
             // Tickets
             XmlElement ticketsElement = doc.CreateElement("Tickets");
-            foreach (var ticket in tickets)
+            foreach (var ticket in _tickets)
             {
                 XmlElement ticketElement = doc.CreateElement("Ticket");
 
@@ -793,11 +875,11 @@ namespace CinemaBYT.Classes
                 ticketElement.AppendChild(type);
 
                 XmlElement sessionId = doc.CreateElement("session");
-                sessionId.InnerText = sessions.IndexOf(ticket.Session).ToString();
+                sessionId.InnerText = _sessions.IndexOf(ticket.Session).ToString();
                 ticketElement.AppendChild(sessionId);
 
                 XmlElement seatId = doc.CreateElement("seat");
-                seatId.InnerText = seats.IndexOf(ticket.Seat).ToString();
+                seatId.InnerText = _seats.IndexOf(ticket.Seat).ToString();
                 ticketElement.AppendChild(seatId);
 
                 XmlElement person = doc.CreateElement("Person");

@@ -118,7 +118,7 @@ namespace CinemaBYT
             string releaseDateString = ReleaseDate.HasValue ? ReleaseDate.Value.ToString("yyyy-MM-dd") : "N/A";
             return $"{Name} (Released on {releaseDateString}), Age Rating: {AgeRating}";
         }
-
+    
         public Movie()
         {
         }
