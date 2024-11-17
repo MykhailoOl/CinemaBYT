@@ -85,27 +85,27 @@ public abstract class Person
     {
         if (obj is Person other)
         {
+            // Compare all properties, considering that some might be null
             return Name == other.Name &&
                    Email == other.Email &&
                    BirthDate == other.BirthDate &&
                    PESEL == other.PESEL &&
-                   (History == null && other.History == null ||
-                    History?.Equals(other.History) == true);
+                   (History?.Equals(other.History) ?? other.History == null);
         }
         return false;
     }
 
-
     public override int GetHashCode()
     {
-        // Combine the hash codes of the essential properties.
+        // Combine the hash codes of the essential properties, ensuring nulls are handled
         int hashCode = Name?.GetHashCode() ?? 0;
         hashCode = (hashCode * 397) ^ (Email?.GetHashCode() ?? 0);
         hashCode = (hashCode * 397) ^ BirthDate.GetHashCode();
         hashCode = (hashCode * 397) ^ (PESEL?.GetHashCode() ?? 0);
-        hashCode = (hashCode * 397) ^ (History?.GetHashCode() ?? 0);
+        hashCode = (hashCode * 397) ^ (History?.GetHashCode() ?? 0);  // Safe null handling for History
 
         return hashCode;
     }
+
 
 }

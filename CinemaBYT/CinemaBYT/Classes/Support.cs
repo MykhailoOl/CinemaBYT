@@ -23,7 +23,7 @@ public class Support : Employee
         {
             // Compare the properties that uniquely identify a Support instance.
             return base.Equals(obj) && // Delegate to the Employee class Equals method
-                   Level == other.Level;
+                   (Level == other.Level); // Compare Level, handling nulls
         }
         return false;
     }
@@ -33,7 +33,9 @@ public class Support : Employee
         // Combine the hash codes of the relevant properties, including the base Employee class's hash code.
         int hashCode = base.GetHashCode();
         hashCode = (hashCode * 397) ^ (Level?.GetHashCode() ?? 0); // Use null-coalescing operator to handle null values
+
         return hashCode;
     }
+
 
 }

@@ -52,9 +52,9 @@ public abstract class Employee : Person
         if (obj is Employee otherEmployee)
         {
             // Compare HireDate, Salary, and base class Person properties
-            return HireDate == otherEmployee.HireDate 
-                   && Salary == otherEmployee.Salary
-                   && base.Equals(otherEmployee); // Compare Person properties
+            return HireDate == otherEmployee.HireDate &&
+                   Salary == otherEmployee.Salary &&
+                   base.Equals(otherEmployee); // Delegate comparison to Person class
         }
         return false;
     }
@@ -62,7 +62,13 @@ public abstract class Employee : Person
     public override int GetHashCode()
     {
         // Combine the hash codes of HireDate, Salary, and base class Person properties
-        return HashCode.Combine(HireDate, Salary, base.GetHashCode());
+        int hashCode = HireDate.GetHashCode();
+        hashCode = (hashCode * 397) ^ Salary.GetHashCode();
+        hashCode = (hashCode * 397) ^ base.GetHashCode(); // Base class (Person) hash code
+
+        return hashCode;
     }
+
+
 
 }

@@ -39,24 +39,22 @@ public class History
     {
         if (obj is History otherHistory)
         {
-            // Use null checks for Person
-            bool personEquals = (Person == null && otherHistory.Person == null) ||
-                                (Person?.Equals(otherHistory.Person) == true);
-
-            // Handle nulls for ListOfSessions
-            bool sessionsEquals = (ListOfSessions == null && otherHistory.ListOfSessions == null) ||
-                                  (ListOfSessions?.SequenceEqual(otherHistory.ListOfSessions) == true);
-
-            return personEquals && sessionsEquals;
+            // Compare the person and the list of sessions, handling nulls safely.
+            return Person?.Equals(otherHistory.Person) == true &&
+                   (ListOfSessions == null && otherHistory.ListOfSessions == null || 
+                    ListOfSessions?.SequenceEqual(otherHistory.ListOfSessions) == true);
         }
         return false;
     }
 
-
     public override int GetHashCode()
     {
-        // Combine the hash codes of Person and ListOfSessions
-        return HashCode.Combine(Person, ListOfSessions);
+        // Combine the hash codes of Person and ListOfSessions, ensuring null safety.
+        int personHash = Person?.GetHashCode() ?? 0; // Use 0 if Person is null
+        int sessionsHash = ListOfSessions?.GetHashCode() ?? 0; // Use 0 if ListOfSessions is null
+    
+        return HashCode.Combine(personHash, sessionsHash);
     }
+
 
 }

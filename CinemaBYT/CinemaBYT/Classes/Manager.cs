@@ -32,7 +32,7 @@ public class Manager : Employee
     {
         if (obj is Manager otherManager)
         {
-            // Compare the Position and base class Employee (assumed to be implementing Equals)
+            // Compare Position and base class Employee (assumed to be implementing Equals)
             return Position == otherManager.Position && base.Equals(otherManager);
         }
         return false;
@@ -41,7 +41,11 @@ public class Manager : Employee
     public override int GetHashCode()
     {
         // Combine the hash code of the Position and the base Employee class
-        return HashCode.Combine(Position, base.GetHashCode());
+        int hashCode = base.GetHashCode();
+        hashCode = (hashCode * 397) ^ (Position?.GetHashCode() ?? 0); // Safe null handling for Position
+
+        return hashCode;
     }
+
 
 }

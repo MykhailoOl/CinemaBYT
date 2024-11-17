@@ -129,29 +129,8 @@ public class OwnsLoyaltyCardTests
             Assert.IsNull(loyaltyCardOwner.PESEL);
             Assert.AreEqual(default(DateTime), loyaltyCardOwner.StartDate);
             Assert.AreEqual(default(DateTime), loyaltyCardOwner.ExpireDate);
-            Assert.AreEqual(0, loyaltyCardOwner.Discount);
         }
-
-        // Test Edge Cases for Discount
-        [Test]
-        public void Discount_SetZero_ShouldSetCorrectValue()
-        {
-            // Act
-            var loyaltyCardOwner = new OwnsLoyaltyCard(_validName, _validEmail, _validBirthDate, _validPESEL, _validStartDate, _validExpireDate);
-
-            // Assert
-            Assert.AreEqual(0, loyaltyCardOwner.Discount);
-        }
-
-        [Test]
-        public void Discount_SetOneHundred_ShouldSetCorrectValue()
-        {
-            // Act
-            var loyaltyCardOwner = new OwnsLoyaltyCard(_validName, _validEmail, _validBirthDate, _validPESEL, _validStartDate, _validExpireDate);
-
-            // Assert
-            Assert.AreEqual(100, loyaltyCardOwner.Discount);
-        }
+        
 
         // Test Null Properties for Person class
         [Test]

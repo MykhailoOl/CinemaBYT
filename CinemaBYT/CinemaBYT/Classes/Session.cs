@@ -106,9 +106,9 @@ namespace CinemaBYT
         {
             if (obj is Session other)
             {
-                // Compare the key properties of the Session class.
-                return Movie.Equals(other.Movie) &&
-                       Hall.Equals(other.Hall) &&
+                // Compare the key properties of the Session class, ensuring null safety for reference types.
+                return Movie?.Equals(other.Movie) == true &&
+                       Hall?.Equals(other.Hall) == true &&
                        TimeStart == other.TimeStart;
             }
             return false;
@@ -116,13 +116,14 @@ namespace CinemaBYT
 
         public override int GetHashCode()
         {
-            // Combine the hash codes of the essential properties.
-            int hashCode = Movie.GetHashCode();
-            hashCode = (hashCode * 397) ^ Hall.GetHashCode();
-            hashCode = (hashCode * 397) ^ TimeStart.GetHashCode();
+            // Ensure hash code computation takes into account null-safe operations.
+            int hashCode = Movie?.GetHashCode() ?? 0;  // Use 0 if Movie is null.
+            hashCode = (hashCode * 397) ^ (Hall?.GetHashCode() ?? 0);  // Use 0 if Hall is null.
+            hashCode = (hashCode * 397) ^ TimeStart.GetHashCode();  // TimeStart is a value type, so no need for null check.
     
             return hashCode;
         }
+
 
     }
 }
