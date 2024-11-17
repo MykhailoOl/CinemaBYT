@@ -85,15 +85,16 @@ public abstract class Person
     {
         if (obj is Person other)
         {
-            // Compare the key properties of the Person class.
             return Name == other.Name &&
                    Email == other.Email &&
                    BirthDate == other.BirthDate &&
                    PESEL == other.PESEL &&
-                   EqualityComparer<History>.Default.Equals(History, other.History);
+                   (History == null && other.History == null ||
+                    History?.Equals(other.History) == true);
         }
         return false;
     }
+
 
     public override int GetHashCode()
     {

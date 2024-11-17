@@ -39,13 +39,19 @@ public class History
     {
         if (obj is History otherHistory)
         {
-            // Compare the person and the list of sessions
-            return Person.Equals(otherHistory.Person) &&
-                   (ListOfSessions == null && otherHistory.ListOfSessions == null || 
-                    ListOfSessions?.SequenceEqual(otherHistory.ListOfSessions) == true);
+            // Use null checks for Person
+            bool personEquals = (Person == null && otherHistory.Person == null) ||
+                                (Person?.Equals(otherHistory.Person) == true);
+
+            // Handle nulls for ListOfSessions
+            bool sessionsEquals = (ListOfSessions == null && otherHistory.ListOfSessions == null) ||
+                                  (ListOfSessions?.SequenceEqual(otherHistory.ListOfSessions) == true);
+
+            return personEquals && sessionsEquals;
         }
         return false;
     }
+
 
     public override int GetHashCode()
     {
