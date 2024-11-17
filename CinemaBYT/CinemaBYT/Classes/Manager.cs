@@ -28,4 +28,20 @@ public class Manager : Employee
     {
         Position = position; 
     }
+    public override bool Equals(object obj)
+    {
+        if (obj is Manager otherManager)
+        {
+            // Compare the Position and base class Employee (assumed to be implementing Equals)
+            return Position == otherManager.Position && base.Equals(otherManager);
+        }
+        return false;
+    }
+
+    public override int GetHashCode()
+    {
+        // Combine the hash code of the Position and the base Employee class
+        return HashCode.Combine(Position, base.GetHashCode());
+    }
+
 }

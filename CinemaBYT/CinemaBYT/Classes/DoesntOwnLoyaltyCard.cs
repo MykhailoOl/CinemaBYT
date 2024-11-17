@@ -8,4 +8,20 @@ public class DoesntOwnLoyaltyCard : Person
     {
       
     }
+    public override bool Equals(object obj)
+    {
+        if (obj is DoesntOwnLoyaltyCard other)
+        {
+            // Compare properties from the base class (Person)
+            return base.Equals(other); // Compare Person properties (Name, Email, BirthDate, Pesel)
+        }
+        return false;
+    }
+
+    public override int GetHashCode()
+    {
+        // Use the base class GetHashCode to include the properties from Person
+        return base.GetHashCode();
+    }
+
 }

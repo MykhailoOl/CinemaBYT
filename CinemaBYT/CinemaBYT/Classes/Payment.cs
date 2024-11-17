@@ -61,6 +61,28 @@ public class Payment
 
         return hasLoyaltyCard ? price * 0.9 : price;  // 10% discount for loyalty card holders
     }
+    public override bool Equals(object obj)
+    {
+        if (obj is Payment other)
+        {
+            // Compare the essential properties of the Payment class.
+            return Type == other.Type &&
+                   PaymentDate == other.PaymentDate &&
+                   MaxTicketPerPayment == other.MaxTicketPerPayment;
+        }
+        return false;
+    }
+
+    public override int GetHashCode()
+    {
+        // Combine the hash codes of the essential properties.
+        int hashCode = Type.GetHashCode();
+        hashCode = (hashCode * 397) ^ PaymentDate.GetHashCode();
+        hashCode = (hashCode * 397) ^ MaxTicketPerPayment.GetHashCode();
+
+        return hashCode;
+    }
+
 }
 
 public enum PaymentType

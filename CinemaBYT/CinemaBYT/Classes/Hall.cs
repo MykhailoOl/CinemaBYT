@@ -97,5 +97,24 @@ namespace CinemaBYT
         {
             return Cinema;
         }
+        public override bool Equals(object obj)
+        {
+            if (obj is Hall otherHall)
+            {
+                // Compare basic properties
+                return HallNumber == otherHall.HallNumber &&
+                       NumberOfSeats == otherHall.NumberOfSeats &&
+                       Seats.SequenceEqual(otherHall.Seats) &&
+                       EqualityComparer<Cinema?>.Default.Equals(Cinema, otherHall.Cinema);
+            }
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            // Combine the hash codes of relevant properties
+            return HashCode.Combine(HallNumber, NumberOfSeats, Seats, Cinema);
+        }
+
     }
 }

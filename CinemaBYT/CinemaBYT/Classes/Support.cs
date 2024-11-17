@@ -17,4 +17,23 @@ public class Support : Employee
     {
         Level = level; 
     }
+    public override bool Equals(object obj)
+    {
+        if (obj is Support other)
+        {
+            // Compare the properties that uniquely identify a Support instance.
+            return base.Equals(obj) && // Delegate to the Employee class Equals method
+                   Level == other.Level;
+        }
+        return false;
+    }
+
+    public override int GetHashCode()
+    {
+        // Combine the hash codes of the relevant properties, including the base Employee class's hash code.
+        int hashCode = base.GetHashCode();
+        hashCode = (hashCode * 397) ^ (Level?.GetHashCode() ?? 0); // Use null-coalescing operator to handle null values
+        return hashCode;
+    }
+
 }

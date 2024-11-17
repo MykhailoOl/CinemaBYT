@@ -147,6 +147,29 @@ namespace CinemaBYT
         {
             return $"Ticket for Seat {SeatNumber} - {Type} at {Session.TimeStart:HH:mm} for {Price:C}";
         }
+        public override bool Equals(object obj)
+        {
+            if (obj is Ticket other)
+            {
+                // Compare properties that define equality.
+                return SeatNumber == other.SeatNumber &&
+                       Type == other.Type &&
+                       Session.Equals(other.Session) && // Ensure the session objects are equal
+                       Person.Equals(other.Person);     // Ensure the person objects are equal
+            }
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            // Combine the hash codes of the relevant properties.
+            int hashCode = SeatNumber.GetHashCode();
+            hashCode = (hashCode * 397) ^ Type.GetHashCode();
+            hashCode = (hashCode * 397) ^ Session.GetHashCode(); // Ensure the session hash code is used
+            hashCode = (hashCode * 397) ^ Person.GetHashCode();  // Ensure the person hash code is used
+            return hashCode;
+        }
+
     }
 
     public enum TicketType
@@ -155,4 +178,5 @@ namespace CinemaBYT
         Senior,
         Child
     }
+    
 }

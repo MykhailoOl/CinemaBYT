@@ -79,4 +79,22 @@ public class Cinema
         }
         return availableHalls;
     }
+    public override bool Equals(object obj)
+    {
+        if (obj is Cinema otherCinema)
+        {
+            return Name == otherCinema.Name &&
+                   City == otherCinema.City &&
+                   Country == otherCinema.Country &&
+                   ContactPhone == otherCinema.ContactPhone &&
+                   OpeningHours == otherCinema.OpeningHours &&
+                   Halls.SequenceEqual(otherCinema.Halls);
+        }
+        return false;
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(Name, City, Country, ContactPhone, OpeningHours);
+    }
 }

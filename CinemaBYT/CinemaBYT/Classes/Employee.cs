@@ -47,4 +47,22 @@ public abstract class Employee : Person
         HireDate = employee.HireDate;
         Salary = employee.Salary; 
     }
+    public override bool Equals(object obj)
+    {
+        if (obj is Employee otherEmployee)
+        {
+            // Compare HireDate, Salary, and base class Person properties
+            return HireDate == otherEmployee.HireDate 
+                   && Salary == otherEmployee.Salary
+                   && base.Equals(otherEmployee); // Compare Person properties
+        }
+        return false;
+    }
+
+    public override int GetHashCode()
+    {
+        // Combine the hash codes of HireDate, Salary, and base class Person properties
+        return HashCode.Combine(HireDate, Salary, base.GetHashCode());
+    }
+
 }

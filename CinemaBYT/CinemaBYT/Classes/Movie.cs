@@ -122,5 +122,25 @@ namespace CinemaBYT
         public Movie()
         {
         }
+        public override bool Equals(object obj)
+        {
+            if (obj is Movie other)
+            {
+                return Name == other.Name &&
+                       ReleaseDate == other.ReleaseDate &&
+                       AgeRating == other.AgeRating;
+            }
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            int hashCode = Name?.GetHashCode() ?? 0;
+            hashCode = (hashCode * 397) ^ (ReleaseDate?.GetHashCode() ?? 0);
+            hashCode = (hashCode * 397) ^ AgeRating.GetHashCode();
+            return hashCode;
+        }
+
+
     }
 }

@@ -86,5 +86,27 @@ namespace CinemaBYT
             return $"Seat {SeatNo} - {(IsVIP ? "VIP" : "Standard")}, " +
                    $"{(IsAvailable ? "Available" : "Reserved")}";
         }
+        public override bool Equals(object obj)
+        {
+            if (obj is Seat other)
+            {
+                // Compare the key properties of the Seat class.
+                return SeatNo == other.SeatNo &&
+                       IsVIP == other.IsVIP &&
+                       IsAvailable == other.IsAvailable;
+            }
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            // Combine the hash codes of the essential properties.
+            int hashCode = SeatNo.GetHashCode();
+            hashCode = (hashCode * 397) ^ IsVIP.GetHashCode();
+            hashCode = (hashCode * 397) ^ IsAvailable.GetHashCode();
+    
+            return hashCode;
+        }
+
     }
 }

@@ -81,4 +81,30 @@ public abstract class Person
         PESEL = other.PESEL;
         History = other.History ?? throw new ArgumentNullException(nameof(other.History), "Copied person's history cannot be null.");
     }
+    public override bool Equals(object obj)
+    {
+        if (obj is Person other)
+        {
+            // Compare the key properties of the Person class.
+            return Name == other.Name &&
+                   Email == other.Email &&
+                   BirthDate == other.BirthDate &&
+                   PESEL == other.PESEL &&
+                   EqualityComparer<History>.Default.Equals(History, other.History);
+        }
+        return false;
+    }
+
+    public override int GetHashCode()
+    {
+        // Combine the hash codes of the essential properties.
+        int hashCode = Name?.GetHashCode() ?? 0;
+        hashCode = (hashCode * 397) ^ (Email?.GetHashCode() ?? 0);
+        hashCode = (hashCode * 397) ^ BirthDate.GetHashCode();
+        hashCode = (hashCode * 397) ^ (PESEL?.GetHashCode() ?? 0);
+        hashCode = (hashCode * 397) ^ (History?.GetHashCode() ?? 0);
+
+        return hashCode;
+    }
+
 }

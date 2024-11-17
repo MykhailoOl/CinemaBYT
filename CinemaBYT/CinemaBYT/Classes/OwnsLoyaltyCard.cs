@@ -56,4 +56,28 @@ public class OwnsLoyaltyCard : Person
     public OwnsLoyaltyCard()
     {
     }
+    public override bool Equals(object obj)
+    {
+        if (obj is OwnsLoyaltyCard other)
+        {
+            // Compare the essential properties of the OwnsLoyaltyCard class.
+            return base.Equals(other) && // Ensures the comparison also includes properties from Person (base class)
+                   StartDate == other.StartDate &&
+                   ExpireDate == other.ExpireDate &&
+                   Discount == other.Discount;
+        }
+        return false;
+    }
+
+    public override int GetHashCode()
+    {
+        // Use a combination of the properties for a good hash code.
+        int hashCode = base.GetHashCode(); // Start with base class hash code (Person)
+        hashCode = (hashCode * 397) ^ StartDate.GetHashCode();
+        hashCode = (hashCode * 397) ^ ExpireDate.GetHashCode();
+        hashCode = (hashCode * 397) ^ Discount.GetHashCode();
+    
+        return hashCode;
+    }
+
 }

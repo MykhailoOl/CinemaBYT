@@ -102,5 +102,27 @@ namespace CinemaBYT
         {
             return $"{Movie.Name} session in Hall {Hall.HallNumber} starts at {TimeStart:HH:mm} with duration of {Duration}";
         }
+        public override bool Equals(object obj)
+        {
+            if (obj is Session other)
+            {
+                // Compare the key properties of the Session class.
+                return Movie.Equals(other.Movie) &&
+                       Hall.Equals(other.Hall) &&
+                       TimeStart == other.TimeStart;
+            }
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            // Combine the hash codes of the essential properties.
+            int hashCode = Movie.GetHashCode();
+            hashCode = (hashCode * 397) ^ Hall.GetHashCode();
+            hashCode = (hashCode * 397) ^ TimeStart.GetHashCode();
+    
+            return hashCode;
+        }
+
     }
 }

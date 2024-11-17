@@ -35,4 +35,22 @@ public class History
         _listOfSessions = new List<Session>();
         Person = person;
     }
+    public override bool Equals(object obj)
+    {
+        if (obj is History otherHistory)
+        {
+            // Compare the person and the list of sessions
+            return Person.Equals(otherHistory.Person) &&
+                   (ListOfSessions == null && otherHistory.ListOfSessions == null || 
+                    ListOfSessions?.SequenceEqual(otherHistory.ListOfSessions) == true);
+        }
+        return false;
+    }
+
+    public override int GetHashCode()
+    {
+        // Combine the hash codes of Person and ListOfSessions
+        return HashCode.Combine(Person, ListOfSessions);
+    }
+
 }
