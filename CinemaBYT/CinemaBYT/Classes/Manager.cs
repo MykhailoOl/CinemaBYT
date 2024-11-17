@@ -35,7 +35,7 @@ public class Manager : Employee
             // Compare Position and base class Employee (assumed to be implementing Equals)
             bool p = Position == otherManager.Position;
             bool b = base.Equals(otherManager);
-            return p;
+            return p && b;
         }
         return false;
     }

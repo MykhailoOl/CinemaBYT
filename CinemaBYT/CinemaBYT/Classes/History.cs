@@ -43,7 +43,7 @@ public class History
             bool p = (Person == null && otherHistory.Person == null) || (Person?.Equals(otherHistory.Person)==true);
             bool l1 = ListOfSessions == null && otherHistory.ListOfSessions == null;
             bool l2 = ListOfSessions?.SequenceEqual(otherHistory.ListOfSessions) == true;
-            return p;
+            return p && (l1 || l2);
         }
         return false;
     }
