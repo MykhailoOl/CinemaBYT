@@ -4,7 +4,6 @@ public class OwnsLoyaltyCard : Person
 {
     private DateTime _startDate;
     private DateTime _expireDate;
-    private decimal _discount;
 
     public DateTime StartDate
     {
@@ -34,28 +33,37 @@ public class OwnsLoyaltyCard : Person
 
     public decimal Discount
     {
-        get => _discount * 100;
-        set
+        get
         {
-            if (value < 0 || value > 100)
+            TimeSpan timeToExpire = ExpireDate - DateTime.Now;
+
+            if (timeToExpire.TotalDays <= 1)
             {
-                throw new ArgumentOutOfRangeException(nameof(Discount), "Discount must be between 0 and 100.");
+                return 0.2m * 100; // 20% discount
             }
-            _discount = value / 100;
+
+            if (timeToExpire.TotalDays > 30)
+            {
+                return 0m; // No discount if more than 30 days remain
+            }
+
+            // Calculate a proportional discount based on the remaining days
+            decimal proportionalDiscount = (decimal)(1 - (timeToExpire.TotalDays / 30)) * 0.2m;
+            return proportionalDiscount * 100; // Convert to percentage
         }
     }
 
-    public OwnsLoyaltyCard(String name,String email, DateTime birthDate,String pesel,DateTime startDate, DateTime expireDate, decimal discount)
+    public OwnsLoyaltyCard(string name, string email, DateTime birthDate, string pesel, DateTime startDate, DateTime expireDate)
         : base(name, email, birthDate, pesel)
     {
         StartDate = startDate;
         ExpireDate = expireDate;
-        Discount = discount;
     }
 
     public OwnsLoyaltyCard()
     {
     }
+
     public override bool Equals(object obj)
     {
         if (obj is OwnsLoyaltyCard other)
@@ -76,8 +84,7 @@ public class OwnsLoyaltyCard : Person
         hashCode = (hashCode * 397) ^ StartDate.GetHashCode();
         hashCode = (hashCode * 397) ^ ExpireDate.GetHashCode();
         hashCode = (hashCode * 397) ^ Discount.GetHashCode();
-    
+
         return hashCode;
     }
-
 }

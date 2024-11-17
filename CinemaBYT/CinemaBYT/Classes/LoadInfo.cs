@@ -125,12 +125,11 @@ namespace CinemaBYT.Classes
                         {
                             DateTime startDate = DateTime.ParseExact(loyaltyCardNode["startDate"].InnerText, "yyyy-MM-dd", CultureInfo.InvariantCulture);
                             DateTime expireDate = DateTime.ParseExact(loyaltyCardNode["expireDate"].InnerText, "yyyy-MM-dd", CultureInfo.InvariantCulture);
-                            decimal discount = decimal.Parse(loyaltyCardNode["discount"].InnerText);
                             string name = loyaltyCardNode["name"].InnerText;
                             DateTime birthDate = DateTime.ParseExact(loyaltyCardNode["birthDate"].InnerText, "yyyy-MM-dd", CultureInfo.InvariantCulture);
                             string email = loyaltyCardNode["email"].InnerText;
                             string pesel = loyaltyCardNode["pesel"].InnerText;
-                            _loyaltyOwners.Add(new OwnsLoyaltyCard(name, email, birthDate, pesel, startDate, expireDate, discount));
+                            _loyaltyOwners.Add(new OwnsLoyaltyCard(name, email, birthDate, pesel, startDate, expireDate));
                         }
 
                         catch (FormatException ex)
@@ -542,10 +541,7 @@ namespace CinemaBYT.Classes
                 cardElement.AppendChild(startDate);
                 XmlElement expireDate = doc.CreateElement("expireDate");
                 expireDate.InnerText = loyaltyCard.ExpireDate.ToString("yyyy-MM-dd");
-                cardElement.AppendChild(expireDate);            
-                XmlElement discount = doc.CreateElement("discount");
-                discount.InnerText = loyaltyCard.Discount.ToString();
-                cardElement.AppendChild(discount);           
+                cardElement.AppendChild(expireDate);                  
                 XmlElement name = doc.CreateElement("name");
                 name.InnerText = loyaltyCard.Name;
                 cardElement.AppendChild(name);

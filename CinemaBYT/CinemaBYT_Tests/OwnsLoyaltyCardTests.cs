@@ -28,7 +28,7 @@ public class OwnsLoyaltyCardTests
         public void Constructor_ValidParameters_ShouldInitializePersonProperties()
         {
             // Act
-            var loyaltyCardOwner = new OwnsLoyaltyCard(_validName, _validEmail, _validBirthDate, _validPESEL, _validStartDate, _validExpireDate, _validDiscount);
+            var loyaltyCardOwner = new OwnsLoyaltyCard(_validName, _validEmail, _validBirthDate, _validPESEL, _validStartDate, _validExpireDate);
 
             // Assert
             Assert.AreEqual(_validName, loyaltyCardOwner.Name);
@@ -41,7 +41,7 @@ public class OwnsLoyaltyCardTests
         public void Constructor_InvalidName_ShouldThrowArgumentNullException()
         {
             // Act & Assert
-            var exception = Assert.Throws<ArgumentNullException>(() => new OwnsLoyaltyCard(null, _validEmail, _validBirthDate, _validPESEL, _validStartDate, _validExpireDate, _validDiscount));
+            var exception = Assert.Throws<ArgumentNullException>(() => new OwnsLoyaltyCard(null, _validEmail, _validBirthDate, _validPESEL, _validStartDate, _validExpireDate));
             Assert.AreEqual("Name cannot be null or empty. (Parameter 'Name')", exception.Message);
         }
 
@@ -49,7 +49,7 @@ public class OwnsLoyaltyCardTests
         public void Constructor_InvalidEmail_ShouldThrowArgumentNullException()
         {
             // Act & Assert
-            var exception = Assert.Throws<ArgumentNullException>(() => new OwnsLoyaltyCard(_validName, null, _validBirthDate, _validPESEL, _validStartDate, _validExpireDate, _validDiscount));
+            var exception = Assert.Throws<ArgumentNullException>(() => new OwnsLoyaltyCard(_validName, null, _validBirthDate, _validPESEL, _validStartDate, _validExpireDate));
             Assert.AreEqual("Email cannot be null or empty. (Parameter 'Email')", exception.Message);
         }
 
@@ -57,7 +57,7 @@ public class OwnsLoyaltyCardTests
         public void Constructor_InvalidBirthDate_ShouldThrowArgumentOutOfRangeException()
         {
             // Act & Assert
-            var exception = Assert.Throws<ArgumentOutOfRangeException>(() => new OwnsLoyaltyCard(_validName, _validEmail, DateTime.Now.AddDays(1), _validPESEL, _validStartDate, _validExpireDate, _validDiscount));
+            var exception = Assert.Throws<ArgumentOutOfRangeException>(() => new OwnsLoyaltyCard(_validName, _validEmail, DateTime.Now.AddDays(1), _validPESEL, _validStartDate, _validExpireDate));
             Assert.AreEqual("Birth date cannot be in the future. (Parameter 'BirthDate')", exception.Message);
         }
 
@@ -65,7 +65,7 @@ public class OwnsLoyaltyCardTests
         public void Constructor_InvalidPESEL_ShouldThrowArgumentException()
         {
             // Act & Assert
-            var exception = Assert.Throws<ArgumentException>(() => new OwnsLoyaltyCard(_validName, _validEmail, _validBirthDate, "12345", _validStartDate, _validExpireDate, _validDiscount));
+            var exception = Assert.Throws<ArgumentException>(() => new OwnsLoyaltyCard(_validName, _validEmail, _validBirthDate, "12345", _validStartDate, _validExpireDate));
             Assert.AreEqual("PESEL must be a valid 11-character identifier. (Parameter 'PESEL')", exception.Message);
         }
 
@@ -78,7 +78,7 @@ public class OwnsLoyaltyCardTests
             var futureStartDate = DateTime.Now.AddDays(1);
 
             // Act & Assert
-            var exception = Assert.Throws<ArgumentOutOfRangeException>(() => new OwnsLoyaltyCard(_validName, _validEmail, _validBirthDate, _validPESEL, futureStartDate, _validExpireDate, _validDiscount));
+            var exception = Assert.Throws<ArgumentOutOfRangeException>(() => new OwnsLoyaltyCard(_validName, _validEmail, _validBirthDate, _validPESEL, futureStartDate, _validExpireDate));
             Assert.AreEqual("Start date cannot be in the future. (Parameter 'StartDate')", exception.Message);
         }
 
@@ -86,7 +86,7 @@ public class OwnsLoyaltyCardTests
         public void StartDate_SetValidDate_ShouldSetValue()
         {
             // Act
-            var loyaltyCardOwner = new OwnsLoyaltyCard(_validName, _validEmail, _validBirthDate, _validPESEL, _validStartDate, _validExpireDate, _validDiscount);
+            var loyaltyCardOwner = new OwnsLoyaltyCard(_validName, _validEmail, _validBirthDate, _validPESEL, _validStartDate, _validExpireDate);
 
             // Assert
             Assert.AreEqual(_validStartDate, loyaltyCardOwner.StartDate);
@@ -101,7 +101,7 @@ public class OwnsLoyaltyCardTests
             var expireDateBeforeStartDate = _validStartDate.AddDays(-1);
 
             // Act & Assert
-            var exception = Assert.Throws<ArgumentOutOfRangeException>(() => new OwnsLoyaltyCard(_validName, _validEmail, _validBirthDate, _validPESEL, _validStartDate, expireDateBeforeStartDate, _validDiscount));
+            var exception = Assert.Throws<ArgumentOutOfRangeException>(() => new OwnsLoyaltyCard(_validName, _validEmail, _validBirthDate, _validPESEL, _validStartDate, expireDateBeforeStartDate));
             Assert.AreEqual("Expire date must be after the start date. (Parameter 'ExpireDate')", exception.Message);
         }
 
@@ -109,51 +109,11 @@ public class OwnsLoyaltyCardTests
         public void ExpireDate_SetValidDate_ShouldSetValue()
         {
             // Act
-            var loyaltyCardOwner = new OwnsLoyaltyCard(_validName, _validEmail, _validBirthDate, _validPESEL, _validStartDate, _validExpireDate, _validDiscount);
+            var loyaltyCardOwner = new OwnsLoyaltyCard(_validName, _validEmail, _validBirthDate, _validPESEL, _validStartDate, _validExpireDate);
 
             // Assert
             Assert.AreEqual(_validExpireDate, loyaltyCardOwner.ExpireDate);
-        }
-
-        // Test for Discount
-
-        [Test]
-        public void Discount_SetNegativeValue_ShouldThrowArgumentOutOfRangeException()
-        {
-            // Act & Assert
-            var exception = Assert.Throws<ArgumentOutOfRangeException>(() => new OwnsLoyaltyCard(_validName, _validEmail, _validBirthDate, _validPESEL, _validStartDate, _validExpireDate, -5));
-            Assert.AreEqual("Discount must be between 0 and 100. (Parameter 'Discount')", exception.Message);
-        }
-
-        [Test]
-        public void Discount_SetGreaterThan100_ShouldThrowArgumentOutOfRangeException()
-        {
-            // Act & Assert
-            var exception = Assert.Throws<ArgumentOutOfRangeException>(() => new OwnsLoyaltyCard(_validName, _validEmail, _validBirthDate, _validPESEL, _validStartDate, _validExpireDate, 110));
-            Assert.AreEqual("Discount must be between 0 and 100. (Parameter 'Discount')", exception.Message);
-        }
-
-        [Test]
-        public void Discount_SetValidValue_ShouldSetValue()
-        {
-            // Act
-            var loyaltyCardOwner = new OwnsLoyaltyCard(_validName, _validEmail, _validBirthDate, _validPESEL, _validStartDate, _validExpireDate, _validDiscount);
-
-            // Assert
-            Assert.AreEqual(_validDiscount, loyaltyCardOwner.Discount);
-        }
-
-        [Test]
-        public void Discount_Getter_ShouldReturnCorrectValue()
-        {
-            // Act
-            var loyaltyCardOwner = new OwnsLoyaltyCard(_validName, _validEmail, _validBirthDate, _validPESEL, _validStartDate, _validExpireDate, _validDiscount);
-
-            // Assert
-            Assert.AreEqual(_validDiscount, loyaltyCardOwner.Discount); // Discount should be returned as a percentage (multiplied by 100)
-        }
-
-        
+        }   
 
         // Test Default Constructor
         [Test]
@@ -177,7 +137,7 @@ public class OwnsLoyaltyCardTests
         public void Discount_SetZero_ShouldSetCorrectValue()
         {
             // Act
-            var loyaltyCardOwner = new OwnsLoyaltyCard(_validName, _validEmail, _validBirthDate, _validPESEL, _validStartDate, _validExpireDate, 0);
+            var loyaltyCardOwner = new OwnsLoyaltyCard(_validName, _validEmail, _validBirthDate, _validPESEL, _validStartDate, _validExpireDate);
 
             // Assert
             Assert.AreEqual(0, loyaltyCardOwner.Discount);
@@ -187,7 +147,7 @@ public class OwnsLoyaltyCardTests
         public void Discount_SetOneHundred_ShouldSetCorrectValue()
         {
             // Act
-            var loyaltyCardOwner = new OwnsLoyaltyCard(_validName, _validEmail, _validBirthDate, _validPESEL, _validStartDate, _validExpireDate, 100);
+            var loyaltyCardOwner = new OwnsLoyaltyCard(_validName, _validEmail, _validBirthDate, _validPESEL, _validStartDate, _validExpireDate);
 
             // Assert
             Assert.AreEqual(100, loyaltyCardOwner.Discount);
@@ -198,7 +158,7 @@ public class OwnsLoyaltyCardTests
         public void Constructor_NullEmail_ShouldThrowArgumentNullException()
         {
             // Act & Assert
-            var exception = Assert.Throws<ArgumentNullException>(() => new OwnsLoyaltyCard(_validName, null, _validBirthDate, _validPESEL, _validStartDate, _validExpireDate, _validDiscount));
+            var exception = Assert.Throws<ArgumentNullException>(() => new OwnsLoyaltyCard(_validName, null, _validBirthDate, _validPESEL, _validStartDate, _validExpireDate));
             Assert.AreEqual("Email cannot be null or empty. (Parameter 'Email')", exception.Message);
         }
 
@@ -206,7 +166,7 @@ public class OwnsLoyaltyCardTests
         public void Constructor_EmptyPESEL_ShouldThrowArgumentException()
         {
             // Act & Assert
-            var exception = Assert.Throws<ArgumentException>(() => new OwnsLoyaltyCard(_validName, _validEmail, _validBirthDate, "", _validStartDate, _validExpireDate, _validDiscount));
+            var exception = Assert.Throws<ArgumentException>(() => new OwnsLoyaltyCard(_validName, _validEmail, _validBirthDate, "", _validStartDate, _validExpireDate));
             Assert.AreEqual("PESEL must be a valid 11-character identifier. (Parameter 'PESEL')", exception.Message);
         }
 
@@ -214,7 +174,7 @@ public class OwnsLoyaltyCardTests
         public void Constructor_InvalidPESEL_Length_ShouldThrowArgumentException()
         {
             // Act & Assert
-            var exception = Assert.Throws<ArgumentException>(() => new OwnsLoyaltyCard(_validName, _validEmail, _validBirthDate, "123456789012", _validStartDate, _validExpireDate, _validDiscount));
+            var exception = Assert.Throws<ArgumentException>(() => new OwnsLoyaltyCard(_validName, _validEmail, _validBirthDate, "123456789012", _validStartDate, _validExpireDate));
             Assert.AreEqual("PESEL must be a valid 11-character identifier. (Parameter 'PESEL')", exception.Message);
         }
 
