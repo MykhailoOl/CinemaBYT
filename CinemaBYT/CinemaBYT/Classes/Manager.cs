@@ -33,7 +33,9 @@ public class Manager : Employee
         if (obj is Manager otherManager)
         {
             // Compare Position and base class Employee (assumed to be implementing Equals)
-            return Position == otherManager.Position && base.Equals(otherManager);
+            bool p = Position == otherManager.Position;
+            bool b = base.Equals(otherManager);
+            return p;
         }
         return false;
     }

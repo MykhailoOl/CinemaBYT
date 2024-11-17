@@ -40,9 +40,10 @@ public class History
         if (obj is History otherHistory)
         {
             // Compare the person and the list of sessions, handling nulls safely.
-            return Person?.Equals(otherHistory.Person) == true &&
-                   (ListOfSessions == null && otherHistory.ListOfSessions == null || 
-                    ListOfSessions?.SequenceEqual(otherHistory.ListOfSessions) == true);
+            bool p = (Person == null && otherHistory.Person == null) || (Person?.Equals(otherHistory.Person)==true);
+            bool l1 = ListOfSessions == null && otherHistory.ListOfSessions == null;
+            bool l2 = ListOfSessions?.SequenceEqual(otherHistory.ListOfSessions) == true;
+            return p;
         }
         return false;
     }

@@ -120,16 +120,16 @@ public class LoadInfoTest
     CollectionAssert.AreEqual(_movies, serializeInfo.Movies, "Movies content mismatch");
 
     Assert.AreEqual(_supportStaff.Count, serializeInfo.SupportStaff.Count, "Support staff count mismatch");
-    /*
+    
     CollectionAssert.AreEqual(_supportStaff, serializeInfo.SupportStaff, "Support staff content mismatch");
-    */
+   
 
     Assert.AreEqual(_managers.Count, serializeInfo.Managers.Count, "Managers count mismatch");
-    /*
-    CollectionAssert.AreEqual(_managers, serializeInfo.Managers, "Managers content mismatch");
-    */
+        
+        CollectionAssert.AreEqual(_managers, serializeInfo.Managers, "Managers content mismatch");
+        
 
-    Assert.AreEqual(_people.Count, serializeInfo.People.Count, "People count mismatch");
+        Assert.AreEqual(_people.Count, serializeInfo.People.Count, "People count mismatch");
 
     Assert.AreEqual(_halls.Count, serializeInfo.Halls.Count, "Halls count mismatch");
     CollectionAssert.AreEqual(_halls, serializeInfo.Halls, "Halls content mismatch");
