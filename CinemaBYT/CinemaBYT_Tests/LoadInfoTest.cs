@@ -46,13 +46,14 @@ public class LoadInfoTest
     [Test]
     public void SerializationDeserialization_Validation()
     {
-        serializeInfo.People.Add(new Manager(DateTime.Today,12,"superboss","joe", "afasdf", DateTime.Today, "12312312312"));
+        serializeInfo.Managers.Add(new Manager(DateTime.Today,12,"superboss","joe", "afasdf", DateTime.Today, "12312312312"));
+        serializeInfo.People.Add(serializeInfo.Managers.Last());
         serializeInfo.Cinemas.Add(new Cinema("cinema","kyiv","ukraine","132132","12"));
         List<string> genres = new List<string>();
         genres.Add("adventure");
         Movie movie = new Movie("movie", DateTime.Today, 12, genres);
         serializeInfo.Movies.Add(movie);
-        serializeInfo.Comments.Add(new Comment("good",DateTime.Today,movie,serializeInfo.People[0]));
+        serializeInfo.Comments.Add(new Comment("good",DateTime.Today, movie, serializeInfo.People[0]));
         
         serializeInfo.Histories.Add(new History(serializeInfo.People[0]));
         
@@ -66,14 +67,15 @@ public class LoadInfoTest
         Hall hall = new Hall(1, 25, seats);
         serializeInfo.Halls.Add(hall);
         serializeInfo.Managers.Add(new Manager(DateTime.Today, 5,"man","joe","sfdsf",DateTime.Today, "12313211111"));
-        serializeInfo.People.Add(serializeInfo.Managers[0]);
+        serializeInfo.People.Add(serializeInfo.Managers.Last());
 
         serializeInfo.Payments.Add(new Payment(PaymentType.Blik,DateTime.Today));
         
         serializeInfo.Sessions.Add(new Session(TimeSpan.Zero, DateTime.Today, 33,movie,hall,new List<Ticket>()));
         serializeInfo.Tickets.Add(new Ticket(serializeInfo.Seats[0].SeatNo, 10, DateTime.Today, TicketType.Adult, serializeInfo.Sessions[0], serializeInfo.Seats[0], serializeInfo.People[0]));
-        serializeInfo.SupportStaff.Add(new Support(DateTime.Today, 33,"joe","adfafa",DateTime.Today, "12312312312","4"));
-        
+        serializeInfo.SupportStaff.Add(new Support(DateTime.Today, 33,"joe","adfafa",DateTime.Today, "09876543211","4"));
+        serializeInfo.People.Add(serializeInfo.SupportStaff.Last());
+
         serializeInfo.SerializeToXml(testFilePath);
         
         // Transfer the data from serializeInfo to custom lists
@@ -135,9 +137,9 @@ public class LoadInfoTest
     CollectionAssert.AreEqual(_halls, serializeInfo.Halls, "Halls content mismatch");
 
     Assert.AreEqual(_tickets.Count, serializeInfo.Tickets.Count, "Tickets count mismatch");
-    /*
+    
     CollectionAssert.AreEqual(_tickets, serializeInfo.Tickets, "Tickets content mismatch");
-    */
+   
 
     Assert.AreEqual(_sessions.Count, serializeInfo.Sessions.Count, "Sessions count mismatch");
     CollectionAssert.AreEqual(_sessions, serializeInfo.Sessions, "Sessions content mismatch");
@@ -146,14 +148,14 @@ public class LoadInfoTest
     CollectionAssert.AreEqual(_cinemas, serializeInfo.Cinemas, "Cinemas content mismatch");
 
     Assert.AreEqual(_histories.Count, serializeInfo.Histories.Count, "Histories count mismatch");
-    /*
+   
     CollectionAssert.AreEqual(_histories, serializeInfo.Histories, "Histories content mismatch");
-    */
+   
 
     Assert.AreEqual(_comments.Count, serializeInfo.Comments.Count, "Comments count mismatch");
-    /*
+    
     CollectionAssert.AreEqual(_comments, serializeInfo.Comments, "Comments content mismatch");
-    */
+    
 
     Assert.AreEqual(_payments.Count, serializeInfo.Payments.Count, "Payments count mismatch");
     CollectionAssert.AreEqual(_payments, serializeInfo.Payments, "Payments content mismatch"); }

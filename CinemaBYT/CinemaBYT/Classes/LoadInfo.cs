@@ -397,17 +397,19 @@ namespace CinemaBYT.Classes
                         try
                         {
                             List<Session> Historysessions = new List<Session>();
+                            List<Session> hSessions=new List<Session>();    
                             foreach (XmlNode hsessionNode in historyNode.SelectNodes("Sessions/Session"))
                             {
                                 // ... Deserialize Session object as shown in previous responses ...
                                 Historysessions.Add(_sessions[int.Parse(hsessionNode.InnerText)]);
+                                hSessions.Add(_sessions[int.Parse(hsessionNode.InnerText)]);
                             }
 
                             // Assuming Person object is deserialized separately or from another part of the XML
                             _people.Count();
                             Person person = _people[_people.FindIndex(p => p.PESEL.Equals(historyNode["Person"].InnerText))]; // Deserialize person information
 
-                            _histories.Add(new History(_sessions, person));
+                            _histories.Add(new History(hSessions, person));
                         }
                         catch (FormatException ex)
                         {
