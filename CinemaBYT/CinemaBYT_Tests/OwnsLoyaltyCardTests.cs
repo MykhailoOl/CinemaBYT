@@ -8,7 +8,6 @@ public class OwnsLoyaltyCardTests
         private string _validPESEL;
         private DateTime _validStartDate;
         private DateTime _validExpireDate;
-        private decimal _validDiscount;
 
         [SetUp]
         public void Setup()
@@ -19,7 +18,6 @@ public class OwnsLoyaltyCardTests
             _validPESEL = "12345678901"; // Example PESEL
             _validStartDate = DateTime.Now.AddMonths(-1); // Start date 1 month ago
             _validExpireDate = DateTime.Now.AddMonths(1); // Expiry date 1 month from now
-            _validDiscount = 20; // 20% discount
         }
 
         // Test inherited properties from Person class (Name, Email, BirthDate, PESEL)
@@ -156,5 +154,64 @@ public class OwnsLoyaltyCardTests
             var exception = Assert.Throws<ArgumentException>(() => new OwnsLoyaltyCard(_validName, _validEmail, _validBirthDate, "123456789012", _validStartDate, _validExpireDate));
             Assert.AreEqual("PESEL must be a valid 11-character identifier. (Parameter 'PESEL')", exception.Message);
         }
+        
+        [Test]
+        public void Discount_WithMoreThan30DaysRemaining_ShouldReturnZero()
+        {
+            // Arrange
+            var expireDate = DateTime.Now.AddDays(31);
+            var loyaltyCardOwner = new OwnsLoyaltyCard(_validName, _validEmail, _validBirthDate, _validPESEL, _validStartDate, expireDate);
+
+            // Act
+            var discount = loyaltyCardOwner.Discount;
+
+            // Assert
+            Assert.AreEqual(0m, discount);
+        }
+
+        [Test]
+        public void Discount_WithExactly1DayRemaining_ShouldReturn20Percent()
+        {
+            // Arrange
+            var expireDate = DateTime.Now.AddDays(1);
+            var loyaltyCardOwner = new OwnsLoyaltyCard(_validName, _validEmail, _validBirthDate, _validPESEL, _validStartDate, expireDate);
+
+            // Act
+            var discount = loyaltyCardOwner.Discount;
+
+            // Assert
+            Assert.AreEqual(20m, discount); // 20% discount
+        }
+
+        [Test]
+        public void Discount_WithLessThan1DayRemaining_ShouldReturn20Percent()
+        {
+            // Arrange
+            var expireDate = DateTime.Now.AddHours(23);
+            var loyaltyCardOwner = new OwnsLoyaltyCard(_validName, _validEmail, _validBirthDate, _validPESEL, _validStartDate, expireDate);
+
+            // Act
+            var discount = loyaltyCardOwner.Discount;
+
+            // Assert
+            Assert.AreEqual(20m, discount); // 20% discount
+        }
+
+        [Test]
+        public void Discount_With15DaysRemaining_ShouldReturnProportionalDiscount()
+        {
+            // Arrange
+            var expireDate = DateTime.Now.AddDays(15); // Halfway to expiry
+            var loyaltyCardOwner = new OwnsLoyaltyCard(_validName, _validEmail, _validBirthDate, _validPESEL, _validStartDate, expireDate);
+
+            // Act
+            var discount = loyaltyCardOwner.Discount;
+
+            // Assert
+            // 15 days remaining, so proportional discount = (1 - (15 / 30)) * 0.2 = 10% = 10m
+            Assert.AreEqual(10m, Math.Round(discount, 2));
+        }
+        
+
 
     }
