@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
-using System.Xml.Linq;
 using CinemaBYT;
 using CinemaBYT.Exceptions;
+using System.Collections;
 
 public class Cinema
 {
@@ -48,8 +49,41 @@ public class Cinema
     }
 
     [MinLength(1)]
-    public List<Hall> Halls { get; set; }
+    private List<Hall> Halls = new List<Hall>();
+    public void addHall(Hall hall)
+    {
+        if (!Halls.Contains(hall))
+        {
+            Halls.Add(hall);
+            hall.addCinema(this); 
+        }
+    }
+    public void deleteHall(Hall hall) {
+        if (!Halls.Contains(hall))
+        {
+            throw new InvalidOperationException("The specified hall does not belong to this cinema.");
+        }
+        Halls.Remove(hall);
+        hall.deleteCinema();
+    }
+    public void deleteCinema()
+    {
+        
+        foreach (var hall in Halls.ToList()) 
+        {
+            hall.deleteCinema();
+        }
 
+        Halls.Clear(); 
+    }
+    public void applyHallToOtherCinema(Cinema cinema, Hall hall)
+    {
+        if (!this.Halls.Contains(hall)) {
+            throw new InvalidOperationException("The specified hall does not belong to this cinema.");
+        }
+        Halls.Remove(hall);
+        cinema.addHall(hall);
+    }
     public Cinema(string name, string city, string country, string contactPhone, string openingHours)
     {
         Name = name;

@@ -42,7 +42,16 @@ namespace CinemaBYT
             private set => _cinema = value;
         }
 
-    
+        public void addCinema(Cinema cinema)
+        {
+            if (this._cinema != cinema) { 
+            _cinema = cinema;
+            _cinema.addHall(this);
+        }
+        }
+        public void deleteCinema() {
+            Cinema = null;
+        }
         public int HallNumber
         {
             get => _hallNumber;

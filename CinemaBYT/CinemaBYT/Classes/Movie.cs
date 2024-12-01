@@ -59,12 +59,29 @@ namespace CinemaBYT
         }
 
         [MinLength(1)]
-        public List<Session> Sessions
+        public List<Session> Sessions 
         {
             get => _sessions;
             set => _sessions = value ?? new List<Session>();
         }
 
+        //public void addSession(Session session) {
+        //    if (!_sessions.Contains(session)){
+        //        _sessions.Add(session);
+        //        session.addMovie(this); 
+        //    }
+        //}
+        //public void deleteSession(Session sesion) {
+        //    if (!this.Sessions.Contains(sesion))
+        //    {
+        //        throw new InvalidOperationException("The specified session does not belong to this movie.");
+        //    }
+        //    this.Sessions.Remove(sesion);
+        //    sesion.Movie
+        //}
+        //public void updateSession() { 
+        
+        //}
         [AllowNull]
         public List<Comment> Comments
         {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using CinemaBYT.Exceptions;
+using static System.Collections.Specialized.BitVector32;
 
 namespace CinemaBYT
 {
@@ -42,8 +43,28 @@ namespace CinemaBYT
             get => _movie;
              set => _movie = value ?? throw new ArgumentNullException(nameof(Movie), "Movie cannot be null.");
         }
+        //public void addMovie(Movie movie)
+        //{
+        //    if (_movie != movie) { 
+        //        _movie = movie;
+        //        movie.addSession(this);
+        //    }
+        //}
+        //public void deleteMovie(Movie movie)
+        //{
+        //    if (_movie != movie)
+        //    {
+        //        throw new InvalidOperationException("The specified movie does not belong to this session.");
+        //    }
+        
 
-        [DisallowNull]
+        //}
+        //public void updateMovie()
+        //{
+
+        //}
+
+            [DisallowNull]
         public Hall Hall
         {
             get => _hall;
