@@ -51,6 +51,17 @@ namespace CinemaBYT
         }
         public void deleteCinema() {
             Cinema = null;
+            foreach (var seat in _seats.ToList())
+            {
+                seat.deleteHall();
+                seat.deleteTicket();
+            }
+            _seats.Clear();
+            foreach (var session in Sessions.ToList())
+            {
+                session.deleteSession();
+            }
+            Sessions.Clear();
         }
         public int HallNumber
         {

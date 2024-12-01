@@ -169,7 +169,14 @@ namespace CinemaBYT
             hashCode = (hashCode * 397) ^ Person.GetHashCode();  // Ensure the person hash code is used
             return hashCode;
         }
-
+        public void deleteTicket()
+        {
+            _session = null;
+        }
+        public void deleteSeat()
+        {
+            _seat = null;
+        }
     }
 
     public enum TicketType
@@ -178,5 +185,5 @@ namespace CinemaBYT
         Senior,
         Child
     }
-    
+
 }

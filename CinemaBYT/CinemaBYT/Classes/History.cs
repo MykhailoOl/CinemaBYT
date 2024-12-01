@@ -57,6 +57,7 @@ public class History
     
         return HashCode.Combine(personHash, sessionsHash);
     }
-
-
+    public void deleteSessionInHistory(Session session) {
+        _listOfSessions.Remove(session);
+    }
 }

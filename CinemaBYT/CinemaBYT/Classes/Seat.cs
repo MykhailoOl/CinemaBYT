@@ -1,112 +1,123 @@
-﻿using System;
+﻿using CinemaBYT.Exceptions;
+using CinemaBYT;
 using System.Diagnostics.CodeAnalysis;
-using CinemaBYT.Exceptions;
+using System;
 
-namespace CinemaBYT
+public class Seat
 {
-    public class Seat
+    private int _seatNo;
+    private bool _isVIP;
+    private bool _isAvailable = true;
+    private Ticket? _ticket;
+    private Hall _hall;
+
+    [DisallowNull]
+    public int SeatNo
     {
-        private int _seatNo;
-        private bool _isVIP;
-        private bool _isAvailable = true; 
-        private Ticket? _ticket;
-
-        [DisallowNull]
-        public int SeatNo
+        get => _seatNo;
+        set
         {
-            get => _seatNo;
-            set
+            if (value <= 0)
             {
-                if (value <= 0)
-                {
-                    throw new ArgumentException("Seat number must be positive.", nameof(SeatNo));
-                }
-                _seatNo = value;
+                throw new ArgumentException("Seat number must be positive.", nameof(SeatNo));
             }
+            _seatNo = value;
         }
+    }
 
-        [DisallowNull]
-        public bool IsVIP
+    [DisallowNull]
+    public bool IsVIP
+    {
+        get => _isVIP;
+        set => _isVIP = value;
+    }
+
+    [DisallowNull]
+    public bool IsAvailable
+    {
+        get => _isAvailable;
+        private set => _isAvailable = value;
+    }
+
+    [AllowNull]
+    public Ticket? Ticket
+    {
+        get => _ticket;
+        private set => _ticket = value;
+    }
+    public Seat(int seatNo, bool isVIP, Hall hall, bool isAvailable = true)
+    {
+        SeatNo = seatNo;
+        IsVIP = isVIP;
+        _hall = hall; 
+        IsAvailable = isAvailable;
+    }
+
+    public bool ReserveSeat(Ticket ticket)
+    {
+        if (ticket == null)
         {
-            get => _isVIP;
-            set => _isVIP = value;
+            throw new ArgumentNullException(nameof(ticket), "Ticket cannot be null.");
         }
-
-        [DisallowNull]
-        public bool IsAvailable
+        if (!IsAvailable)
         {
-            get => _isAvailable;
-            private set => _isAvailable = value; 
+            throw new SeatReservationException("Seat is already reserved.");
         }
 
-        [AllowNull]
-        public Ticket? Ticket
+        Ticket = ticket;
+        IsAvailable = false;
+        return true;
+    }
+
+    public bool ReleaseSeat()
+    {
+        if (IsAvailable)
         {
-            get => _ticket;
-            private set => _ticket = value; 
+            throw new SeatReservationException("Seat is already available.");
         }
 
-        public Seat(int seatNo, bool isVIP, bool isAvailable = true)
+        Ticket = null;
+        IsAvailable = true;
+        return true;
+    }
+
+    public override string ToString()
+    {
+        return $"Seat {SeatNo} - {(IsVIP ? "VIP" : "Standard")}, " +
+               $"{(IsAvailable ? "Available" : "Reserved")} in Hall {_hall.HallNumber}";
+    }
+
+    public override bool Equals(object obj)
+    {
+        if (obj is Seat other)
         {
-            SeatNo = seatNo;
-            IsVIP = isVIP;
-            IsAvailable = isAvailable; 
+            return SeatNo == other.SeatNo &&
+                   IsVIP == other.IsVIP &&
+                   IsAvailable == other.IsAvailable;
         }
+        return false;
+    }
 
-        public bool ReserveSeat(Ticket ticket)
+    public override int GetHashCode()
+    {
+        int hashCode = SeatNo.GetHashCode();
+        hashCode = (hashCode * 397) ^ IsVIP.GetHashCode();
+        hashCode = (hashCode * 397) ^ IsAvailable.GetHashCode();
+        hashCode = (hashCode * 397) ^ _hall.GetHashCode();  
+        return hashCode;
+    }
+
+    public void deleteHall() {
+        _hall = null;
+    }
+    public void deleteTicket()
+    {
+        if (_ticket == null)
         {
-            if (ticket == null)
-            {
-                throw new ArgumentNullException(nameof(ticket), "Ticket cannot be null.");
-            }
-            if (!IsAvailable)
-            {
-                throw new SeatReservationException("Seat is already reserved.");
-            }
-
-            Ticket = ticket;
-            IsAvailable = false;
-            return true;
+            throw new ArgumentNullException("No seat");
         }
-
-        public bool ReleaseSeat()
-        {
-            if (IsAvailable)
-            {
-                throw new SeatReservationException("Seat is already available.");
-            }
-
-            Ticket = null; 
-            IsAvailable = true; 
-            return true;
-        }
-
-        public override string ToString()
-        {
-            return $"Seat {SeatNo} - {(IsVIP ? "VIP" : "Standard")}, " +
-                   $"{(IsAvailable ? "Available" : "Reserved")}";
-        }
-        public override bool Equals(object obj)
-        {
-            if (obj is Seat other)
-            {
-                // Compare the key properties of the Seat class.
-                return SeatNo == other.SeatNo &&
-                       IsVIP == other.IsVIP &&
-                       IsAvailable == other.IsAvailable;
-            }
-            return false;
-        }
-
-        public override int GetHashCode()
-        {
-            // Combine the hash codes of the essential properties.
-            int hashCode = SeatNo.GetHashCode();
-            hashCode = (hashCode * 397) ^ IsVIP.GetHashCode();
-            hashCode = (hashCode * 397) ^ IsAvailable.GetHashCode();
-    
-            return hashCode;
-        }
-
+        _ticket.deleteSeat();
+       
     }
 }
+

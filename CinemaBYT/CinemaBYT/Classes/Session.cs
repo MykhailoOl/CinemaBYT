@@ -43,26 +43,18 @@ namespace CinemaBYT
             get => _movie;
              set => _movie = value ?? throw new ArgumentNullException(nameof(Movie), "Movie cannot be null.");
         }
-        //public void addMovie(Movie movie)
-        //{
-        //    if (_movie != movie) { 
-        //        _movie = movie;
-        //        movie.addSession(this);
-        //    }
-        //}
-        //public void deleteMovie(Movie movie)
-        //{
-        //    if (_movie != movie)
-        //    {
-        //        throw new InvalidOperationException("The specified movie does not belong to this session.");
-        //    }
-        
-
-        //}
-        //public void updateMovie()
-        //{
-
-        //}
+        public void deleteSession() {
+            _hall = null;
+            foreach (var ticket in _tickets.ToList())
+            {
+                ticket.deleteTicket();
+            }
+            _tickets.Clear();
+            _history.deleteSessionInHistory(this);
+            _history = null;
+            _movie.deleteSession(this);
+            _movie = null;
+        }
 
             [DisallowNull]
         public Hall Hall
