@@ -48,8 +48,9 @@ public class RelationTests
         {
             tickets.Add(new Ticket(s.SeatNo,15,DateTime.Today, TicketType.Adult,session,s,buyer));
         }
-        session.Tickets.AddRange(tickets);
+        
     }
+    
     [Test]
     public void AddHall_ShouldAddHallToCinema()
     {
