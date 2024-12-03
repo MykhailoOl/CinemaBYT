@@ -46,6 +46,8 @@ namespace CinemaBYT
         {
             if (_cinema != cinema)
             {
+                if (_cinema!=null) 
+                    _cinema.deleteHall(this);
                 _cinema = cinema;
                 if (!cinema.halls.Contains(this))
                 {
@@ -58,7 +60,8 @@ namespace CinemaBYT
             foreach (var seat in _seats.ToList())
             {
                 seat.deleteHall();
-                seat.deleteTicket();
+                if(seat.Ticket!=null)
+                    seat.deleteTicket();
             }
             _seats.Clear();
             foreach (var session in Sessions.ToList())

@@ -13,7 +13,7 @@ namespace CinemaBYT
         private decimal _income;
         private Movie _movie;
         private Hall _hall;
-        private List<Ticket> _tickets;
+        private List<Ticket> _tickets=new List<Ticket>();
         private History? _history; 
 
         [DisallowNull]

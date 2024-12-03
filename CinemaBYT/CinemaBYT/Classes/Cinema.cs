@@ -91,14 +91,7 @@ public class Cinema
 
         Halls.Clear(); 
     }
-    public void applyHallToOtherCinema(Cinema cinema, Hall hall)
-    {
-        if (!this.Halls.Contains(hall)) {
-            throw new InvalidOperationException("The specified hall does not belong to this cinema.");
-        }
-        Halls.Remove(hall);
-        cinema.addHall(hall);
-    }
+    
     public Cinema(string name, string city, string country, string contactPhone, string openingHours)
     {
         Name = name;

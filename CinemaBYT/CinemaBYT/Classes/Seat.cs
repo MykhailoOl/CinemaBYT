@@ -82,11 +82,11 @@ public class Seat
         return true;
     }
 
-    public override string ToString()
-    {
-        return $"Seat {SeatNo} - {(IsVIP ? "VIP" : "Standard")}, " +
-               $"{(IsAvailable ? "Available" : "Reserved")} in Hall {_hall.HallNumber}";
-    }
+    //public override string ToString()
+    //{
+    //    return $"Seat {SeatNo} - {(IsVIP ? "VIP" : "Standard")}, " +
+    //           $"{(IsAvailable ? "Available" : "Reserved")} in Hall {_hall.HallNumber}";
+    //}
 
     public override bool Equals(object obj)
     {
