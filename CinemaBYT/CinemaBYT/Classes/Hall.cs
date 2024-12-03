@@ -44,10 +44,14 @@ namespace CinemaBYT
 
         public void addCinema(Cinema cinema)
         {
-            if (this._cinema != cinema) { 
-            _cinema = cinema;
-            _cinema.addHall(this);
-        }
+            if (_cinema != cinema)
+            {
+                _cinema = cinema;
+                if (!cinema.halls.Contains(this))
+                {
+                    cinema.addHall(this);
+                }
+            }
         }
         public void deleteCinema() {
             Cinema = null;

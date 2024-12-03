@@ -67,7 +67,10 @@ public class Cinema
         if (!Halls.Contains(hall))
         {
             Halls.Add(hall);
-            hall.addCinema(this); 
+            if (hall.Cinema != this)
+            {
+                hall.SetCinema(this);
+            }
         }
     }
     public void deleteHall(Hall hall) {
