@@ -13,7 +13,9 @@ public class TicketTests
         {
             // Initialize objects needed for testing
             _session = new Session(TimeSpan.FromMinutes(120), DateTime.Now.AddHours(1), 0m, new Movie("Test Movie", DateTime.Now, 120, new List<string> { "Action" }), new Hall(), new List<Ticket>());
+            /*
             _seat = new Seat(1, false); // Not a VIP seat
+            */
             _person = new Buyer("John Doe", "john.doe@example.com", new DateTime(1985, 5, 15), "12345678900");
         }
 

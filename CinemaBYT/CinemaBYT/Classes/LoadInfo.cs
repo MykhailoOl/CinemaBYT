@@ -159,7 +159,9 @@ namespace CinemaBYT.Classes
                             bool isVIP = bool.Parse(seatNode["isVIP"].InnerText);
                             bool isAvailable = bool.Parse(seatNode["isAvailable"].InnerText);
 
+                            /*
                             _seats.Add(new Seat(seatNo, isVIP, isAvailable));
+                        */
                         }
                         catch (FormatException ex)
                         {

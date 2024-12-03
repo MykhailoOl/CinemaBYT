@@ -1,7 +1,6 @@
 ﻿using CinemaBYT.Exceptions;
 using CinemaBYT;
 using System.Diagnostics.CodeAnalysis;
-using System;
 
 public class Seat
 {
@@ -24,6 +23,8 @@ public class Seat
             _seatNo = value;
         }
     }
+
+    public Hall Hall => _hall;
 
     [DisallowNull]
     public bool IsVIP
@@ -107,6 +108,9 @@ public class Seat
         return hashCode;
     }
 
+    public void addHall(Hall hall) {
+        _hall = hall;
+    }
     public void deleteHall() {
         _hall = null;
     }

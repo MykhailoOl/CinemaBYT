@@ -24,8 +24,8 @@ namespace CinemaBYT_Tests
             Assert.AreEqual("Country 1", _cinema.Country);
             Assert.AreEqual("1234567890", _cinema.ContactPhone);
             Assert.AreEqual("10:00 AM - 11:00 PM", _cinema.OpeningHours);
-            Assert.IsNotNull(_cinema.Halls);
-            Assert.IsEmpty(_cinema.Halls);
+            Assert.IsNotNull(_cinema.halls);
+            Assert.IsEmpty(_cinema.halls);
         }
 
          // Constructor error handling tests
@@ -186,8 +186,8 @@ namespace CinemaBYT_Tests
         public void Halls_ShouldBeInitializedAsEmptyList_WhenCinemaIsCreated()
         {
             // Assert
-            Assert.IsNotNull(_cinema.Halls);
-            Assert.IsEmpty(_cinema.Halls);
+            Assert.IsNotNull(_cinema.halls);
+            Assert.IsEmpty(_cinema.halls);
         }
 
         // Test for Halls property getter and setter
@@ -202,8 +202,8 @@ namespace CinemaBYT_Tests
             };
 
             // Act
-            _cinema.Halls = hallList;
-            var actualHalls = _cinema.Halls;
+            _cinema.halls = hallList;
+            var actualHalls = _cinema.halls;
 
             // Assert
             Assert.AreEqual(hallList.Count, actualHalls.Count);

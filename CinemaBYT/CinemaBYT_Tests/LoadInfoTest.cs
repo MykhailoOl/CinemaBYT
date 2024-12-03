@@ -60,7 +60,9 @@ public class LoadInfoTest
         List <Seat> seats = new List<Seat>();
         for (int i = 1; i <= 25; i++)
         {
+            /*
             seats.Add(new Seat(i, false));
+            */
             serializeInfo.Seats.Add(seats[i-1]);
         }
 

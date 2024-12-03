@@ -48,8 +48,20 @@ public class Cinema
         set => _openingHours = value ?? throw new ArgumentNullException(nameof(OpeningHours), "Opening hours cannot be null.");
     }
 
-    [MinLength(1)]
-    private List<Hall> Halls = new List<Hall>();
+    [MinLength(1)] private List<Hall> Halls;
+
+    public List<Hall> halls
+    {
+        get => Halls;
+        set
+        {
+            if (value == null || value.Count < 1)
+            {
+                throw new ArgumentException("Halls must contain at least one hall.", nameof(Halls));
+            }
+            halls = value;
+        }
+    }
     public void addHall(Hall hall)
     {
         if (!Halls.Contains(hall))
