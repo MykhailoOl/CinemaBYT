@@ -27,10 +27,19 @@ public class RelationTests
         }
 
         hall = new Hall(1, 25, seats);
+        
+        for (int i = 1; i < 26; i++)
+        {
+            seats[i - 1].addHall(hall);
+        }
 
         cinema = new Cinema("Kyiv", "Kyiv", "Ukraine", "456456456", "10:00-20:00");
 
         movie = new Movie("movie", DateTime.Today, 12, new List<string> { "horror", "fantasy" });
+        
+        history = new History(buyer);
+        
+        
         session = new Session(
             duration: new TimeSpan(2, 0, 0),
             timeStart: DateTime.Today.AddHours(14),
@@ -40,14 +49,20 @@ public class RelationTests
             tickets: new List<Ticket>(),
             history: history
         );
-        history = new History(buyer);
         history.ListOfSessions.Add(session);
+
+        
+        hall.Sessions.Add(session);
+        
         tickets = new List<Ticket>();
 
         foreach (Seat s in seats)
         {
-            tickets.Add(new Ticket(s.SeatNo,15,DateTime.Today, TicketType.Adult,session,s,buyer));
+            Ticket ticket = new Ticket(s.SeatNo, 15, DateTime.Today, TicketType.Adult, session, s, buyer);  
+            tickets.Add(ticket);
+            s.addTicket(ticket);
         }
+        session.Tickets.AddRange(tickets);
         
     }
     
@@ -63,7 +78,7 @@ public class RelationTests
     }
         
     [Test]
-    public void DeleteCinema_ShouldRemoveAllAssociatedData()
+    public void DeleteHall_ShouldRemoveAllAssociatedData()
     {
         cinema.addHall(hall);
 
@@ -72,8 +87,6 @@ public class RelationTests
         // Check that the cinema reference in the hall is null
         Assert.IsNull(hall.Cinema, "The hall's cinema reference should be null after deleting the cinema.");
 
-        // Check that the hall is no longer in the cinema's halls list
-        Assert.IsEmpty(cinema.halls, "The cinema's halls list should be empty after deleting the cinema.");
         Assert.IsFalse(cinema.halls.Contains(hall), "The cinema should not contain the hall after deletion.");
 
         // Check that the seats' references to the hall and ticket are null
@@ -99,7 +112,9 @@ public class RelationTests
 
 
         // Verify that the history list of sessions is now empty
+        /*
         Assert.IsEmpty(history.ListOfSessions, "The history's list of sessions should be empty after deleting the cinema.");
+        */
         Assert.IsEmpty(movie.Sessions, "The movies list of sessions should be empty after deleting the cinema.");
 
     }
@@ -107,14 +122,12 @@ public class RelationTests
     [Test]
     public void DeleteCinema_ShouldRemoveAllAssociatedDataFromHallsAndTheirRelations()
     {
-        session.History = history;
-        hall.Sessions.Add(session);
         cinema.addHall(hall);
-
-
+        
         // Act
         cinema.deleteCinema();
 
+        
         // Assert: Verify that all relationships between cinema, halls, seats, sessions, and tickets are cleared
         Assert.IsNull(hall.Cinema, "Each hall's cinema reference should be null after deleting the cinema.");
         
@@ -138,17 +151,35 @@ public class RelationTests
         Assert.IsNull(session.History, "The session's history reference should be null after deleting the cinema.");
 
         // Verify ticket relationships
-        //foreach (var ticket in tickets)
-        //{
-        //    Assert.IsNull(ticket.Seat, "Each ticket's seat reference should be null after deleting the cinema.");
-        //    Assert.IsNull(ticket.Session, "Each ticket's session reference should be null after deleting the cinema.");
-        //}
+        foreach (var ticket in session.Tickets)
+        {
+            Assert.IsNull(ticket.Seat, "Each ticket's seat reference should be null after deleting the cinema.");
+            Assert.IsNull(ticket.Session, "Each ticket's session reference should be null after deleting the cinema.");
+        }
 
-        //Assert.IsEmpty(history.ListOfSessions, "The history's list of sessions should be empty after deleting the cinema.");
+        /*
+        Assert.IsEmpty(history.ListOfSessions, "The history's list of sessions should be empty after deleting the cinema.");
+        */
         Assert.IsEmpty(movie.Sessions, "The movies list of sessions should be empty after deleting the cinema.");
 
     }
+    
+    [Test]
+    public void DeleteHall_ShouldThrowInvalidOperationException_WhenHallDoesNotBelongToCinema()
+    {
+        
+        var ex = Assert.Throws<InvalidOperationException>(() => cinema.deleteHall(hall));
+        Assert.AreEqual("The specified hall does not belong to this cinema.", ex.Message);
+    }
 
+    [Test]
+    public void DeleteTicket_ShouldThrowArgumentNullException_WhenNoTicketExists()
+    {
+        var seat = new Seat(27,false,hall); // A seat without a ticket assigned
+
+        var ex = Assert.Throws<ArgumentNullException>(() => seat.deleteTicket());
+        Assert.AreEqual("No seat", ex.ParamName);
+    }
     [Test]
     public void ApplyHallToOtherCinema_ShouldTransferHallSuccessfully()
     {

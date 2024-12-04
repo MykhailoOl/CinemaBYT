@@ -62,6 +62,7 @@ namespace CinemaBYT
                 seat.deleteHall();
                 if(seat.Ticket!=null)
                     seat.deleteTicket();
+                
             }
             _seats.Clear();
             foreach (var session in Sessions.ToList())

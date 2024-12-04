@@ -111,6 +111,9 @@ public class Seat
     public void addHall(Hall hall) {
         _hall = hall;
     }
+    public void addTicket(Ticket ticket) {
+        _ticket = ticket;
+    }
     public void deleteHall() {
         _hall = null;
     }
@@ -121,7 +124,7 @@ public class Seat
             throw new ArgumentNullException("No seat");
         }
         _ticket.deleteSeat();
-       
+        _ticket = null;
     }
 }
 

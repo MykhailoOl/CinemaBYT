@@ -74,12 +74,13 @@ public class Cinema
         }
     }
     public void deleteHall(Hall hall) {
-        if (!Halls.Contains(hall))
+        if (Halls.FindIndex(h => h.HallNumber==hall.HallNumber)==-1)
         {
             throw new InvalidOperationException("The specified hall does not belong to this cinema.");
         }
-        Halls.Remove(hall);
-        hall.deleteCinema();
+        hall.deleteCinema(); 
+        Halls.Remove(hall);  
+
     }
     public void deleteCinema()
     {
