@@ -145,11 +145,14 @@ public abstract class Person
     public void updateComment(Comment c)
     {
         if (c == null) throw new ArgumentNullException();
-        if (c.Person.Equals(this)) {
-            if (_comments.Count != 0) {
-                _comments.Find(sc => sc.Date == c.Date && sc.Movie==c.Movie).updateItself(c);
+        if (c.Person.Equals(this))
+        {
+            if (_comments.Count != 0)
+            {
+                _comments.Find(sc => sc.Date == c.Date && sc.Movie == c.Movie).updateItself(c);
             }
         }
+    }
 
     public static void deletePerson(Person p)
     {
