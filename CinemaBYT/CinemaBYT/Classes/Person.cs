@@ -149,7 +149,9 @@ public abstract class Person
         {
             if (_comments.Count != 0)
             {
-                _comments.Find(sc => sc.Date == c.Date && sc.Movie == c.Movie).updateItself(c);
+                Comment oldC = _comments.Find(sc => sc.Date == c.Date && sc.Movie == c.Movie);
+                if(oldC != null)
+                     oldC.updateItself(c);
             }
         }
     }
