@@ -140,7 +140,45 @@ namespace CinemaBYT
             return hashCode;
         }
         public void deleteSession(Session session) { 
-        _sessions.Remove(session);
+            _sessions.Remove(session);
+        }
+        public void addSession(Session s)
+        {
+            if(s == null)
+                throw new ArgumentNullException(nameof(s));
+            if(!_sessions.Contains(s))
+                _sessions.Add(s);
+        }
+
+        public void deleteComment(Comment comment)
+        {
+            if(!_comments.Remove(comment))
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+        }
+        public void addComment(Comment comment)
+        {
+            if (comment == null) throw new ArgumentNullException();
+            if(!_comments.Contains(comment))
+            {
+                _comments.Add(comment);
+            }
+        }
+        public void updateComment(Comment comment)
+        {
+            if (comment == null) throw new ArgumentNullException();
+            Comment newC = _comments.Find(c => c.Date == comment.Date && c.Movie == comment.Movie && c.Person == comment.Person);
+            if (newC!=null) {
+                newC=comment;
+            }               
+        }
+
+        public static void deleteMovie(Movie m)
+        {
+            m._sessions.ForEach(s => Session.deleteSessionGlobally(s));
+            m._comments.ForEach(c=> Comment.deleteComment(c));
+            m = null;
         }
     }
 }

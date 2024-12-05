@@ -60,4 +60,18 @@ public class History
     public void deleteSessionInHistory(Session session) {
         _listOfSessions.Remove(session);
     }
+    public static void deleteHistory(History h)
+    {
+        if(h._person!=null)
+            h._person.History = new History(new List<Session>(), h._person);
+        h._listOfSessions.ForEach(s => s.History = null);
+        h._listOfSessions.Clear();
+        h = null;
+    }
+    
+    public void addSession(Session session)
+    {
+        if(!_listOfSessions.Contains(session))
+            _listOfSessions.Add(session);
+    }
 }

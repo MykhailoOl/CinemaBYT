@@ -169,13 +169,22 @@ namespace CinemaBYT
             hashCode = (hashCode * 397) ^ Person.GetHashCode();  // Ensure the person hash code is used
             return hashCode;
         }
-        public void deleteTicket()
+        public void DeleteSession()
         {
             _session = null;
         }
         public void deleteSeat()
         {
             _seat = null;
+        }
+        public static void deleteTicket(Ticket t)
+        {
+            if (t != null)
+            {
+                t.DeleteSession();
+                t.deleteSeat();
+                t = null;
+            }
         }
     }
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CinemaBYT;
+using System;
 using System.Diagnostics.CodeAnalysis;
 
 public abstract class Person
@@ -8,6 +9,8 @@ public abstract class Person
     private DateTime _birthDate;
     private string _pesel;
     private History _history = new History();
+    private List<Comment> _comments = new List<Comment>();
+    private List<Ticket> tickets = new List<Ticket>();
 
     [DisallowNull]
     public string Name
@@ -107,5 +110,53 @@ public abstract class Person
         return hashCode;
     }
 
+    public void deleteComment(Comment c)
+    {
+        if (c == null) 
+            throw new ArgumentNullException();
+        if (_comments.Count != 0)
+        {
+            if (!_comments.Remove(c))
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+        }
+        else
+            throw new Exception();
+    }
+    public void addTicket(Ticket t)
+    {
+        if(t == null) throw new ArgumentNullException();
+        if(!tickets.Contains(t))
+        {
+            tickets.Add(t);
+        }
+    }
+    public void addComment(Comment c)
+    {
+        if (c == null)
+            throw new ArgumentNullException();
+        if (_comments.Count != 0)
+        {
+            _comments.Add(c);
+        }
+    }
 
+    public void updateComment(Comment c)
+    {
+        if (c == null) throw new ArgumentNullException();
+        if (c.Person.Equals(this)) {
+            if (_comments.Count != 0) {
+                _comments.Find(sc => sc.Date == c.Date && sc.Movie==c.Movie).updateItself(c);
+            }
+        }
+
+    public static void deletePerson(Person p)
+    {
+        p._comments.ForEach(c=> Comment.deleteComment(c));
+        p._comments.Clear();
+        History.deleteHistory(p._history);
+        p.tickets.ForEach(t => Ticket.deleteTicket(t));
+        p = null;
+    }
 }

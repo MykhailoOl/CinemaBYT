@@ -47,13 +47,21 @@ namespace CinemaBYT
             _hall = null;
             foreach (var ticket in _tickets.ToList())
             {
-                ticket.deleteTicket();
+                ticket.DeleteSession();
             }
             _tickets.Clear();
             _history.deleteSessionInHistory(this);
             _history = null;
-            _movie.deleteSession(this);
-            _movie = null;
+            if (_movie != null)
+            {
+                _movie.deleteSession(this);
+                _movie = null;
+            }
+        }
+        public static void deleteSessionGlobally(Session s)
+        {
+            s.deleteSession();
+            s = null;
         }
 
             [DisallowNull]

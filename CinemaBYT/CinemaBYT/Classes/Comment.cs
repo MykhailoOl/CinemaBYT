@@ -72,6 +72,32 @@ namespace CinemaBYT
             Replies.Add(reply);
         }
 
+        //associations
+        public void addMovie(Movie movie) { 
+            if (movie == null) 
+                throw new ArgumentNullException(nameof(movie)); 
+            if (_movie == null) 
+                _movie=movie;
+        }
+        public void addPerson(Person person)
+        {
+            if (person == null)
+                throw new ArgumentNullException(nameof(person));
+            if (_person == null)
+                _person = person;
+        }
+        public static void deleteComment(Comment c)
+        {
+            //delete its mention from movie and person
+            c._movie.deleteComment(c);
+            if(c._person != null)
+                c._person.deleteComment(c);
+            //clear the comment itself
+            c.Replies.ForEach(r => r = null);
+            c.Replies.Clear();
+            c = null;
+        }
+
         public override string ToString()
         {
             return $"{Person.Name} commented on {Movie.Name}: \"{CommentText}\" on {Date:d}";
@@ -96,5 +122,11 @@ namespace CinemaBYT
             return HashCode.Combine(CommentText, Date, Movie, Person, Replies);
         }
 
+        public void updateItself(Comment c)
+        {
+            Replies=c.Replies;
+            CommentText=c.CommentText;
+            Movie.updateComment(c);
+        }
     }
 }
