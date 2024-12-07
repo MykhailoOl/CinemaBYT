@@ -12,6 +12,7 @@ namespace CinemaBYT
         private List<Seat> _seats;
         private Cinema? _cinema;
         private int _hallNumber;
+        private List<Session> _sessions;
 
         [Range(20, 100, ErrorMessage = "The number of seats in the hall must be between 20 and 100.")]
         public int NumberOfSeats
@@ -144,5 +145,22 @@ namespace CinemaBYT
             return HashCode.Combine(HallNumber, NumberOfSeats, Seats, Cinema);
         }
 
+        public void deleteSession(Session session)
+        {
+            if (session == null) throw new ArgumentNullException();
+            if(_sessions.Remove(session))
+                Session.deleteSessionGlobally(session);
+            
+        }
+
+        public void addSession(Session session)
+        {
+            if(session == null) throw new ArgumentNullException();
+            if (!_sessions.Contains(session))
+            {
+                _sessions.Add(session);
+                session.UpdateHall(this);
+            }
+        }
     }
 }

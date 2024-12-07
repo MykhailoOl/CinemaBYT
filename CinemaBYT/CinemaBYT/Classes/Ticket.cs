@@ -186,6 +186,17 @@ namespace CinemaBYT
                 t = null;
             }
         }
+
+        internal void updateSession(Session session)
+        {
+            if (session == null)
+                throw new ArgumentNullException();
+            if(_session!=session)
+            {
+                _session = session;
+                _session.AddTicket(this);
+            }
+        }
     }
 
     public enum TicketType

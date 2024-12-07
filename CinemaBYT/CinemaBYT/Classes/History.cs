@@ -58,19 +58,27 @@ public class History
         return HashCode.Combine(personHash, sessionsHash);
     }
     public void deleteSessionInHistory(Session session) {
-        _listOfSessions.Remove(session);
+        if (session == null)
+            throw new ArgumentNullException();
+        if(_listOfSessions!=null)
+            _listOfSessions.Remove(session);
     }
     public static void deleteHistory(History h)
     {
         if(h._person!=null)
             h._person.History = new History(new List<Session>(), h._person);
-        h._listOfSessions.ForEach(s => s.History = null);
-        h._listOfSessions.Clear();
+        if (h._listOfSessions != null)
+        {
+            h._listOfSessions.ForEach(s => s.History = null);
+            h._listOfSessions.Clear();
+        }
         h = null;
     }
     
     public void addSession(Session session)
     {
+        if(_listOfSessions==null)
+            _listOfSessions = new List<Session>();
         if(!_listOfSessions.Contains(session))
             _listOfSessions.Add(session);
     }

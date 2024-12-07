@@ -124,6 +124,18 @@ public abstract class Person
         else
             throw new Exception();
     }
+    public void deleteTicket(Ticket t)
+    {
+        if (t == null)
+            throw new ArgumentNullException();
+        if (tickets.Count != 0)
+        {
+            if(!tickets.Remove(t))
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+        }
+    }
     public void addTicket(Ticket t)
     {
         if(t == null) throw new ArgumentNullException();
@@ -154,6 +166,17 @@ public abstract class Person
                      oldC.updateItself(c);
             }
         }
+    }
+    public void updateItself(Person p)
+    {
+        if (p == null) throw new ArgumentNullException();
+        _name=p.Name;
+        _email=p.Email;
+        _birthDate=p.BirthDate;
+        _pesel = p.PESEL;
+        _history= p.History;
+        _comments=p._comments;
+        tickets = p.tickets;
     }
 
     public static void deletePerson(Person p)

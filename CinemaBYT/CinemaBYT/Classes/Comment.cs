@@ -73,10 +73,10 @@ namespace CinemaBYT
         }
 
         //associations
-        public void addMovie(Movie movie) { 
+        public void updateMovie(Movie movie) { 
             if (movie == null) 
                 throw new ArgumentNullException(nameof(movie)); 
-            if (_movie == null) 
+            if (_movie != movie) 
                 _movie=movie;
         }
         public void addPerson(Person person)
@@ -85,6 +85,12 @@ namespace CinemaBYT
                 throw new ArgumentNullException(nameof(person));
             if (_person == null)
                 _person = person;
+        }
+        public void deleteReply(Comment reply)
+        {
+            if (reply == null) throw new ArgumentNullException();
+            if(_replies.Contains(reply))
+                _replies.Remove(reply);
         }
         public static void deleteComment(Comment c)
         {

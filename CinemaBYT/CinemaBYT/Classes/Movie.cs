@@ -94,22 +94,37 @@ namespace CinemaBYT
             return age >= AgeRating;
         }
 
-        public void AddSession(Session session)
+        //public void AddSession(Session session)
+        //{
+        //    if (session == null)
+        //    {
+        //        throw new ArgumentNullException(nameof(session), "Session cannot be null.");
+        //    }
+        //    Sessions.Add(session);
+        //}
+        public void AddSession(Session s)
         {
-            if (session == null)
-            {
-                throw new ArgumentNullException(nameof(session), "Session cannot be null.");
-            }
-            Sessions.Add(session);
+            if (s == null)
+                throw new ArgumentNullException(nameof(s));
+            if (!_sessions.Contains(s))
+                _sessions.Add(s);
         }
 
+        //public void AddComment(Comment comment)
+        //{
+        //    if (comment == null)
+        //    {
+        //        throw new ArgumentNullException(nameof(comment), "Comment cannot be null.");
+        //    }
+        //    Comments.Add(comment);
+        //}
         public void AddComment(Comment comment)
         {
-            if (comment == null)
+            if (comment == null) throw new ArgumentNullException();
+            if (!_comments.Contains(comment))
             {
-                throw new ArgumentNullException(nameof(comment), "Comment cannot be null.");
+                _comments.Add(comment);
             }
-            Comments.Add(comment);
         }
 
         public override string ToString()
@@ -140,31 +155,22 @@ namespace CinemaBYT
             return hashCode;
         }
         public void deleteSession(Session session) { 
-            _sessions.Remove(session);
+            if (session == null)
+                throw new ArgumentNullException(nameof(session));
+            if (!_sessions.Remove(session))
+                throw new ArgumentOutOfRangeException();
         }
-        public void addSession(Session s)
-        {
-            if(s == null)
-                throw new ArgumentNullException(nameof(s));
-            if(!_sessions.Contains(s))
-                _sessions.Add(s);
-        }
+       
 
         public void deleteComment(Comment comment)
         {
+            if (comment == null) throw new ArgumentNullException(nameof(comment));
             if(!_comments.Remove(comment))
             {
                 throw new ArgumentOutOfRangeException();
             }
         }
-        public void addComment(Comment comment)
-        {
-            if (comment == null) throw new ArgumentNullException();
-            if(!_comments.Contains(comment))
-            {
-                _comments.Add(comment);
-            }
-        }
+      
         public void updateComment(Comment comment)
         {
             if (comment == null) throw new ArgumentNullException();
@@ -172,6 +178,18 @@ namespace CinemaBYT
             if (newC!=null) {
                 newC=comment;
             }               
+        }
+
+        public void updateItself(Movie m)
+        {
+            if (m == null)
+                throw new ArgumentNullException();
+            _ageRating = m.AgeRating;
+            _name= m.Name;
+            _releaseDate= m.ReleaseDate;
+            _listOfGenres=m.ListOfGenres;
+            _comments=m.Comments;
+            _sessions=m.Sessions;
         }
 
         public static void deleteMovie(Movie m)

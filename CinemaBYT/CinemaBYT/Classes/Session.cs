@@ -63,6 +63,47 @@ namespace CinemaBYT
             s.deleteSession();
             s = null;
         }
+        public void AddTicket(Ticket ticket)
+        {
+            if (ticket == null) throw new ArgumentNullException();
+            if (!_tickets.Contains(ticket))
+            {
+                ticket.updateSession(this);
+                _tickets.Add(ticket);
+            }
+        }
+        public void DeleteTicket(Ticket t)
+        {
+            if(t== null) throw new ArgumentNullException();
+            if(_tickets.Contains(t))
+                _tickets.Remove(t);
+            Ticket.deleteTicket(t);
+        }
+        public void UpdateMovie(Movie m)
+        {
+            if(m == null) throw new ArgumentNullException();
+            if(m!=_movie) _movie.updateItself(m);
+        }
+        public void ReplaceMovie(Movie m)
+        {
+            if(null == m) throw new ArgumentNullException();
+            if(_movie!=m)
+            {
+                Movie.deleteMovie(_movie);
+                _movie.updateItself(m);
+            }
+        }
+        public void UpdateHall(Hall hall)
+        {
+            if (_hall == null)
+                throw new ArgumentNullException();
+            if (hall != _hall)
+            {
+                _hall.deleteSession(this);
+                _hall = hall;
+                _hall.addSession(this);
+            }
+        }
 
             [DisallowNull]
         public Hall Hall
