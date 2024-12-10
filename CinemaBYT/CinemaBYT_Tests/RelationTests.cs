@@ -14,6 +14,7 @@ public class RelationTests
     private History history;
     private Buyer buyer;
     private List<Ticket> tickets;
+    private Comment comment;
     
     [SetUp]
     public void Setup()
@@ -63,9 +64,13 @@ public class RelationTests
             s.addTicket(ticket);
         }
         session.Tickets.AddRange(tickets);
-        
+
+        comment = new Comment("Very good movie", DateTime.Today, movie, buyer);
+
+        movie.Comments.Add(comment);
+        buyer.co
     }
-    
+    //Cinema tests
     [Test]
     public void AddHall_ShouldAddHallToCinema()
     {
@@ -190,5 +195,54 @@ public class RelationTests
         Assert.Contains(hall, newcinema.halls, "The hall should be added to the cinema.");
         Assert.AreEqual(newcinema, hall.Cinema, "The hall's cinema reference should be updated.");
 
+    }
+
+    [Test]
+    public void UpdateMovieTest()
+    {
+        Movie movie1 = new Movie("movie", DateTime.Today, 16, new List<string> { "horror", "fantasy" });
+        
+        comment.updateMovie(movie1);    
+        
+        Assert.AreEqual(comment.Movie,movie1);
+    }
+    
+    [Test]
+    public void DeleteReply_ShouldRemoveReply_WhenReplyExists()
+    {
+        // Arrange
+        var reply = new Comment("Very good movie", DateTime.Today, movie, buyer);
+        comment.Replies.Add(reply);
+
+        // Act
+        comment.deleteReply(reply);
+
+        // Assert
+        Assert.IsFalse(comment.Replies.Contains(reply), "Reply was not removed from the list.");
+    }
+
+    [Test]
+    public void DeleteComment_HandlesAllCasesCorrectly()
+    {
+        
+
+        // Add replies to the comment
+        Comment reply1 = new Comment(movie, person);
+        Comment reply2 = new Comment(movie, person);
+        comment.Replies.Add(reply1);
+        comment.Replies.Add(reply2);
+
+        // Verify replies are added to the comment
+        Assert.AreEqual(2, comment.Replies.Count);
+
+        // Delete the comment and ensure it handles all cases properly
+        DeleteComment(comment);
+
+        // Verify the comment is removed from movie and person
+        Assert.DoesNotContain(comment, movie.GetComments());
+        Assert.DoesNotContain(comment, person.GetComments());
+
+        // Verify replies are cleared
+        Assert.IsEmpty(comment.Replies);
     }
 }

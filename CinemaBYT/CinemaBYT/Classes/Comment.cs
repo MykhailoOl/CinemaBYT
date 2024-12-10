@@ -79,13 +79,7 @@ namespace CinemaBYT
             if (_movie != movie) 
                 _movie=movie;
         }
-        public void addPerson(Person person)
-        {
-            if (person == null)
-                throw new ArgumentNullException(nameof(person));
-            if (_person == null)
-                _person = person;
-        }
+       
         public void deleteReply(Comment reply)
         {
             if (reply == null) throw new ArgumentNullException();
