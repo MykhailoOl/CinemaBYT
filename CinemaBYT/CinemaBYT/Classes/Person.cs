@@ -1,5 +1,4 @@
 ﻿using CinemaBYT;
-using System;
 using System.Diagnostics.CodeAnalysis;
 
 public abstract class Person
@@ -9,7 +8,7 @@ public abstract class Person
     private DateTime _birthDate;
     private string _pesel;
     private List<Comment> _comments = new List<Comment>();
-    private List<Ticket> tickets = new List<Ticket>();
+    private List<Ticket> _tickets = new List<Ticket>();
 
     [DisallowNull]
     public string Name
@@ -56,6 +55,10 @@ public abstract class Person
     [AllowNull]
     public History History { get; set; } = new History();
 
+    // Expose _comments and _tickets as read-only collections
+    public IReadOnlyList<Comment> Comments => _comments.AsReadOnly();
+    public IReadOnlyList<Ticket> Tickets => _tickets.AsReadOnly();
+
     protected Person() { }
 
     protected Person(string name, string email, DateTime birthDate, string pesel)
@@ -66,120 +69,104 @@ public abstract class Person
         PESEL = pesel;
     }
 
-    protected Person(Person other)
+    public void AddComment(Comment comment)
     {
-        if (other == null)
+        if (comment == null) throw new ArgumentNullException(nameof(comment));
+        if (!_comments.Contains(comment))
         {
-            throw new ArgumentNullException(nameof(other), "Person to copy cannot be null.");
+            _comments.Add(comment);
         }
-
-        Name = other.Name;
-        Email = other.Email;
-        BirthDate = other.BirthDate;
-        PESEL = other.PESEL;
-        History = other.History ?? throw new ArgumentNullException(nameof(other.History), "Copied person's history cannot be null.");
     }
+
+    public void RemoveComment(Comment comment)
+    {
+        if (comment == null) throw new ArgumentNullException(nameof(comment));
+        if (!_comments.Remove(comment))
+        {
+            throw new InvalidOperationException("Comment not found.");
+        }
+    }
+
+    public void AddTicket(Ticket ticket)
+    {
+        if (ticket == null) throw new ArgumentNullException(nameof(ticket));
+        if (!_tickets.Contains(ticket))
+        {
+            _tickets.Add(ticket);
+        }
+    }
+
+    public void RemoveTicket(Ticket ticket)
+    {
+        if (ticket == null) throw new ArgumentNullException(nameof(ticket));
+        if (!_tickets.Remove(ticket))
+        {
+            throw new InvalidOperationException("Ticket not found.");
+        }
+    }
+
+    public void UpdateComment(Comment updatedComment)
+    {
+        if (updatedComment == null) throw new ArgumentNullException(nameof(updatedComment));
+        var existingComment = _comments.Find(c => c.Date == updatedComment.Date && c.Movie == updatedComment.Movie);
+        if (existingComment == null)
+        {
+            throw new InvalidOperationException("Comment not found for update.");
+        }
+        existingComment.updateItself(updatedComment);
+    }
+
+    public void UpdateItself(Person updatedPerson)
+    {
+        if (updatedPerson == null) throw new ArgumentNullException(nameof(updatedPerson));
+        Name = updatedPerson.Name;
+        Email = updatedPerson.Email;
+        BirthDate = updatedPerson.BirthDate;
+        PESEL = updatedPerson.PESEL;
+        History = updatedPerson.History;
+
+        // Replace internal lists with updated data
+        _comments = new List<Comment>(updatedPerson._comments);
+        _tickets = new List<Ticket>(updatedPerson._tickets);
+    }
+
+    public static void DeletePerson(Person person)
+    {
+        if (person == null) throw new ArgumentNullException(nameof(person));
+
+        // Delete all associated data
+        foreach (var comment in person._comments.ToList())
+        {
+            Comment.deleteComment(comment);
+        }
+        person._comments.Clear();
+
+        History.deleteHistory(person.History);
+
+        foreach (var ticket in person._tickets.ToList())
+        {
+            Ticket.deleteTicket(ticket);
+        }
+        person._tickets.Clear();
+    }
+
     public override bool Equals(object obj)
     {
         if (obj is Person other)
         {
-            // Compare all properties, considering that some might be null
             return Name == other.Name &&
                    Email == other.Email &&
                    BirthDate == other.BirthDate &&
                    PESEL == other.PESEL &&
-                   (History?.Equals(other.History) ?? other.History == null);
+                   (History?.Equals(other.History) ?? other.History == null) &&
+                   _comments.SequenceEqual(other._comments) &&
+                   _tickets.SequenceEqual(other._tickets);
         }
         return false;
     }
 
     public override int GetHashCode()
     {
-        // Combine the hash codes of the essential properties, ensuring nulls are handled
-        int hashCode = Name?.GetHashCode() ?? 0;
-        hashCode = (hashCode * 397) ^ (Email?.GetHashCode() ?? 0);
-        hashCode = (hashCode * 397) ^ BirthDate.GetHashCode();
-        hashCode = (hashCode * 397) ^ (PESEL?.GetHashCode() ?? 0);
-        hashCode = (hashCode * 397) ^ (History?.GetHashCode() ?? 0);  // Safe null handling for History
-
-        return hashCode;
-    }
-
-    public void deleteComment(Comment c)
-    {
-        if (c == null) 
-            throw new ArgumentNullException();
-        if (_comments.Count != 0)
-        {
-            if (!_comments.Remove(c))
-            {
-                throw new ArgumentOutOfRangeException();
-            }
-        }
-        else
-            throw new Exception();
-    }
-    public void deleteTicket(Ticket t)
-    {
-        if (t == null)
-            throw new ArgumentNullException();
-        if (tickets.Count != 0)
-        {
-            if(!tickets.Remove(t))
-            {
-                throw new ArgumentOutOfRangeException();
-            }
-        }
-    }
-    public void addTicket(Ticket t)
-    {
-        if(t == null) throw new ArgumentNullException();
-        if(!tickets.Contains(t))
-        {
-            tickets.Add(t);
-        }
-    }
-    public void addComment(Comment c)
-    {
-        if (c == null)
-            throw new ArgumentNullException();
-        if (_comments.Count != 0)
-        {
-            _comments.Add(c);
-        }
-    }
-
-    public void updateComment(Comment c)
-    {
-        if (c == null) throw new ArgumentNullException();
-        if (c.Person.Equals(this))
-        {
-            if (_comments.Count != 0)
-            {
-                Comment oldC = _comments.Find(sc => sc.Date == c.Date && sc.Movie == c.Movie);
-                if(oldC != null)
-                     oldC.updateItself(c);
-            }
-        }
-    }
-    public void updateItself(Person p)
-    {
-        if (p == null) throw new ArgumentNullException();
-        _name=p.Name;
-        _email=p.Email;
-        _birthDate=p.BirthDate;
-        _pesel = p.PESEL;
-        History= p.History;
-        _comments=p._comments;
-        tickets = p.tickets;
-    }
-
-    public static void deletePerson(Person p)
-    {
-        p._comments.ForEach(c=> Comment.deleteComment(c));
-        p._comments.Clear();
-        History.deleteHistory(p.History);
-        p.tickets.ForEach(t => Ticket.deleteTicket(t));
-        p = null;
+        return HashCode.Combine(Name, Email, BirthDate, PESEL, History);
     }
 }
