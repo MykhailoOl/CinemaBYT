@@ -8,7 +8,6 @@ public abstract class Person
     private string _email;
     private DateTime _birthDate;
     private string _pesel;
-    private History _history = new History();
     private List<Comment> _comments = new List<Comment>();
     private List<Ticket> tickets = new List<Ticket>();
 
@@ -54,12 +53,8 @@ public abstract class Person
         }
     }
 
-    [DisallowNull]
-    public History History
-    {
-        get => _history;
-        set => _history = value ?? throw new ArgumentNullException(nameof(History), "History cannot be null.");
-    }
+    [AllowNull]
+    public History History { get; set; } = new History();
 
     protected Person() { }
 
@@ -174,7 +169,7 @@ public abstract class Person
         _email=p.Email;
         _birthDate=p.BirthDate;
         _pesel = p.PESEL;
-        _history= p.History;
+        History= p.History;
         _comments=p._comments;
         tickets = p.tickets;
     }
@@ -183,7 +178,7 @@ public abstract class Person
     {
         p._comments.ForEach(c=> Comment.deleteComment(c));
         p._comments.Clear();
-        History.deleteHistory(p._history);
+        History.deleteHistory(p.History);
         p.tickets.ForEach(t => Ticket.deleteTicket(t));
         p = null;
     }
