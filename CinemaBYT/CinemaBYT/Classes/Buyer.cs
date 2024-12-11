@@ -29,10 +29,6 @@ public class Buyer : Person
     public Buyer(string name, string email, DateTime birthDate, string pesel, History history, List<Comment> comments, List<Ticket> tickets)
         : base(name, email, birthDate, pesel)
     {
-        if (history == null) throw new ArgumentNullException(nameof(history), "History cannot be null.");
-        if (comments == null) throw new ArgumentNullException(nameof(comments), "Comments cannot be null.");
-        if (tickets == null) throw new ArgumentNullException(nameof(tickets), "Tickets cannot be null.");
-
         History = history; // Initialize inherited association
         comments.ForEach(addComment); // Add each comment
         tickets.ForEach(addTicket); // Add each ticket

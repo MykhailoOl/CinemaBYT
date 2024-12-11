@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using CinemaBYT;
 
-public class RelationTests
+public class AssociationsTests
 {
     private Cinema cinema;
     private Hall hall;
@@ -19,7 +19,8 @@ public class RelationTests
     [SetUp]
     public void Setup()
     {
-        buyer = new Buyer("John Doe", "johndoe@example.com", new DateTime(1990, 1, 1), "12345678901");
+        buyer = new Buyer("John Doe", "johndoe@example.com", new DateTime(1990, 1, 1),
+            "12345678901",null,new List<Comment>(),new List<Ticket>());
 
         seats = new List<Seat>();
         for (int i = 1; i < 26; i++)
@@ -39,7 +40,7 @@ public class RelationTests
         movie = new Movie("movie", DateTime.Today, 12, new List<string> { "horror", "fantasy" });
         
         history = new History(buyer);
-        
+        buyer.History = history;
         
         session = new Session(
             duration: new TimeSpan(2, 0, 0),
@@ -64,11 +65,12 @@ public class RelationTests
             s.addTicket(ticket);
         }
         session.Tickets.AddRange(tickets);
-
+        
         comment = new Comment("Very good movie", DateTime.Today, movie, buyer);
 
         movie.Comments.Add(comment);
-        buyer.co
+        buyer.Comments.Add(comment);
+        
     }
     //Cinema tests
     [Test]
@@ -197,6 +199,11 @@ public class RelationTests
 
     }
 
+    
+    
+    
+    
+    //Comment tests
     [Test]
     public void UpdateMovieTest()
     {
@@ -224,11 +231,9 @@ public class RelationTests
     [Test]
     public void DeleteComment_HandlesAllCasesCorrectly()
     {
-        
-
         // Add replies to the comment
-        Comment reply1 = new Comment(movie, person);
-        Comment reply2 = new Comment(movie, person);
+        Comment reply1 = new Comment("Very good movie", DateTime.Today, movie, buyer);
+        Comment reply2 = new Comment("Very bad movie", DateTime.Today, movie, buyer);
         comment.Replies.Add(reply1);
         comment.Replies.Add(reply2);
 
@@ -236,13 +241,112 @@ public class RelationTests
         Assert.AreEqual(2, comment.Replies.Count);
 
         // Delete the comment and ensure it handles all cases properly
-        DeleteComment(comment);
+        Comment.deleteComment(comment);
 
         // Verify the comment is removed from movie and person
-        Assert.DoesNotContain(comment, movie.GetComments());
-        Assert.DoesNotContain(comment, person.GetComments());
+        Assert.IsFalse(movie.Comments.Contains(comment));
+        Assert.IsFalse(buyer.Comments.Contains(comment));
 
         // Verify replies are cleared
         Assert.IsEmpty(comment.Replies);
     }
+    
+    [Test]
+    public void UpdateItself_UpdatesFieldsCorrectly()
+    {
+        
+        var updatedComment = new Comment("Very nud movie", DateTime.Today, movie, buyer);
+        // Act
+        comment.updateItself(updatedComment);
+
+        // Assert
+        Assert.AreEqual(updatedComment.Replies, comment.Replies, "Replies were not updated correctly.");
+        Assert.AreEqual(updatedComment.CommentText, comment.CommentText, "CommentText was not updated correctly.");
+        Assert.Contains(updatedComment,movie.Comments);
+    }
+    
+    
+    //Hall tests
+    
+    [Test]
+public void DeleteSession_ClearsPropertiesAndDeletesReferences()
+{
+
+    // Act
+    hall.deleteSession(session);
+
+    foreach (var seat in hall.Seats)
+    {
+        Assert.IsNull(seat.Hall, "Each seat's hall reference should be null after deleting the cinema.");
+        Assert.IsNull(seat.Ticket, "Each seat's ticket reference should be null after deleting the cinema.");
+    }
+
+    Assert.IsEmpty(hall.Sessions, "Each hall's sessions list should be empty after deleting the cinema.");
+        
+
+    // Verify session relationships
+    Assert.IsNull(session, "Session is not null.");
+
+    // Verify ticket relationships
+    foreach (var ticket in session.Tickets)
+    {
+        Assert.IsNull(ticket.Seat, "Each ticket's seat reference should be null after deleting the cinema.");
+        Assert.IsNull(ticket.Session, "Each ticket's session reference should be null after deleting the cinema.");
+    }
+
+    /*
+    Assert.IsEmpty(history.ListOfSessions, "The history's list of sessions should be empty after deleting the cinema.");
+    */
+    Assert.IsEmpty(movie.Sessions, "The movies list of sessions should be empty after deleting the cinema.");
+
+}
+
+
+    [Test]
+    public void AddSession_HandlesAllCasesCorrectly()
+    {
+        
+        // Act & Assert
+        // Case 1: Throws ArgumentNullException if session is null
+        Assert.Throws<ArgumentNullException>(() => hall.addSession(null), "addSession did not throw ArgumentNullException for null session.");
+
+        // Case 2: Adds a new session and updates the session's hall
+        hall.addSession(session);
+        Assert.Contains(session, hall.Sessions, "Session was not added to the hall.");
+        Assert.AreEqual(hall, session.Hall, "Session's hall was not updated.");
+
+        // Case 3: Does not add duplicate sessions
+        hall.addSession(session); // Try adding the same session again
+        Assert.AreEqual(1, hall.Sessions.Count(s => s == session), "Duplicate session was added to the hall.");
+    }
+
+    
+    //Person tests
+        [Test]
+        public void DeleteComment_ThrowsExceptionsForInvalidCases()
+        {
+            // Act & Assert
+            // Case 1: ArgumentNullException when comment is null
+            Assert.Throws<ArgumentNullException>(() => buyer.deleteComment(null), "Expected ArgumentNullException for null comment.");
+
+            // Case 2: Exception when _comments is empty
+            Assert.Throws<Exception>(() => buyer.deleteComment(comment), "Expected Exception for deleting a comment from an empty collection.");
+
+            // Case 3: ArgumentOutOfRangeException when comment does not exist in _comments
+            buyer.addComment(new Comment(" movie", DateTime.Today, movie, buyer));
+            Assert.Throws<ArgumentOutOfRangeException>(() => buyer.deleteComment(comment), "Expected ArgumentOutOfRangeException for non-existent comment.");
+        }
+
+        [Test]
+        public void DeleteComment_RemovesCommentFromList()
+        {
+            // Arrange
+            buyer.addComment(comment);
+
+            // Act
+            buyer.deleteComment(comment);
+
+            // Assert
+            Assert.IsFalse(buyer.Comments.Contains(comment), "Comment was not removed from _comments.");
+        }
 }
