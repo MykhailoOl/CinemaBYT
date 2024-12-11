@@ -12,7 +12,7 @@ namespace CinemaBYT
         private List<Seat> _seats;
         private Cinema? _cinema;
         private int _hallNumber;
-        private List<Session> _sessions;
+        private List<Session> _sessions = new List<Session>(); 
 
         [Range(20, 100, ErrorMessage = "The number of seats in the hall must be between 20 and 100.")]
         public int NumberOfSeats
@@ -34,7 +34,7 @@ namespace CinemaBYT
             get => _seats;
              set => _seats = value ?? throw new ArgumentNullException(nameof(Seats), "Seats list cannot be null.");
         }
-
+    
         public List<Session> Sessions { get; private set; } = new List<Session>();
 
         public Cinema? Cinema

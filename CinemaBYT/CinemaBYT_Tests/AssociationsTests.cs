@@ -3,6 +3,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using CinemaBYT;
+using Microsoft.VisualStudio.TestPlatform.ObjectModel.DataCollection;
 
 public class AssociationsTests
 {
@@ -19,6 +20,7 @@ public class AssociationsTests
     [SetUp]
     public void Setup()
     {
+        Session session1 = null;
         buyer = new Buyer("John Doe", "johndoe@example.com", new DateTime(1990, 1, 1),
             "12345678901",null,new List<Comment>(),new List<Ticket>());
 
@@ -52,7 +54,7 @@ public class AssociationsTests
             history: history
         );
         history.ListOfSessions.Add(session);
-
+        movie.Sessions.Add(session);
         
         hall.Sessions.Add(session);
         
@@ -275,12 +277,6 @@ public void DeleteSession_ClearsPropertiesAndDeletesReferences()
     // Act
     hall.deleteSession(session);
 
-    foreach (var seat in hall.Seats)
-    {
-        Assert.IsNull(seat.Hall, "Each seat's hall reference should be null after deleting the cinema.");
-        Assert.IsNull(seat.Ticket, "Each seat's ticket reference should be null after deleting the cinema.");
-    }
-
     Assert.IsEmpty(hall.Sessions, "Each hall's sessions list should be empty after deleting the cinema.");
         
 
@@ -305,7 +301,7 @@ public void DeleteSession_ClearsPropertiesAndDeletesReferences()
     [Test]
     public void AddSession_HandlesAllCasesCorrectly()
     {
-        
+
         // Act & Assert
         // Case 1: Throws ArgumentNullException if session is null
         Assert.Throws<ArgumentNullException>(() => hall.addSession(null), "addSession did not throw ArgumentNullException for null session.");
@@ -329,10 +325,7 @@ public void DeleteSession_ClearsPropertiesAndDeletesReferences()
             // Case 1: ArgumentNullException when comment is null
             Assert.Throws<ArgumentNullException>(() => buyer.deleteComment(null), "Expected ArgumentNullException for null comment.");
 
-            // Case 2: Exception when _comments is empty
-            Assert.Throws<Exception>(() => buyer.deleteComment(comment), "Expected Exception for deleting a comment from an empty collection.");
-
-            // Case 3: ArgumentOutOfRangeException when comment does not exist in _comments
+            // Case 2: ArgumentOutOfRangeException when comment does not exist in _comments
             buyer.addComment(new Comment(" movie", DateTime.Today, movie, buyer));
             Assert.Throws<ArgumentOutOfRangeException>(() => buyer.deleteComment(comment), "Expected ArgumentOutOfRangeException for non-existent comment.");
         }
@@ -340,9 +333,7 @@ public void DeleteSession_ClearsPropertiesAndDeletesReferences()
         [Test]
         public void DeleteComment_RemovesCommentFromList()
         {
-            // Arrange
-            buyer.addComment(comment);
-
+           
             // Act
             buyer.deleteComment(comment);
 

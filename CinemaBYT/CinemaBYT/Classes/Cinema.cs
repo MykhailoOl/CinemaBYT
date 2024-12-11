@@ -48,7 +48,8 @@ public class Cinema
         set => _openingHours = value ?? throw new ArgumentNullException(nameof(OpeningHours), "Opening hours cannot be null.");
     }
 
-    [MinLength(1)] private List<Hall> Halls;
+    [MinLength(1)] 
+    private List<Hall> Halls = new List<Hall>();
 
     public List<Hall> halls
     {

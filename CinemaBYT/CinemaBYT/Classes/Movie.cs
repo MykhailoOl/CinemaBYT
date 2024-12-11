@@ -57,8 +57,6 @@ namespace CinemaBYT
             get => _listOfGenres;
             set => _listOfGenres = value ?? throw new ArgumentNullException(nameof(ListOfGenres), "List of genres cannot be null.");
         }
-
-        [MinLength(1)]
         public List<Session> Sessions 
         {
             get => _sessions;
