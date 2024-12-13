@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using CinemaBYT;
 using CinemaBYT.Exceptions;
 
 public class Payment
@@ -7,14 +8,21 @@ public class Payment
     private PaymentType _type;
     private DateTime _paymentDate;
     private int _maxTicketPerPayment = 5;
+    private Person _person;
+    private Ticket _ticket;
+   
 
     [DisallowNull]
     public PaymentType Type
     {
         get => _type;
-        set => _type = value; 
+        set => _type = value;
     }
-
+    public Dictionary<Ticket, Payment> TicketPaymentMap
+    {
+        get => _ticketPaymentMap;
+        set => _ticketPaymentMap = value ?? new Dictionary<Ticket, Payment>();
+    }
     [DisallowNull]
     public DateTime PaymentDate
     {
@@ -41,6 +49,18 @@ public class Payment
             }
             _maxTicketPerPayment = value;
         }
+    }
+    [DisallowNull]
+    public Person Person
+    {
+        get => _person;
+        set => _person = value ?? throw new ArgumentNullException(nameof(Person), "Person cannot be null.");
+    }
+    [DisallowNull]
+    public Ticket Ticket
+    {
+        get => _ticket;
+        set => _ticket = value ?? throw new ArgumentNullException(nameof(Ticket), "Ticket cannot be null.");
     }
 
     public Payment(PaymentType type, DateTime paymentDate, int maxTicketPerPayment = 5)

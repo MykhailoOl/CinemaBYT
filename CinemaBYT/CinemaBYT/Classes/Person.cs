@@ -10,6 +10,8 @@ public abstract class Person
     private string _pesel;
     private List<Comment> _comments = new List<Comment>();
     private List<Ticket> _tickets = new List<Ticket>();
+    private List<Payment> _payments = new List<Payment>();
+    private Dictionary<Ticket, Payment> _ticketPaymentMap = new Dictionary<Ticket, Payment>();
 
     [DisallowNull]
     public string Name
@@ -55,6 +57,13 @@ public abstract class Person
 
     [AllowNull]
     public History History { get; set; } = new History();
+    [AllowNull]
+    public List<Payment> Payments
+    {
+        get => _payments;
+        set => _payments = value ?? new List<Payment>();
+    }
+
 
     [AllowNull]
     public List<Ticket> Tickets
@@ -91,6 +100,60 @@ public abstract class Person
         PESEL = other.PESEL;
         History = other.History ?? throw new ArgumentNullException(nameof(other.History), "Copied person's history cannot be null.");
     }
+    public void AddTicketPayment(Ticket ticket, Payment payment)
+    {
+        if (ticket == null) throw new ArgumentNullException(nameof(ticket), "Ticket cannot be null.");
+        if (payment == null) throw new ArgumentNullException(nameof(payment), "Payment cannot be null.");
+
+        if (!_ticketPaymentMap.ContainsKey(ticket))
+        {
+            _ticketPaymentMap.Add(ticket, payment);
+        }
+        else
+        {
+            throw new ArgumentException("This ticket is already associated with a payment.");
+        }
+    }
+
+    public void RemoveTicketPayment(Ticket ticket)
+    {
+        if (ticket == null) throw new ArgumentNullException(nameof(ticket), "Ticket cannot be null.");
+
+        if (!_ticketPaymentMap.Remove(ticket))
+        {
+            throw new KeyNotFoundException("The specified ticket is not associated with any payment.");
+        }
+    }
+
+    public Payment GetPaymentForTicket(Ticket ticket)
+    {
+        if (ticket == null) throw new ArgumentNullException(nameof(ticket), "Ticket cannot be null.");
+
+        if (_ticketPaymentMap.TryGetValue(ticket, out Payment payment))
+        {
+            return payment;
+        }
+        else
+        {
+            throw new KeyNotFoundException("The specified ticket is not associated with any payment.");
+        }
+    }
+
+    public void UpdateTicketPayment(Ticket ticket, Payment newPayment)
+    {
+        if (ticket == null) throw new ArgumentNullException(nameof(ticket), "Ticket cannot be null.");
+        if (newPayment == null) throw new ArgumentNullException(nameof(newPayment), "Payment cannot be null.");
+
+        if (_ticketPaymentMap.ContainsKey(ticket))
+        {
+            _ticketPaymentMap[ticket] = newPayment;
+        }
+        else
+        {
+            throw new KeyNotFoundException("The specified ticket is not associated with any payment.");
+        }
+    }
+
     public override bool Equals(object obj)
     {
         if (obj is Person other)

@@ -13,6 +13,7 @@ namespace CinemaBYT
         private Session _session;
         private Seat _seat;
         private Person _person;
+        private List<Payment> _payments = new List<Payment>();
 
         [DisallowNull]
         public int SeatNumber
@@ -76,7 +77,12 @@ namespace CinemaBYT
             get => _person;
             private set => _person = value ?? throw new ArgumentNullException(nameof(Person), "Person cannot be null.");
         }
-
+        [AllowNull]
+        public List<Payment> Payments
+        {
+            get => _payments;
+            set => _payments = value ?? new List<Payment>();
+        }
         public Ticket(int seatNumber, decimal price, DateTime purchaseDate, TicketType type, Session session, Seat seat, Person person)
         {
             SeatNumber = seatNumber; 
