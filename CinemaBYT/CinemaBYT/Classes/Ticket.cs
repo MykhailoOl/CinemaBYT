@@ -28,6 +28,12 @@ namespace CinemaBYT
                 _seatNumber = value;
             }
         }
+        public void addPayment(Payment payment) { 
+        _payments.Add(payment);
+        }
+        public void setPerson(Person person) { 
+        _person = person;
+        }
 
         [DisallowNull]
         public decimal Price

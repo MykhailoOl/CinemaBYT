@@ -1,6 +1,7 @@
 ﻿using CinemaBYT;
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Xml.Linq;
 
 public abstract class Person
 {
@@ -153,7 +154,17 @@ public abstract class Person
             throw new KeyNotFoundException("The specified ticket is not associated with any payment.");
         }
     }
-
+    public void BuyTicket(Ticket ticket,Payment payment) {
+        if (ticket == null) throw new ArgumentNullException(nameof(ticket));
+        if (payment == null) throw new ArgumentNullException(nameof(payment));
+        AddTicketPayment(ticket, payment);
+        _tickets.Add(ticket);
+        _payments.Add(payment);
+        payment.setTicket(ticket);
+        payment.setPerson(this);
+        ticket.addPayment(payment);
+        ticket.setPerson(this);
+    }
     public override bool Equals(object obj)
     {
         if (obj is Person other)

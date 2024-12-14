@@ -18,10 +18,11 @@ public class Payment
         get => _type;
         set => _type = value;
     }
-    public Dictionary<Ticket, Payment> TicketPaymentMap
-    {
-        get => _ticketPaymentMap;
-        set => _ticketPaymentMap = value ?? new Dictionary<Ticket, Payment>();
+    public void setPerson(Person person) { 
+    _person = person;
+    }
+    public void setTicket(Ticket ticket) { 
+        _ticket = ticket;
     }
     [DisallowNull]
     public DateTime PaymentDate
