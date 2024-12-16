@@ -78,6 +78,13 @@ public abstract class Person
         get => _comments;
         set => _comments = value;
     }
+
+    public Dictionary<Ticket, Payment> TicketPaymentMap
+    {
+        get => _ticketPaymentMap;
+        set => _ticketPaymentMap = value ?? throw new ArgumentNullException(nameof(value));
+    }
+
     protected Person() { }
 
     protected Person(string name, string email, DateTime birthDate, string pesel)
@@ -209,13 +216,13 @@ public abstract class Person
     {
         if (t == null)
             throw new ArgumentNullException();
-        if (_tickets.Count != 0)
+
+        if (!_tickets.Contains(t)) // Check if the ticket exists in the list
         {
-            if (!_tickets.Remove(t))
-            {
-                throw new ArgumentOutOfRangeException();
-            }
+            throw new ArgumentOutOfRangeException();
         }
+
+        _tickets.Remove(t); // Remove the ticket if it exists
     }
     public void addTicket(Ticket t)
     {
@@ -229,10 +236,9 @@ public abstract class Person
     {
         if (c == null)
             throw new ArgumentNullException();
-        if (_comments.Count != 0)
-        {
-            _comments.Add(c);
-        }
+        
+        _comments.Add(c);
+        
     }
 
     public void updateComment(Comment c)

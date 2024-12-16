@@ -95,7 +95,7 @@ namespace CinemaBYT
         }
         public void UpdateHall(Hall hall)
         {
-            if (_hall == null)
+            if (hall == null)
                 throw new ArgumentNullException();
             if (hall != _hall)
             {

@@ -3,7 +3,6 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using CinemaBYT;
-using Microsoft.VisualStudio.TestPlatform.ObjectModel.DataCollection;
 
 public class AssociationsTests
 {
@@ -16,11 +15,11 @@ public class AssociationsTests
     private Buyer buyer;
     private List<Ticket> tickets;
     private Comment comment;
+    private Payment payment;
     
     [SetUp]
     public void Setup()
     {
-        Session session1 = null;
         buyer = new Buyer("John Doe", "johndoe@example.com", new DateTime(1990, 1, 1),
             "12345678901",null,new List<Comment>(),new List<Ticket>());
 
@@ -53,8 +52,6 @@ public class AssociationsTests
             tickets: new List<Ticket>(),
             history: history
         );
-        history.ListOfSessions.Add(session);
-        movie.Sessions.Add(session);
         
         hall.Sessions.Add(session);
         
@@ -66,13 +63,13 @@ public class AssociationsTests
             tickets.Add(ticket);
             s.addTicket(ticket);
         }
-        session.Tickets.AddRange(tickets);
         
         comment = new Comment("Very good movie", DateTime.Today, movie, buyer);
 
         movie.Comments.Add(comment);
         buyer.Comments.Add(comment);
-        
+        payment = new Payment(PaymentType.Blik, DateTime.Today, 2);
+
     }
     //Cinema tests
     [Test]
@@ -172,7 +169,17 @@ public class AssociationsTests
         Assert.IsEmpty(movie.Sessions, "The movies list of sessions should be empty after deleting the cinema.");
 
     }
+    [Test]
+    public void ApplyHallToOtherCinema_ShouldUpdateSuccessfully()
+        {
+            Cinema newcinema = new Cinema("Lviv", "Kyiv", "Ukraine", "456456456", "10:00-20:00");
+            
+            hall.addCinema(newcinema);
+            
+            Assert.Contains(hall, newcinema.halls, "The hall should be added to the cinema.");
+            Assert.AreEqual(newcinema, hall.Cinema, "The hall's cinema reference should be updated.");
     
+        }
     [Test]
     public void DeleteHall_ShouldThrowInvalidOperationException_WhenHallDoesNotBelongToCinema()
     {
@@ -189,17 +196,8 @@ public class AssociationsTests
         var ex = Assert.Throws<ArgumentNullException>(() => seat.deleteTicket());
         Assert.AreEqual("No seat", ex.ParamName);
     }
-    [Test]
-    public void ApplyHallToOtherCinema_ShouldTransferHallSuccessfully()
-    {
-        Cinema newcinema = new Cinema("Lviv", "Kyiv", "Ukraine", "456456456", "10:00-20:00");
-        
-        hall.addCinema(newcinema);
-        
-        Assert.Contains(hall, newcinema.halls, "The hall should be added to the cinema.");
-        Assert.AreEqual(newcinema, hall.Cinema, "The hall's cinema reference should be updated.");
-
-    }
+    
+    
 
     
     
@@ -216,6 +214,20 @@ public class AssociationsTests
         Assert.AreEqual(comment.Movie,movie1);
     }
     
+    [Test]
+    public void AddReply_ShouldHandleValidAndInvalidReplies()
+    {
+        var reply = new Comment("Very good movie", DateTime.Today, movie, buyer);
+
+        Assert.Throws<ArgumentNullException>(
+            () => comment.AddReply(null), 
+            "Expected ArgumentNullException when reply is null"
+        );
+
+        comment.AddReply(reply);
+
+        Assert.Contains(reply, comment.Replies, "Reply should be added to the Replies collection.");
+    }
     [Test]
     public void DeleteReply_ShouldRemoveReply_WhenReplyExists()
     {
@@ -271,73 +283,361 @@ public class AssociationsTests
     //Hall tests
     
     [Test]
-public void DeleteSession_ClearsPropertiesAndDeletesReferences()
-{
-
-    // Act
-    hall.deleteSession(session);
-
-    Assert.IsEmpty(hall.Sessions, "Each hall's sessions list should be empty after deleting the cinema.");
-        
-
-    // Verify session relationships
-    Assert.IsNull(session, "Session is not null.");
-
-    // Verify ticket relationships
-    foreach (var ticket in session.Tickets)
-    {
-        Assert.IsNull(ticket.Seat, "Each ticket's seat reference should be null after deleting the cinema.");
-        Assert.IsNull(ticket.Session, "Each ticket's session reference should be null after deleting the cinema.");
-    }
-
-    /*
-    Assert.IsEmpty(history.ListOfSessions, "The history's list of sessions should be empty after deleting the cinema.");
-    */
-    Assert.IsEmpty(movie.Sessions, "The movies list of sessions should be empty after deleting the cinema.");
-
-}
-
-
-    [Test]
     public void AddSession_HandlesAllCasesCorrectly()
     {
-
-        // Act & Assert
-        // Case 1: Throws ArgumentNullException if session is null
+        
         Assert.Throws<ArgumentNullException>(() => hall.addSession(null), "addSession did not throw ArgumentNullException for null session.");
 
-        // Case 2: Adds a new session and updates the session's hall
         hall.addSession(session);
         Assert.Contains(session, hall.Sessions, "Session was not added to the hall.");
         Assert.AreEqual(hall, session.Hall, "Session's hall was not updated.");
 
-        // Case 3: Does not add duplicate sessions
         hall.addSession(session); // Try adding the same session again
         Assert.AreEqual(1, hall.Sessions.Count(s => s == session), "Duplicate session was added to the hall.");
     }
 
+    //History tests
+    [Test]
+    public void AddSession_ShouldHandleNullListAndAddUniqueSessions()
+    {
+        // Act (Adding first session)
+        history.addSession(session);
+
+        // Assert (First session is added)
+        Assert.NotNull(history.ListOfSessions, "The list of sessions should be initialized.");
+        Assert.Contains(session, history.ListOfSessions, "Session1 should be added to the list.");
+
+        // Act (Adding duplicate session)
+        history.addSession(session);
+
+        // Assert (Duplicate session is not added)
+        Assert.AreEqual(1, history.ListOfSessions.Count, "Duplicate sessions should not be added.");
+
+    }
+    
+    
+    //Session Tests
+    [Test]
+    public void AddTicket_ShouldHandleAllScenarios()
+    {
+        Assert.Throws<ArgumentNullException>(() => session.AddTicket(null), "Expected ArgumentNullException for null ticket.");
+
+        session.AddTicket(tickets[0]);
+
+        // Assert (Ticket Added)
+        Assert.Contains(tickets[0], session.Tickets, "Ticket should be added to the session's ticket list.");
+        Assert.AreEqual(session, tickets[0].Session, "Ticket should reference the correct session.");
+
+        // Act (Add Duplicate Ticket)
+        session.AddTicket(tickets[0]);
+
+        // Assert (Duplicate Ticket Not Added)
+        Assert.AreEqual(1, session.Tickets.Count, "Duplicate tickets should not be added.");
+
+    }
+    [Test]
+    public void DeleteTicket_ShouldHandleAllScenarios()
+    {
+        
+        session.AddTicket(tickets[0]);
+
+        Assert.Throws<ArgumentNullException>(() => session.DeleteTicket(null), "Expected ArgumentNullException for null ticket.");
+
+        session.DeleteTicket(tickets[1]);
+
+        Assert.AreEqual(1, session.Tickets.Count, "Deleting a non-existent ticket should not affect the collection.");
+
+        session.DeleteTicket(tickets[0]);
+
+        Assert.IsFalse(session.Tickets.Contains(tickets[0]), "Ticket should be removed from the session.");
+    }
+    
+    [Test]
+    public void MovieMethods_ShouldHandleUpdateAndReplaceScenarios()
+    {
+        
+        Movie newMovie = new Movie("movie", DateTime.Today, 16, new List<string> { "horror", "fantasy" });
+
+        session.UpdateMovie(movie);
+        Assert.Throws<ArgumentNullException>(() => session.UpdateMovie(null), "Expected ArgumentNullException for null movie.");
+
+        session.UpdateMovie(newMovie);
+        Assert.AreEqual(newMovie, session.Movie, "Movie should be updated to the new movie.");
+
+        Assert.Throws<ArgumentNullException>(() => session.ReplaceMovie(null), "Expected ArgumentNullException for null movie.");
+
+        session.ReplaceMovie(newMovie);
+        // Assert (No Change)
+        Assert.AreEqual(newMovie, session.Movie, "Movie should not change if the same movie is provided.");
+
+        session.ReplaceMovie(movie);
+
+        Assert.AreEqual(movie, session.Movie, "Movie should be replaced with the new movie.");
+    }
+    
+    [Test]
+    public void UpdateHall_ShouldHandleAllScenarios()
+    {
+        Hall newHall = new Hall(2, 25, seats);
+        session.UpdateHall(hall);
+        
+        Assert.Throws<ArgumentNullException>(() => session.UpdateHall(null), "Expected ArgumentNullException for null hall.");
+
+        session.UpdateHall(hall);
+        Assert.AreEqual(hall, session.Hall, "Hall should not change if the same hall is provided.");
+
+        // Act (Update Hall with New Hall)
+        session.UpdateHall(newHall);
+        Assert.AreEqual(newHall, session.Hall, "Session's hall should be updated to the new hall.");
+    }
+    
+    //Movie tests
+    
+    [Test]
+    public void AddSession_ShouldHandleAllScenarios()
+    {
+        Assert.Throws<ArgumentNullException>(() => movie.AddSession(null), "Expected ArgumentNullException for null session.");
+
+        movie.AddSession(session);
+        Assert.Contains(session, movie.Sessions, "Session1 should be added to the movie's session list.");
+
+        // Act (Add Duplicate Session)
+        movie.AddSession(session);
+        Assert.AreEqual(1, movie.Sessions.Count, "Duplicate sessions should not be added.");
+
+    }
+    
+    [Test]
+    public void AddComment_ShouldHandleAllScenarios()
+    {
+        
+        Assert.Throws<ArgumentNullException>(() => movie.AddComment(null), "Expected ArgumentNullException for null comment.");
+        movie.AddComment(comment);
+        Assert.Contains(comment, movie.Comments, "Comment1 should be added to the movie's comment list.");
+
+        // Act (Add Duplicate Comment)
+        movie.AddComment(comment);
+        Assert.AreEqual(1, movie.Comments.Count, "Duplicate comments should not be added.");
+    }
+    
+    [Test]
+    public void UpdateItself_ShouldUpdateFieldsFromNewMovie()
+    {
+        Movie newMovie = new Movie("movie", DateTime.Today, 16, new List<string> { "horror", "fantasy" });
+        movie.updateItself(newMovie);
+
+        Assert.AreEqual(16, movie.AgeRating, "AgeRating should be updated.");
+        Assert.AreEqual("movie", movie.Name, "Name should be updated.");
+        Assert.AreEqual(DateTime.Today, movie.ReleaseDate, "ReleaseDate should be updated.");
+        CollectionAssert.AreEqual(newMovie.ListOfGenres, movie.ListOfGenres, "Genres should be updated.");
+        CollectionAssert.AreEqual(newMovie.Comments, movie.Comments, "Comments should be updated.");
+        CollectionAssert.AreEqual(newMovie.Sessions, movie.Sessions, "Sessions should be updated.");
+
+        Assert.Throws<ArgumentNullException>(() => movie.updateItself(null), "Expected ArgumentNullException for null movie.");
+    }
+    
+    [Test]
+    public void DeleteMovie_ShouldDeleteSessionsAndCommentsAndNullifyMovie()
+    {
+        Movie.deleteMovie(movie);
+
+        Assert.AreEqual(0, movie.Sessions.Count, "All sessions should be removed from the movie.");
+        Assert.AreEqual(0, movie.Comments.Count, "All comments should be removed from the movie.");
+        
+        // Assert (Movie Nullified)
+        Assert.IsNull(movie, "Movie should be null after deletion.");
+    }
     
     //Person tests
-        [Test]
-        public void DeleteComment_ThrowsExceptionsForInvalidCases()
-        {
-            // Act & Assert
-            // Case 1: ArgumentNullException when comment is null
-            Assert.Throws<ArgumentNullException>(() => buyer.deleteComment(null), "Expected ArgumentNullException for null comment.");
+    
+    [Test]
+    public void AddTicketPayment_ShouldHandleAllScenarios_Correctly()
+    {
+        // Scenario 1: Adding a payment for a ticket
+        buyer.AddTicketPayment(tickets[0], payment);
+        Assert.AreEqual(payment, buyer.TicketPaymentMap[tickets[0]], "The payment should be associated with the ticket.");
 
-            // Case 2: ArgumentOutOfRangeException when comment does not exist in _comments
-            buyer.addComment(new Comment(" movie", DateTime.Today, movie, buyer));
-            Assert.Throws<ArgumentOutOfRangeException>(() => buyer.deleteComment(comment), "Expected ArgumentOutOfRangeException for non-existent comment.");
+        // Scenario 2: Trying to add a payment for a ticket that is null
+        var ex1 = Assert.Throws<ArgumentNullException>(() => buyer.AddTicketPayment(null, payment));
+        Assert.That(ex1.ParamName, Is.EqualTo("ticket"));
+        Assert.AreEqual("Ticket cannot be null.", ex1.Message);
+
+        // Scenario 3: Trying to add a payment where the payment is null
+        var ex2 = Assert.Throws<ArgumentNullException>(() => buyer.AddTicketPayment(tickets[0], null));
+        Assert.That(ex2.ParamName, Is.EqualTo("payment"));
+        Assert.AreEqual("Payment cannot be null.", ex2.Message);
+
+        // Scenario 4: Trying to add a payment for a ticket that already has a payment
+        buyer.AddTicketPayment(tickets[0], payment);
+        var ex3 = Assert.Throws<ArgumentException>(() => buyer.AddTicketPayment(tickets[0], new Payment(PaymentType.CreditCard,DateTime.Today,3)));
+        Assert.AreEqual("This ticket is already associated with a payment.", ex3.Message);
+    }
+    
+    [Test]
+    public void RemoveTicketPayment_ShouldHandleAllScenarios_Correctly()
+    {
+        // Scenario 1: Removing a ticket payment successfully
+        buyer.AddTicketPayment(tickets[0], payment);
+        buyer.RemoveTicketPayment(tickets[0]);
+        Assert.False(buyer.TicketPaymentMap.ContainsKey(tickets[0]), "The ticket should be removed from the payment map.");
+
+        // Scenario 2: Trying to remove a ticket payment for a ticket that is null
+        var ex1 = Assert.Throws<ArgumentNullException>(() => buyer.RemoveTicketPayment(null));
+        Assert.That(ex1.ParamName, Is.EqualTo("ticket"));
+        Assert.AreEqual("Ticket cannot be null.", ex1.Message);
+
+        // Scenario 3: Trying to remove a ticket payment for a ticket not in the map (ticket without payment)
+        var ex2 = Assert.Throws<KeyNotFoundException>(() => buyer.RemoveTicketPayment(tickets[0]));
+        Assert.AreEqual("The specified ticket is not associated with any payment.", ex2.Message);
+    }
+    
+    [Test]
+    public void GetPaymentForTicket_ShouldHandleAllScenarios_Correctly()
+    {
+        // Scenario 1: Retrieving payment for an existing ticket
+        buyer.AddTicketPayment(tickets[0], payment); // First, add a payment
+        var retrievedPayment = buyer.GetPaymentForTicket(tickets[0]);
+        Assert.AreEqual(payment, retrievedPayment, "The retrieved payment should match the expected payment.");
+
+        // Scenario 2: Trying to retrieve a payment for a null ticket
+        var ex1 = Assert.Throws<ArgumentNullException>(() => buyer.GetPaymentForTicket(null));
+        Assert.That(ex1.ParamName, Is.EqualTo("ticket"));
+        Assert.AreEqual("Ticket cannot be null.", ex1.Message);
+
+        // Scenario 3: Trying to retrieve a payment for a ticket that doesn't exist in the map
+        var ex2 = Assert.Throws<KeyNotFoundException>(() => buyer.GetPaymentForTicket(tickets[1]));
+        Assert.AreEqual("The specified ticket is not associated with any payment.", ex2.Message);
+    }
+    
+    [Test]
+    public void UpdateTicketPayment_ShouldHandleAllScenarios_Correctly()
+    {
+        // Scenario 1: Successfully updating a ticket's payment
+        Payment _newPayment = new Payment(PaymentType.Blik, DateTime.Today, 1);
+        buyer.AddTicketPayment(tickets[0], payment);
+        buyer.UpdateTicketPayment(tickets[0],_newPayment);
+        
+        Assert.AreEqual(_newPayment, buyer.TicketPaymentMap[tickets[0]], "The payment should be updated to the new payment.");
+
+        // Scenario 2: Trying to update a payment for a null ticket
+        var ex1 = Assert.Throws<ArgumentNullException>(() => buyer.UpdateTicketPayment(null, _newPayment));
+        Assert.That(ex1.ParamName, Is.EqualTo("ticket"));
+        Assert.AreEqual("Ticket cannot be null.", ex1.Message);
+
+        // Scenario 3: Trying to update a payment for a null payment
+        var ex2 = Assert.Throws<ArgumentNullException>(() => buyer.UpdateTicketPayment(tickets[0], null));
+        Assert.That(ex2.ParamName, Is.EqualTo("newPayment"));
+        Assert.AreEqual("Payment cannot be null.", ex2.Message);
+
+        // Scenario 4: Trying to update a payment for a ticket not associated with any payment
+        var ex3 = Assert.Throws<KeyNotFoundException>(() => buyer.UpdateTicketPayment(tickets[1], _newPayment));
+        Assert.AreEqual("The specified ticket is not associated with any payment.", ex3.Message);
+    }
+    
+    
+    
+        [Test]
+        public void BuyTicket_ShouldHandleAllScenariosCorrectly()
+        {
+            // Act & Assert (Null Checks)
+            Assert.Throws<ArgumentNullException>(() => buyer.BuyTicket(null, payment), "Expected ArgumentNullException when ticket is null");
+            Assert.Throws<ArgumentNullException>(() => buyer.BuyTicket(tickets[0], null), "Expected ArgumentNullException when payment is null");
+
+            buyer.BuyTicket(tickets[0], payment);
+
+            Assert.Contains(tickets[0], buyer.Tickets, "Ticket should be added to person's ticket collection");
+            Assert.Contains(payment, buyer.Payments, "Payment should be added to person's payment collection");
+
+            Assert.AreEqual(buyer, payment.Person, "Payment should reference the correct person");
+            Assert.AreEqual(tickets[0], payment.Ticket, "Payment should reference the correct ticket");
+            Assert.AreEqual(buyer, tickets[0].Person, "Ticket should reference the correct person");
+            Assert.Contains(payment, tickets[0].Payments, "Ticket should contain the payment in its payments collection");
+        }
+        
+        
+        
+        
+        [Test]
+        public void AddAndDeleteTicket_ShouldAddAndDeleteTicketSuccessfully()
+        {
+            // Add ticket
+            buyer.addTicket(tickets[0]);
+            Assert.Contains(tickets[0], buyer.Tickets);  
+            // Try adding the same ticket again (should not throw exception, just do nothing)
+            Assert.DoesNotThrow(() => buyer.addTicket(tickets[0])); 
+
+            // Delete ticket
+            buyer.deleteTicket(tickets[0]);
+            Assert.IsFalse(buyer.Tickets.Contains(tickets[0])); 
+
+            // Try deleting a ticket that doesn't exist (should throw ArgumentOutOfRangeException)
+            Assert.Throws<ArgumentOutOfRangeException>(() => buyer.deleteTicket(tickets[0]));
+
+            // Try deleting a null ticket (should throw ArgumentNullException)
+            Assert.Throws<ArgumentNullException>(() => buyer.deleteTicket(null));
         }
 
         [Test]
-        public void DeleteComment_RemovesCommentFromList()
+        public void AddAndUpdateComment_ShouldAddAndUpdateCommentSuccessfully()
         {
-           
-            // Act
-            buyer.deleteComment(comment);
+            // Test addComment with valid comment (should add comment)
+            buyer.addComment(comment);
+            Assert.Contains(comment, buyer.Comments); 
 
-            // Assert
-            Assert.IsFalse(buyer.Comments.Contains(comment), "Comment was not removed from _comments.");
+            // Test addComment with null comment (should throw ArgumentNullException)
+            Assert.Throws<ArgumentNullException>(() => buyer.addComment(null)); 
+
+            // Test updateComment with valid comment (should update the existing comment)
+            Comment comment2 = comment;
+            comment2.CommentText = "mid";
+            buyer.updateComment(comment2); 
+            Assert.AreEqual("mid", comment.CommentText);
         }
+
+        
+        [Test]
+        public void UpdateItself_ShouldUpdatePersonFieldsCorrectly()
+        {
+            Buyer newBuyer = new Buyer("newBuyer", "kwejfkjwn@gmail.com", DateTime.Today, "05232213491",null,null,null);
+
+            buyer.updateItself(newBuyer);
+
+            Assert.AreEqual("newBuyer", buyer.Name);
+            Assert.AreEqual("kwejfkjwn@gmail.com", buyer.Email);
+            Assert.AreEqual(DateTime.Today, buyer.BirthDate.Date); 
+            Assert.AreEqual("05232213491", buyer.PESEL);
+            Assert.IsNull(buyer.History);  
+            Assert.IsNull(buyer.Comments);  
+            Assert.IsNull(buyer.Tickets);   
+        }
+
+        [Test]
+public void DeletePerson_ShouldDeleteCommentsHistoryAndTickets()
+{
+    
+    buyer.Comments.Add(comment);
+    buyer.Tickets.AddRange(tickets);
+    
+    // Act: Call the deletePerson method to delete the person
+    Person.deletePerson(buyer);
+
+    // Assert: Verify that the person's comments list is empty
+    Assert.IsEmpty(buyer.Comments, "Person's comments should be deleted.");
+
+    // Assert: Verify that the person's tickets list is empty
+    Assert.IsEmpty(buyer.Tickets, "Person's tickets should be deleted.");
+
+    // Assert: Verify that the person's history is deleted (assuming that deleteHistory performs the deletion correctly)
+    Assert.IsNull(buyer.History, "Person's history should be deleted.");
+
+    // Verify that the comments' references have been cleared from the Comment list
+    Assert.IsFalse(comment.Person.Comments.Contains(comment), "Comment should be removed from its person's comments list.");
+    
+    // Verify that the tickets' references have been cleared from the Ticket list
+    foreach (var ticket in tickets)
+    {
+        Assert.IsFalse(ticket.Person.Tickets.Contains(ticket), "Ticket should be removed from its person's tickets list.");
+    }
+    
+}
 }

@@ -192,9 +192,25 @@ namespace CinemaBYT
 
         public static void deleteMovie(Movie m)
         {
-            m._sessions.ForEach(s => Session.deleteSessionGlobally(s));
-            m._comments.ForEach(c=> Comment.deleteComment(c));
+            if (m == null) throw new ArgumentNullException(nameof(m));
+
+            // Iterate over a copy of the sessions list
+            foreach (var session in m._sessions.ToList())
+            {
+                Session.deleteSessionGlobally(session); // Assume this method handles session cleanup
+            }
+
+            // Iterate over a copy of the comments list
+            foreach (var comment in m._comments.ToList())
+            {
+                Comment.deleteComment(comment); // Assume this method handles comment cleanup
+            }
+
+            // Nullify the movie object
+            m._sessions.Clear();
+            m._comments.Clear();
             m = null;
         }
+
     }
 }
