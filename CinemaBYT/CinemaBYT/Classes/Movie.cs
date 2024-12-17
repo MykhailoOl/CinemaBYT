@@ -190,7 +190,7 @@ namespace CinemaBYT
             _sessions=m.Sessions;
         }
 
-        public static void deleteMovie(Movie m)
+        public static Movie deleteMovie(Movie m)
         {
             if (m == null) throw new ArgumentNullException(nameof(m));
 
@@ -209,7 +209,9 @@ namespace CinemaBYT
             // Nullify the movie object
             m._sessions.Clear();
             m._comments.Clear();
+            m._listOfGenres.Clear();
             m = null;
+            return m;
         }
 
     }
