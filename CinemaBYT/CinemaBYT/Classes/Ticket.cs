@@ -5,9 +5,9 @@ using CinemaBYT.Exceptions;
 
 namespace CinemaBYT
 {
-    public class Ticket : IEnumerator<Ticket>
+    public class Ticket
     {
-        private int _seatNumber;
+        private int _ticketId;
         private decimal _price;
         private DateTime _purchaseDate;
         private TicketType _type;
@@ -17,16 +17,16 @@ namespace CinemaBYT
         private List<Payment> _payments = new List<Payment>();
 
         [DisallowNull]
-        public int SeatNumber
+        public int TicketId
         {
-            get => _seatNumber;
+            get => _ticketId;
             private set
             {
                 if (value <= 0)
                 {
-                    throw new ArgumentException("Seat number must be positive.", nameof(SeatNumber));
+                    throw new ArgumentException("Ticket id must be positive.", nameof(TicketId));
                 }
-                _seatNumber = value;
+                _ticketId = value;
             }
         }
         public void addPayment(Payment payment) { 
@@ -93,11 +93,9 @@ namespace CinemaBYT
 
         public object Current => throw new NotImplementedException();
 
-        Ticket IEnumerator<Ticket>.Current => throw new NotImplementedException();
-
         public Ticket(int seatNumber, decimal price, DateTime purchaseDate, TicketType type, Session session, Seat seat, Person person)
         {
-            SeatNumber = seatNumber; 
+            TicketId = seatNumber; 
             Price = price;         
             PurchaseDate = purchaseDate;
             Type = type;
@@ -170,7 +168,7 @@ namespace CinemaBYT
             if (obj is Ticket other)
             {
                 // Compare properties that define equality.
-                return SeatNumber == other.SeatNumber &&
+                return TicketId == other.TicketId &&
                        Type == other.Type &&
                        Session.Equals(other.Session) && // Ensure the session objects are equal
                        Person.Equals(other.Person);     // Ensure the person objects are equal
@@ -181,7 +179,7 @@ namespace CinemaBYT
         public override int GetHashCode()
         {
             // Combine the hash codes of the relevant properties.
-            int hashCode = SeatNumber.GetHashCode();
+            int hashCode = TicketId.GetHashCode();
             hashCode = (hashCode * 397) ^ Type.GetHashCode();
             hashCode = (hashCode * 397) ^ Session.GetHashCode(); // Ensure the session hash code is used
             hashCode = (hashCode * 397) ^ Person.GetHashCode();  // Ensure the person hash code is used

@@ -859,7 +859,7 @@ namespace CinemaBYT.Classes
                 XmlElement ticketElement = doc.CreateElement("Ticket");
 
                 XmlElement seatNumber = doc.CreateElement("seatNumber");
-                seatNumber.InnerText = ticket.SeatNumber.ToString();
+                seatNumber.InnerText = ticket.TicketId.ToString();
                 ticketElement.AppendChild(seatNumber);
 
                 XmlElement price = doc.CreateElement("price");

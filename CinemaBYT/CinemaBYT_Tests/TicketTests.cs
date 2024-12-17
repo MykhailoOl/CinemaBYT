@@ -77,7 +77,7 @@ public class TicketTests
             var ticket = new Ticket(1, 10.00m, DateTime.Now, TicketType.Adult, _session, _seat, _person);
 
             // Assert
-            Assert.AreEqual(1, ticket.SeatNumber);
+            Assert.AreEqual(1, ticket.TicketId);
             Assert.AreEqual(10.00m, ticket.Price);
             Assert.AreEqual(DateTime.Now.Date, ticket.PurchaseDate.Date); // Check only the date part
             Assert.AreEqual(TicketType.Adult, ticket.Type);

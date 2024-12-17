@@ -455,7 +455,7 @@ public class AssociationsTests
     {
         // Scenario 1: Adding a payment for a ticket
         buyer.AddTicketPayment(tickets[0], payment);
-        Assert.AreEqual(payment, buyer.TicketPaymentMap[tickets[0]], "The payment should be associated with the ticket.");
+        Assert.AreEqual(payment, buyer.TicketPaymentMap[tickets[0].TicketId], "The payment should be associated with the ticket.");
 
         // Scenario 2: Trying to add a payment for a ticket that is null
         var ex1 = Assert.Throws<ArgumentNullException>(() => buyer.AddTicketPayment(null, payment));
@@ -479,7 +479,7 @@ public class AssociationsTests
         // Scenario 1: Removing a ticket payment successfully
         buyer.AddTicketPayment(tickets[0], payment);
         buyer.RemoveTicketPayment(tickets[0]);
-        Assert.False(buyer.TicketPaymentMap.ContainsKey(tickets[0]), "The ticket should be removed from the payment map.");
+        Assert.False(buyer.TicketPaymentMap.ContainsKey(tickets[0].TicketId), "The ticket should be removed from the payment map.");
 
         // Scenario 2: Trying to remove a ticket payment for a ticket that is null
         var ex1 = Assert.Throws<ArgumentNullException>(() => buyer.RemoveTicketPayment(null));
@@ -517,7 +517,7 @@ public class AssociationsTests
         buyer.AddTicketPayment(tickets[0], payment);
         buyer.UpdateTicketPayment(tickets[0],_newPayment);
         
-        Assert.AreEqual(_newPayment, buyer.TicketPaymentMap[tickets[0]], "The payment should be updated to the new payment.");
+        Assert.AreEqual(_newPayment, buyer.TicketPaymentMap[tickets[0].TicketId], "The payment should be updated to the new payment.");
 
         // Scenario 2: Trying to update a payment for a null ticket
         var ex1 = Assert.Throws<ArgumentNullException>(() => buyer.UpdateTicketPayment(null, _newPayment));
