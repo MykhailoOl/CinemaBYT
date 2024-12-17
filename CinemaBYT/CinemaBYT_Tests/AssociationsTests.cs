@@ -598,7 +598,7 @@ public class AssociationsTests
         [Test]
         public void UpdateItself_ShouldUpdatePersonFieldsCorrectly()
         {
-            Buyer newBuyer = new Buyer("newBuyer", "kwejfkjwn@gmail.com", DateTime.Today, "05232213491",null,null,null);
+            Buyer newBuyer = new Buyer("newBuyer", "kwejfkjwn@gmail.com", DateTime.Today, "05232213491");
 
             buyer.updateItself(newBuyer);
 
@@ -606,9 +606,9 @@ public class AssociationsTests
             Assert.AreEqual("kwejfkjwn@gmail.com", buyer.Email);
             Assert.AreEqual(DateTime.Today, buyer.BirthDate.Date); 
             Assert.AreEqual("05232213491", buyer.PESEL);
-            Assert.IsNull(buyer.History);  
-            Assert.IsNull(buyer.Comments);  
-            Assert.IsNull(buyer.Tickets);   
+            Assert.AreEqual(new History(newBuyer), buyer.History);  
+            Assert.AreEqual(new List<Comment>(), buyer.Comments);  
+            Assert.AreEqual(new List<Ticket>(), buyer.Tickets);   
         }
 
         [Test]

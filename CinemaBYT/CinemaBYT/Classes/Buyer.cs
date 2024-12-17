@@ -4,11 +4,7 @@ using System.Collections.Generic;
 
 public class Buyer : Person
 {
-    // Primary constructor to initialize Buyer with required properties
-    public Buyer(string name, string email, DateTime birthDate, string pesel)
-        : base(name, email, birthDate, pesel)
-    {
-    }
+
 
     // Parameterless constructor
     public Buyer()
@@ -32,6 +28,14 @@ public class Buyer : Person
         History = history; // Initialize inherited association
         comments.ForEach(addComment); // Add each comment
         tickets.ForEach(addTicket); // Add each ticket
+    }
+    // Primary constructor to initialize Buyer with required properties
+    public Buyer(string name, string email, DateTime birthDate, string pesel)
+       : base(name, email, birthDate, pesel)
+    {
+        History = new History(this); // Initialize inherited association
+        this.Comments=new List<Comment>();
+        Tickets=new List<Ticket>(); // Add each ticket
     }
 
     // Override Equals method

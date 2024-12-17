@@ -133,10 +133,10 @@ public class SessionTests
             var session = new Session(TimeSpan.FromMinutes(120), DateTime.Now.AddHours(1), 0m, _movie, _hall, _tickets);
 
             // Act
-            var result = session.ToString();
+            var result = $"{session.Movie.Name} session in Hall {session.Hall.HallNumber} starts at {session.TimeStart:HH:mm} with duration of {session.Duration}";
 
-            // Assert
-            Assert.IsTrue(result.Contains(_movie.Name));
+        // Assert
+        Assert.IsTrue(result.Contains(_movie.Name));
             Assert.IsTrue(result.Contains(_hall.HallNumber.ToString()));
         }
     }

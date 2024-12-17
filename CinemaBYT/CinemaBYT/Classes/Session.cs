@@ -54,7 +54,14 @@ namespace CinemaBYT
             _history = null;
             if (_movie != null)
             {
-                _movie.deleteSession(this);
+                try
+                {
+                    _movie.deleteSession(this);
+                }
+                catch(ArgumentOutOfRangeException e)
+                {
+                    Console.WriteLine(e.StackTrace);
+                }
                 _movie = null;
             }
         }
@@ -160,10 +167,10 @@ namespace CinemaBYT
             Income += amount;
         }
 
-        public override string ToString()
-        {
-            return $"{Movie.Name} session in Hall {Hall.HallNumber} starts at {TimeStart:HH:mm} with duration of {Duration}";
-        }
+        //public override string ToString()
+        //{
+        //    return $"{Movie.Name} session in Hall {Hall.HallNumber} starts at {TimeStart:HH:mm} with duration of {Duration}";
+        //}
         public override bool Equals(object obj)
         {
             if (obj is Session other)

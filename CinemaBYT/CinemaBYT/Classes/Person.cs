@@ -1,6 +1,8 @@
 ﻿using CinemaBYT;
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Xml.Linq;
 
 public abstract class Person
@@ -13,6 +15,7 @@ public abstract class Person
     private List<Ticket> _tickets = new List<Ticket>();
     private List<Payment> _payments = new List<Payment>();
     private Dictionary<Ticket, Payment> _ticketPaymentMap = new Dictionary<Ticket, Payment>();
+    private Dictionary<int, Payment> _extraMap = new Dictionary<int, Payment>();
 
     [DisallowNull]
     public string Name
@@ -115,7 +118,13 @@ public abstract class Person
 
         if (!_ticketPaymentMap.ContainsKey(ticket))
         {
-            _ticketPaymentMap.Add(ticket, payment);
+            //_ticketPaymentMap.Keys.Append(ticket);
+            //Payment exp=_ticketPaymentMap.GetValueOrDefault(ticket);
+            //_ticketPaymentMap.Append(new KeyValuePair<Ticket, Payment>(ticket, payment));
+            //_ticketPaymentMap[ticket] = payment;
+            //_ticketPaymentMap.TryAdd(ticket, payment);           
+            //_ticketPaymentMap[ticket] = payment;
+            _extraMap.Add(ticket.SeatNumber, payment);
         }
         else
         {
@@ -268,10 +277,26 @@ public abstract class Person
 
     public static void deletePerson(Person p)
     {
-        p._comments.ForEach(c => Comment.deleteComment(c));
+        //p._comments.ForEach(c => Comment.deleteComment(c));
+        while (p._comments.Count>0)
+        {
+            try
+            {
+                Comment.deleteComment(p._comments[p._comments.Count - 1]);
+            }
+            catch (ArgumentOutOfRangeException e)
+            {
+                Console.WriteLine(e.Message);
+            }      
+        }
         p._comments.Clear();
         History.deleteHistory(p.History);
-        p._tickets.ForEach(t => Ticket.deleteTicket(t));
-        p = null;
+        p.History = null;
+        //p._tickets.ForEach(t => Ticket.deleteTicket(t));
+        while (p._tickets.Count > 0)
+        {
+            Ticket.deleteTicket(p._tickets[p._tickets.Count - 1]);
+        }
+            p = null;
     }
 }

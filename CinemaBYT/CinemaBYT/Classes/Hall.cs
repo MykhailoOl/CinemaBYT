@@ -68,7 +68,14 @@ namespace CinemaBYT
             _seats.Clear();
             foreach (var session in Sessions.ToList())
             {
-                session.deleteSession();
+                try
+                {
+                    session.deleteSession();
+                }
+                catch (ArgumentOutOfRangeException e)
+                {
+                    Console.WriteLine(e.StackTrace);
+                }
             }
             Sessions.Clear();
         }

@@ -124,6 +124,7 @@ public class Seat
             throw new ArgumentNullException("No seat");
         }
         _ticket.deleteSeat();
+        _ticket.DeleteSession();
         _ticket = null;
     }
 }

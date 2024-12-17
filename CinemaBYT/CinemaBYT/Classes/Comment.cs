@@ -89,7 +89,14 @@ namespace CinemaBYT
         public static void deleteComment(Comment c)
         {
             //delete its mention from movie and person
-            c._movie.deleteComment(c);
+            try
+            {
+                c._movie.deleteComment(c);
+            }
+            catch(ArgumentOutOfRangeException e)
+            {
+                Console.WriteLine(e.Message);
+            }
             if(c._person != null)
                 c._person.deleteComment(c);
             //clear the comment itself

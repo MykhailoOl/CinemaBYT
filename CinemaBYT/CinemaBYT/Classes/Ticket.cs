@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 using CinemaBYT.Exceptions;
 
 namespace CinemaBYT
 {
-    public class Ticket
+    public class Ticket : IEnumerator<Ticket>
     {
         private int _seatNumber;
         private decimal _price;
@@ -89,6 +90,11 @@ namespace CinemaBYT
             get => _payments;
             set => _payments = value ?? new List<Payment>();
         }
+
+        public object Current => throw new NotImplementedException();
+
+        Ticket IEnumerator<Ticket>.Current => throw new NotImplementedException();
+
         public Ticket(int seatNumber, decimal price, DateTime purchaseDate, TicketType type, Session session, Seat seat, Person person)
         {
             SeatNumber = seatNumber; 
@@ -155,10 +161,10 @@ namespace CinemaBYT
             return timeDifference.TotalHours < 24;
         }
 
-        public override string ToString()
-        {
-            return $"Ticket for Seat {SeatNumber} - {Type} at {Session.TimeStart:HH:mm} for {Price:C}";
-        }
+        //public override string ToString()
+        //{
+        //    return $"Ticket for Seat {SeatNumber} - {Type} at {Session.TimeStart:HH:mm} for {Price:C}";
+        //}
         public override bool Equals(object obj)
         {
             if (obj is Ticket other)
@@ -193,6 +199,7 @@ namespace CinemaBYT
         {
             if (t != null)
             {
+                t._person.deleteTicket(t);
                 t.DeleteSession();
                 t.deleteSeat();
                 t = null;
@@ -209,6 +216,8 @@ namespace CinemaBYT
                 _session.AddTicket(this);
             }
         }
+
+      
     }
 
     public enum TicketType

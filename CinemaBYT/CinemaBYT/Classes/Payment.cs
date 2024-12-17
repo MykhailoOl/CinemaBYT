@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 using CinemaBYT;
 using CinemaBYT.Exceptions;
 
-public class Payment
+public class Payment 
 {
     private PaymentType _type;
     private DateTime _paymentDate;
@@ -72,6 +73,9 @@ public class Payment
             : paymentDate;
         MaxTicketPerPayment = maxTicketPerPayment;
     }
+    public Payment()
+    {
+    }
 
     public static double LoyaltyDiscount(double price, bool hasLoyaltyCard)
     {
@@ -104,6 +108,7 @@ public class Payment
         return hashCode;
     }
 
+   
 }
 
 public enum PaymentType
