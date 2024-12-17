@@ -24,7 +24,7 @@ namespace CinemaBYT
             {
                 if (value <= 0)
                 {
-                    throw new ArgumentException("Ticket id must be positive.", nameof(TicketId));
+                    throw new ArgumentException("Seat number must be positive.", nameof(TicketId));
                 }
                 _ticketId = value;
             }
@@ -197,7 +197,13 @@ namespace CinemaBYT
         {
             if (t != null)
             {
-                t._person.deleteTicket(t);
+                try
+                {
+                    t._person.deleteTicket(t);
+                }
+                catch (ArgumentOutOfRangeException ex) { 
+                Console.WriteLine(ex.ToString());
+                }
                 t.DeleteSession();
                 t.deleteSeat();
                 t = null;

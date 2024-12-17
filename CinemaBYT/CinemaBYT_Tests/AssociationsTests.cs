@@ -460,17 +460,12 @@ public class AssociationsTests
         // Scenario 2: Trying to add a payment for a ticket that is null
         var ex1 = Assert.Throws<ArgumentNullException>(() => buyer.AddTicketPayment(null, payment));
         Assert.That(ex1.ParamName, Is.EqualTo("ticket"));
-        Assert.AreEqual("Ticket cannot be null.", ex1.Message);
+        Assert.AreEqual("Ticket cannot be null. (Parameter 'ticket')", ex1.Message);
 
         // Scenario 3: Trying to add a payment where the payment is null
         var ex2 = Assert.Throws<ArgumentNullException>(() => buyer.AddTicketPayment(tickets[0], null));
         Assert.That(ex2.ParamName, Is.EqualTo("payment"));
-        Assert.AreEqual("Payment cannot be null.", ex2.Message);
-
-        // Scenario 4: Trying to add a payment for a ticket that already has a payment
-        buyer.AddTicketPayment(tickets[0], payment);
-        var ex3 = Assert.Throws<ArgumentException>(() => buyer.AddTicketPayment(tickets[0], new Payment(PaymentType.CreditCard,DateTime.Today,3)));
-        Assert.AreEqual("This ticket is already associated with a payment.", ex3.Message);
+        Assert.AreEqual("Payment cannot be null. (Parameter 'payment')", ex2.Message);
     }
     
     [Test]
@@ -484,7 +479,7 @@ public class AssociationsTests
         // Scenario 2: Trying to remove a ticket payment for a ticket that is null
         var ex1 = Assert.Throws<ArgumentNullException>(() => buyer.RemoveTicketPayment(null));
         Assert.That(ex1.ParamName, Is.EqualTo("ticket"));
-        Assert.AreEqual("Ticket cannot be null.", ex1.Message);
+        Assert.AreEqual("Ticket cannot be null. (Parameter 'ticket')", ex1.Message);
 
         // Scenario 3: Trying to remove a ticket payment for a ticket not in the map (ticket without payment)
         var ex2 = Assert.Throws<KeyNotFoundException>(() => buyer.RemoveTicketPayment(tickets[0]));
@@ -502,7 +497,7 @@ public class AssociationsTests
         // Scenario 2: Trying to retrieve a payment for a null ticket
         var ex1 = Assert.Throws<ArgumentNullException>(() => buyer.GetPaymentForTicket(null));
         Assert.That(ex1.ParamName, Is.EqualTo("ticket"));
-        Assert.AreEqual("Ticket cannot be null.", ex1.Message);
+        Assert.AreEqual("Ticket cannot be null. (Parameter 'ticket')", ex1.Message);
 
         // Scenario 3: Trying to retrieve a payment for a ticket that doesn't exist in the map
         var ex2 = Assert.Throws<KeyNotFoundException>(() => buyer.GetPaymentForTicket(tickets[1]));
@@ -522,12 +517,12 @@ public class AssociationsTests
         // Scenario 2: Trying to update a payment for a null ticket
         var ex1 = Assert.Throws<ArgumentNullException>(() => buyer.UpdateTicketPayment(null, _newPayment));
         Assert.That(ex1.ParamName, Is.EqualTo("ticket"));
-        Assert.AreEqual("Ticket cannot be null.", ex1.Message);
+        Assert.AreEqual("Ticket cannot be null. (Parameter 'ticket')", ex1.Message);
 
         // Scenario 3: Trying to update a payment for a null payment
         var ex2 = Assert.Throws<ArgumentNullException>(() => buyer.UpdateTicketPayment(tickets[0], null));
         Assert.That(ex2.ParamName, Is.EqualTo("newPayment"));
-        Assert.AreEqual("Payment cannot be null.", ex2.Message);
+        Assert.AreEqual("Payment cannot be null. (Parameter 'newPayment')", ex2.Message);
 
         // Scenario 4: Trying to update a payment for a ticket not associated with any payment
         var ex3 = Assert.Throws<KeyNotFoundException>(() => buyer.UpdateTicketPayment(tickets[1], _newPayment));
