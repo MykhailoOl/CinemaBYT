@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 
-public abstract class Employee : Person
+public abstract class Employee 
 {
     private DateTime _hireDate;
     private decimal _salary;
@@ -28,21 +28,21 @@ public abstract class Employee : Person
     }
 
     protected Employee(DateTime hireDate, decimal salary, string name, string email, DateTime birthDate, string pesel)
-        : base(name, email, birthDate, pesel)
+       
     {
         HireDate = hireDate;
         Salary = salary;
     }
 
     protected Employee(DateTime hireDate, decimal salary, Person person)
-        : base(person)
+       
     {
         HireDate = hireDate;
         Salary = salary; 
     }
 
     protected Employee(Employee employee)
-        : base(employee)
+        
     {
         HireDate = employee.HireDate;
         Salary = employee.Salary; 

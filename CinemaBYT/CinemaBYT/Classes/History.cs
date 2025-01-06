@@ -5,7 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 public class History
 {
     private List<Session>? _listOfSessions;
-    private Person _person;
+    private Buyer _person;
 
     [AllowNull]
     public List<Session>? ListOfSessions
@@ -15,13 +15,13 @@ public class History
     }
 
     [DisallowNull]
-    public Person Person
+    public Buyer Person
     {
         get => _person;
         set => _person = value ?? throw new ArgumentNullException(nameof(Person), "Person cannot be null.");
     }
 
-    public History(List<Session>? listOfSessions, Person person)
+    public History(List<Session>? listOfSessions, Buyer person)
     {
         ListOfSessions = listOfSessions;
         Person = person;
@@ -30,7 +30,7 @@ public class History
     {
         _listOfSessions = new List<Session>();
     }
-    public History(Person person)
+    public History(Buyer person)
     {
         _listOfSessions = new List<Session>();
         Person = person;
@@ -40,7 +40,7 @@ public class History
         if (obj is History otherHistory)
         {
             // Compare the person and the list of sessions, handling nulls safely.
-            bool p = (Person == null && otherHistory.Person == null) || (Person?.PESEL==otherHistory.Person?.PESEL);
+            bool p = (Person == null && otherHistory.Person == null);
             bool l1 = ListOfSessions == null && otherHistory.ListOfSessions == null;
             bool l3=(ListOfSessions?.Capacity==0 && otherHistory.ListOfSessions?.Capacity==0) ==true;
             bool l2 = ListOfSessions?.SequenceEqual(otherHistory.ListOfSessions) == true;
