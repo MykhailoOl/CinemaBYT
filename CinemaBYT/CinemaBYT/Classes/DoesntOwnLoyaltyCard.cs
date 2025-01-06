@@ -8,6 +8,10 @@ public class DoesntOwnLoyaltyCard : Person
     {
       
     }
+    public DoesntOwnLoyaltyCard(Person p) : base(p)
+    {
+        Person.deletePerson(p);
+    }
     public override bool Equals(object obj)
     {
         if (obj is DoesntOwnLoyaltyCard other)

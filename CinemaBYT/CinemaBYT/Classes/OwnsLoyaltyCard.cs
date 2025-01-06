@@ -64,6 +64,12 @@ public class OwnsLoyaltyCard : Person
     {
     }
 
+    public OwnsLoyaltyCard(Person p, DateTime expireDate) : base(p) { 
+        StartDate=DateTime.Now;
+        ExpireDate = expireDate;
+        Person.deletePerson(p);
+    }
+
     public override bool Equals(object obj)
     {
         if (obj is OwnsLoyaltyCard other)

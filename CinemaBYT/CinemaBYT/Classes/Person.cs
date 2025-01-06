@@ -61,6 +61,16 @@ public abstract class Person
 
     protected Person() { }
 
+    protected Person(string name, string email, DateTime birthDate, string pesel)
+    {
+        Name = name;
+        Email = email;
+        BirthDate = birthDate;
+        PESEL = pesel;
+        //Buyer part
+        _buyer = null;
+    }
+
     protected Person(string name, string email, DateTime birthDate, string pesel, Buyer buyer)
     {
         Name = name;
@@ -69,6 +79,25 @@ public abstract class Person
         PESEL = pesel;
         //Buyer part
         _buyer=new Buyer(buyer);
+    }
+    protected Person(string name, string email, DateTime birthDate, string pesel, Employee emp)
+    {
+        Name = name;
+        Email = email;
+        BirthDate = birthDate;
+        PESEL = pesel;
+        //Employee part
+        _employee = emp;
+    }
+    protected Person(string name, string email, DateTime birthDate, string pesel, Buyer buyer, Employee emp)
+    {
+        Name = name;
+        Email = email;
+        BirthDate = birthDate;
+        PESEL = pesel;
+        //Buyer and Employee part
+        _buyer = new Buyer(buyer);
+        _employee = emp;
     }
 
     protected Person(Person other)
