@@ -127,5 +127,40 @@ public class Seat
         _ticket.DeleteSession();
         _ticket = null;
     }
+    
+    private List<Timer> timers = new List<Timer>();
+
+
+    public void AddTimer(Timer timer)
+    {
+        if (!timers.Contains(timer))
+        {
+            timers.Add(timer);
+            timer.AddSeat(this); // Set the Seat reference in Timer
+        }
+    }
+
+    public void UpdateTimer(Timer oldTimer, Timer newTimer)
+    {
+        int index = timers.IndexOf(oldTimer);
+        if (index != -1)
+        {
+            timers[index] = newTimer;
+            newTimer.AddSeat(this); // Update Seat reference in the new Timer
+        }
+    }
+
+    public void RemoveTimer(Timer timer)
+    {
+        if (timers.Contains(timer))
+        {
+            timers.Remove(timer);
+            timer.RemoveSeat(); // Clear the Seat reference in Timer
+        }
+    }
+    public List<Timer> GetTimers()
+    {
+        return timers;
+    }
 }
 

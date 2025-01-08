@@ -16,6 +16,7 @@ public class AssociationsTests
     private List<Ticket> tickets;
     private Comment comment;
     private Payment payment;
+    private Timer timer;
     
     [SetUp]
     public void Setup()
@@ -69,6 +70,8 @@ public class AssociationsTests
         movie.Comments.Add(comment);
         buyer.Comments.Add(comment);
         payment = new Payment(PaymentType.Blik, DateTime.Today, 2);
+
+        timer = new Timer(DateTime.Today, DateTime.Today.AddHours(2));
 
     }
     //Cinema tests
@@ -635,4 +638,100 @@ public void DeletePerson_ShouldDeleteCommentsHistoryAndTickets()
     }
     
 }
+
+//Timer tests
+        [Test]
+        public void AddHall_ShouldAssociateHall_WhenValidHallIsProvided()
+        {
+            // Act
+            timer.AddHall(hall);
+
+            // Assert
+            Assert.AreEqual(hall, timer.Hall);
+            Assert.Contains(timer, hall.GetTimers());
+        }
+
+        [Test]
+        public void AddHall_ShouldThrowArgumentNullException_WhenNullHallIsProvided()
+        {
+            // Act & Assert
+            Assert.Throws<ArgumentNullException>(() => timer.AddHall(null));
+        }
+
+        [Test]
+        public void AddHall_ShouldThrowInvalidOperationException_WhenHallIsAlreadyAssociated()
+        {
+            timer.AddHall(hall);
+
+            // Act & Assert
+            Assert.Throws<InvalidOperationException>(() => timer.AddHall(hall));
+        }
+
+        [Test]
+        public void RemoveHall_ShouldDissociateHall_WhenHallIsAssociated()
+        {
+            timer.AddHall(hall);
+
+            // Act
+            timer.RemoveHall();
+
+            // Assert
+            Assert.Null(timer.Hall);
+            Assert.IsFalse(hall.GetTimers().Contains(timer));
+        }
+
+
+        [Test]
+        public void RemoveHall_ShouldThrowInvalidOperationException_WhenNoHallIsAssociated()
+        {
+            // Act & Assert
+            Assert.Throws<InvalidOperationException>(() => timer.RemoveHall());
+        }
+
+        [Test]
+        public void AddSeat_ShouldAssociateSeat_WhenValidSeatIsProvided()
+        {
+            // Act
+            timer.AddSeat(seats[0]);
+
+            // Assert
+            Assert.AreEqual(seats[0], timer.Seat);
+            Assert.Contains(timer, seats[0].GetTimers());
+        }
+
+        [Test]
+        public void AddSeat_ShouldThrowArgumentNullException_WhenNullSeatIsProvided()
+        {
+            // Act & Assert
+            Assert.Throws<ArgumentNullException>(() => timer.AddSeat(null));
+        }
+
+        [Test]
+        public void AddSeat_ShouldThrowInvalidOperationException_WhenSeatIsAlreadyAssociated()
+        {
+            timer.AddSeat(seats[0]);
+
+            // Act & Assert
+            Assert.Throws<InvalidOperationException>(() => timer.AddSeat(seats[0]));
+        }
+
+        [Test]
+        public void RemoveSeat_ShouldDissociateSeat_WhenSeatIsAssociated()
+        {
+            timer.AddSeat(seats[0]);
+
+            // Act
+            timer.RemoveSeat();
+
+            // Assert
+            Assert.Null(timer.Seat);
+            Assert.IsFalse(seats[0].GetTimers().Contains(timer));
+        }
+
+        [Test]
+        public void RemoveSeat_ShouldThrowInvalidOperationException_WhenNoSeatIsAssociated()
+        {
+            // Act & Assert
+            Assert.Throws<InvalidOperationException>(() => timer.RemoveSeat());
+        } 
 }

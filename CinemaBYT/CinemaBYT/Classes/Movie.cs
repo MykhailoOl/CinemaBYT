@@ -153,10 +153,12 @@ namespace CinemaBYT
             return hashCode;
         }
         public void deleteSession(Session session) { 
+            if(_sessions.Count==1)  throw new ArgumentOutOfRangeException();
             if (session == null)
                 throw new ArgumentNullException(nameof(session));
             if (!_sessions.Remove(session))
                 throw new ArgumentOutOfRangeException();
+
         }
        
 

@@ -12,7 +12,8 @@ namespace CinemaBYT
         private List<Seat> _seats;
         private Cinema? _cinema;
         private int _hallNumber;
-        private List<Session> _sessions = new List<Session>(); 
+        private List<Session> _sessions = new List<Session>();
+        private List<Timer> timers = new List<Timer>();
 
         [Range(20, 100, ErrorMessage = "The number of seats in the hall must be between 20 and 100.")]
         public int NumberOfSeats
@@ -36,6 +37,42 @@ namespace CinemaBYT
         }
     
         public List<Session> Sessions { get; private set; } = new List<Session>();
+        public List<Timer> GetTimers()
+        {
+            return timers;
+        }        
+        
+        public void AddTimer(Timer timer)
+        {
+            if (!timers.Contains(timer))
+            {
+                timers.Add(timer);
+                timer.AddHall(this); // Use Timer's AddHall method for bidirectional sync
+            }
+        }
+
+        public void UpdateTimer(Timer oldTimer, Timer newTimer)
+        {
+            int index = timers.IndexOf(oldTimer);
+            if (index != -1)
+            {
+                timers[index] = newTimer;
+
+                // Update the old timer and link the new timer
+                oldTimer.RemoveHall(); // Use Timer's RemoveHall method
+                newTimer.AddHall(this); // Use Timer's AddHall method
+            }
+        }
+
+        public void RemoveTimer(Timer timer)
+        {
+            if (timers.Contains(timer))
+            {
+                timers.Remove(timer);
+                timer.RemoveHall(); // Use Timer's RemoveHall method for bidirectional sync
+            }
+        }
+
 
         public Cinema? Cinema
         {
